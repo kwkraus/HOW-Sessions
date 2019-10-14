@@ -19,7 +19,7 @@ ASP.NET Core provides the following benefits:
 - A cloud-ready, environment-based configuration system.
 - Built-in dependency injection.
 - A lightweight, high-performance, and modular HTTP request pipeline.
-- Ability to host on the following:
+- Ability to [host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/?view=aspnetcore-3.0&tabs=windows) on the following:
   - Kestrel
   - IIS
   - HTTP.sys
@@ -51,6 +51,22 @@ Default templates enable HTTPS, make sure to trust local certs
 
 With the new project created, we will discuss the main fundamentals of an ASP.NET Core project and its execution.
 
+### The Host
+
+[Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/index?view=aspnetcore-3.0&tabs=windows#host)
+
+Discuss how ASP.NET Core is hosted and what scenarios different hosts can be utilized.
+- Lifetime Management
+- [Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0)
+- `CreateDefaultBuilder` and `ConfigureWebHostDefaults` for [commonly configured host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0#default-builder-settings)
+
+>Time permitting, discuss the [Framework Services](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0#framework-provided-services) that can be utilized through DI
+>
+>- `IHostApplicationLifetime` to handle post-startup and graceful shutdown tasks
+>- `IHostLifetime` to implement controls when the host starts and when it stops
+>- `IHostEnvironment` to get information about the following ApplicationName, EnvironmentName, ContentRootPath
+>- Discuss [Host Configuration](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0#host-configuration)
+
 ### The StartUp Class
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/?view=aspnetcore-3.0&tabs=windows#the-startup-class)
@@ -66,3 +82,12 @@ ASP.NET Core projects contain a special class called Startup.cs used for the fol
     - Order Matters
     - `Use`, `Run`, `Map`
 
+### Nuget Packages
+
+ASP.NET Core was designed to only use what you need.  Nuget Packages are the building blocks for adding functionality into an ASP.NET Core application.
+
+There will be opportunities to discuss these nuget packages in the following sessions (e.g. Configuration, Logging, Entity Framework Core)
+
+Discuss the ASP.NET Core [Shared Framework](https://docs.microsoft.com/en-us/aspnet/core/release-notes/aspnetcore-3.0?view=aspnetcore-3.0#use-the-aspnet-core-shared-framework) and included [MetaPackages](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/metapackage-app?view=aspnetcore-3.0) for 3.x
+
+- Projects that target the Microsoft.NET.Sdk.Web SDK implicitly reference the Microsoft.AspNetCore.App framework.
