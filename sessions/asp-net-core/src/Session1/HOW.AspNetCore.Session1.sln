@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HOW.AspNetCore.Mvc.WebApp",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HOW.AspNetCore.Razor.WebApp", "HOW.AspNetCore.Razor.WebApp\HOW.AspNetCore.Razor.WebApp.csproj", "{89B1AA45-F4C8-41C8-83B9-04C2D36C8440}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{4E8B38AF-4B8D-4A86-8F1A-202F2BD67EAE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{89B1AA45-F4C8-41C8-83B9-04C2D36C8440}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89B1AA45-F4C8-41C8-83B9-04C2D36C8440}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89B1AA45-F4C8-41C8-83B9-04C2D36C8440}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E8B38AF-4B8D-4A86-8F1A-202F2BD67EAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E8B38AF-4B8D-4A86-8F1A-202F2BD67EAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E8B38AF-4B8D-4A86-8F1A-202F2BD67EAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E8B38AF-4B8D-4A86-8F1A-202F2BD67EAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

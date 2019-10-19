@@ -60,13 +60,6 @@ Discuss how ASP.NET Core is hosted and what scenarios different hosts can be uti
 - [Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0)
 - `CreateDefaultBuilder` and `ConfigureWebHostDefaults` for [commonly configured host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0#default-builder-settings)
 
->Time permitting, discuss the [Framework Services](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0#framework-provided-services) that can be utilized through DI
->
->- `IHostApplicationLifetime` to handle post-startup and graceful shutdown tasks
->- `IHostLifetime` to implement controls when the host starts and when it stops
->- `IHostEnvironment` to get information about the following ApplicationName, EnvironmentName, ContentRootPath
->- Discuss [Host Configuration](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0#host-configuration)
-
 ### The StartUp Class
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/?view=aspnetcore-3.0&tabs=windows#the-startup-class)
