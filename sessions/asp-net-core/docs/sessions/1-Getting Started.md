@@ -75,6 +75,8 @@ ASP.NET Core projects contain a special class called Startup.cs used for the fol
     - Order Matters
     - `Use`, `Run`, `Map`
 
+![alt text](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/asp-net-core/docs/images/request-delegate-pipeline.png?raw=true "Request Pipeline")
+
 ### Nuget Packages
 
 ASP.NET Core was designed to only use what you need.  Nuget Packages are the building blocks for adding functionality into an ASP.NET Core application.
