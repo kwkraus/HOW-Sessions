@@ -10,7 +10,7 @@ When you inspect the what is generated from the Visual Studio 2019 ASP.NET Core 
 
 - Razor Page routing within Startup.cs
   - `ConfigureServices()`
-  
+
       ```cs
       services.AddRazorPages()
       ```
@@ -32,5 +32,4 @@ When you inspect the what is generated from the Visual Studio 2019 ASP.NET Core 
 
 - Page routing
 
-In order to 
 ## Page Model
