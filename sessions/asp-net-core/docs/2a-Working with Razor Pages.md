@@ -9,15 +9,20 @@ In this session, we'll take a look at ASP.NET Core Razor pages and their program
 When you inspect the what is generated from the Visual Studio 2019 ASP.NET Core Razor Page template, discuss the following items:
 
 - Razor Page routing within Startup.cs
+  - `ConfigureServices()`
+  
+      ```cs
+      services.AddRazorPages()
+      ```
 
-   `services.AddRazorPages()`
+  - `Configure()`
 
-   ```cs
-   app.UseEndpoints(endpoints =>
-   {
-       endpoints.MapRazorPages();
-   });
-   ```
+      ```cs
+      app.UseEndpoints(endpoints =>
+      {
+          endpoints.MapRazorPages();
+      });
+      ```
 
 - `@page` directive
   - Must be first directive on page. ASP.NET Core treats as it's own MVC Action
