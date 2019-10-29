@@ -37,7 +37,9 @@ When you inspect the what is generated from the Visual Studio 2019 ASP.NET Core 
 
   - Must be first directive on page. ASP.NET Core treats as it's own MVC Action
 
-- Razor Syntax [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-3.0)
+- Razor Syntax
+
+   [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-3.0)
 
    At a high level, discuss the idea of razor syntax using some of the out of the box pages.  Ability to combine HTML and C#
 
