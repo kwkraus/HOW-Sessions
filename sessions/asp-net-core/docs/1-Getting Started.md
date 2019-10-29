@@ -29,7 +29,6 @@ ASP.NET Core provides the following benefits:
 - Side-by-side versioning.
 - Tooling that simplifies modern web development.
 
-
 ## Create New Project
 
 Create a new ASP.NET Core 3.x project using the target tool of choice.  Have a discussion with customer on what tooling they'd like to work with and be consistent during your sessions.
@@ -56,8 +55,11 @@ With the new project created, we will discuss the main fundamentals of an ASP.NE
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/index?view=aspnetcore-3.0&tabs=windows#host)
 
 Discuss how ASP.NET Core is hosted and what scenarios different hosts can be utilized.
+
 - Lifetime Management
+
 - [Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0)
+
 - `CreateDefaultBuilder` and `ConfigureWebHostDefaults` for [commonly configured host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0#default-builder-settings)
 
 ### The StartUp Class
