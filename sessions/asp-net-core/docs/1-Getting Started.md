@@ -2,7 +2,7 @@
 
 ## Why ASP.NET Core?
 
-[Docs Reference](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-3.0#why-choose-aspnet-core)
+[Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-3.0#why-choose-aspnet-core)
 
 Begin the discussion with an overview of why someone would want to use ASP.NET Core over a different technology.
 
