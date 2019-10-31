@@ -35,13 +35,18 @@ Discuss the following
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options?view=aspnetcore-3.0)
 
-
-
 ## Secret Manager
+
 - Enable Secret Manager `dotnet user-secrets init`
+
 - Add Secret `dotnet user-secrets set`
+
 - JSON flattening
+
 - Set multiple secretes: Bootstrap Secret Manager
+
 - `CreateDefaultBuilder` calls `AddUserSecrets()` by default when Environment is Development. [Access Secrets](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-3.0&tabs=windows#access-a-secret)
+
 - [Mapping to POCO](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-3.0&tabs=windows#map-secrets-to-a-poco)
+
 - String replacement: Use SqlConnectionStringBuilder using secrets.

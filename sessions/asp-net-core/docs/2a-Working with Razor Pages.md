@@ -178,7 +178,7 @@ Let's create our first Razor pages using Visual Studio.  For this session, we're
   - Razor Code Blocks
 
     ```cs
-    @{ 
+    @{
     var newProduct = new Product
     {
         Name = "Chewy Bear",
