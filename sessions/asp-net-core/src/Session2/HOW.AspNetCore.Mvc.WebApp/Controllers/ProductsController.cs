@@ -1,16 +1,12 @@
-﻿using HOW.AspNetCore.Razor.WebApp.Entities;
+﻿using HOW.AspNetCore.Mvc.WebApp.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 
-namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
+namespace HOW.AspNetCore.Mvc.WebApp.Controllers
 {
-    public class IndexModel : PageModel
+    public class ProductsController : Controller
     {
-        [BindProperty]
-        public List<Product> Products { get; set; }
-
-        public void OnGet()
+        public IActionResult Index()
         {
             List<Product> products = new List<Product>
             {
@@ -31,7 +27,7 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
                 }
             };
 
-            Products = products;
+            return View(products);
         }
     }
 }
