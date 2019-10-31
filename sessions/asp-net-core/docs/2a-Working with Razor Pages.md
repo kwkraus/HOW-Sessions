@@ -63,6 +63,17 @@ Let's create our first Razor pages using Visual Studio.  For this session, we're
 
 ### List a set of Products page
 
+- First, we need to create an Entity class that will represent a Product. Add a new class in a folder called Entities and use the following class definition
+
+    ```cs
+    public class Product
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+    }
+    ```
+
 - Add a new Razor Page to the Pages/Products folder and call it `Index.cshtml`
 
     >if using dotnet cli:  
@@ -112,38 +123,68 @@ Let's create our first Razor pages using Visual Studio.  For this session, we're
 
     > NOTE: Some of the ActionLinks will not work until the pages are created
 
-### Create a new Product page
+- Create some products within the IndexModel class and save to a `List<Product>` variable
 
-- Add a new Razor Page to the Page/Products folder and call it `Create.cshtml`
+    ```cs
+    public class IndexModel : PageModel
+        {
+            [BindProperty]
+            public List<Product> Products { get; set; }
 
-- Open the `Create.cshtml` page and add the following markup
+            public void OnGet()
+            {
+                List<Product> products = new List<Product>
+                {
+                    new Product
+                    {
+                        Name = "Gummy Bears",
+                        Price = 5.99M
+                    },
+                    new Product
+                    {
+                        Name = "Sweeie Bears",
+                        Price = 3.99M
+                    },
+                    new Product
+                    {
+                        Name = "Sour Bears",
+                        Price = 7.99M
+                    }
+                };
 
-    ```html
-    <h1>Create Product</h1>
-
-    <form method="post">
-        <div class="form-group">
-            <label asp-for="Product.Name" class="control-label"></label>
-            <input asp-for="Product.Name" class="form-control" />
-            <span asp-validation-for="Product.Name" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Product.Price" class="control-label"></label>
-            <input asp-for="Product.Price" class="form-control" />
-            <span asp-validation-for="Product.Price" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-primary" />
-        </div>
-    </form>
+                Products = products;
+            }
+        }
     ```
 
-- Discuss the Razor Tag Helpers present on this page
+  - Discuss the `OnGet()` method
 
-    [Reference Doc](https://docs.microsoft.com/en-US/aspnet/core/mvc/views/tag-helpers/intro?view=aspnetcore-3.0)
+  - Discuss the `[BindProperty]` attribute
 
-    - Label, Input, Validation
+- Hit F5 to run application to view the Products List
 
-    - Tag Helper Scope
+- Discuss Razor Syntax
 
-    - Intellisense Support
+  [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-3.0)
+
+  - Implicit Expressions use one @ symbol
+
+    - Add `<p>@DateTime.Now</p>` to top of page to demonstrate
+
+  - Explicit Expressions use two @ symbols
+
+    - Add `<p>Products last updated: @(DateTime.Now - TimeSpan.FromDays(7))</p>` to top of page to demonstrate
+
+  - Razor Code Blocks
+
+    ```cs
+    @{ 
+    var newProduct = new Product
+    {
+        Name = "Chewy Bear",
+        Price = 10.99M
+    };
+
+    Model.Products.Add(newProduct);
+    }
+    ```
