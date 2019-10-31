@@ -61,7 +61,7 @@ When you inspect the what is generated from the Visual Studio 2019 ASP.NET Core 
 
 Let's create our first Razor pages using Visual Studio.  For this session, we're going to create some pages that will manage Products for a particular company.  We'll add pages to create, edit, and list products.
 
-### List a set of products
+### List a set of Products page
 
 - Add a new Razor Page to the Pages/Products folder and call it `Index.cshtml`
 
@@ -112,7 +112,7 @@ Let's create our first Razor pages using Visual Studio.  For this session, we're
 
     > NOTE: Some of the ActionLinks will not work until the pages are created
 
-### Create a new Product
+### Create a new Product page
 
 - Add a new Razor Page to the Page/Products folder and call it `Create.cshtml`
 
