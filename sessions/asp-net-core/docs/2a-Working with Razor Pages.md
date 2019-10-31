@@ -61,56 +61,56 @@ When you inspect the what is generated from the Visual Studio 2019 ASP.NET Core 
 
 Let's create our first Razor pages using Visual Studio.  For this session, we're going to create some pages that will manage Products for a particular company.  We'll add pages to create, edit, and list products.
 
-1. List a set of products
+### List a set of products
 
-    - Add a new Razor Page to the Pages/Products folder and call it `Index.cshtml`
+- Add a new Razor Page to the Pages/Products folder and call it `Index.cshtml`
 
-        >if using dotnet cli:  
-        >`dotnet new page --name Create --namespace [TargetNamespace]`
+    >if using dotnet cli:  
+    >`dotnet new page --name Create --namespace [TargetNamespace]`
 
-    - Open the `Index.cshtml` page and add the following markup
+- Open the `Index.cshtml` page and add the following markup
 
-        ```html
-        <h1>Products</h1>
+    ```html
+    <h1>Products</h1>
 
-        <p>
-            <a asp-action="Create">Create New</a>
-        </p>
-        <table class="table">
-            <thead>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Price)
-                    </th>
-                    <th></th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+            }
+        </tbody>
+    </table>
 
-        ```
+    ```
 
-        > NOTE: Some of the ActionLinks will not work until the pages are created
+    > NOTE: Some of the ActionLinks will not work until the pages are created
 
 2. Add a new Razor Page to the Page/Products folder and call it `Products.cshtml`
 
