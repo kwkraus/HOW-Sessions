@@ -112,31 +112,33 @@ Let's create our first Razor pages using Visual Studio.  For this session, we're
 
     > NOTE: Some of the ActionLinks will not work until the pages are created
 
-2. Add a new Razor Page to the Page/Products folder and call it `Products.cshtml`
+### Create a new Product
 
-    - Open the `Products.cshtml` page and add the following markup
+- Add a new Razor Page to the Page/Products folder and call it `Create.cshtml`
 
-        ```html
-        <h1>Create Product</h1>
+- Open the `Create.cshtml` page and add the following markup
 
-        <form method="post">
-            <div class="form-group">
-                <label asp-for="Product.Name" class="control-label"></label>
-                <input asp-for="Product.Name" class="form-control" />
-                <span asp-validation-for="Product.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Product.Price" class="control-label"></label>
-                <input asp-for="Product.Price" class="form-control" />
-                <span asp-validation-for="Product.Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-        ```
+    ```html
+    <h1>Create Product</h1>
 
-    - Discuss the Razor Tag Helpers present on this page
+    <form method="post">
+        <div class="form-group">
+            <label asp-for="Product.Name" class="control-label"></label>
+            <input asp-for="Product.Name" class="form-control" />
+            <span asp-validation-for="Product.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Product.Price" class="control-label"></label>
+            <input asp-for="Product.Price" class="form-control" />
+            <span asp-validation-for="Product.Price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+    ```
+
+- Discuss the Razor Tag Helpers present on this page
 
     [Reference Doc](https://docs.microsoft.com/en-US/aspnet/core/mvc/views/tag-helpers/intro?view=aspnetcore-3.0)
 
@@ -145,5 +147,3 @@ Let's create our first Razor pages using Visual Studio.  For this session, we're
     - Tag Helper Scope
 
     - Intellisense Support
-
-    - 
