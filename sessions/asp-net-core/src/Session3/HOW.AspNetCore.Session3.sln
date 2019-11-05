@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HOW.AspNetCore.Mvc.WebApp",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HOW.AspNetCore.Razor.WebApp", "HOW.AspNetCore.Razor.WebApp\HOW.AspNetCore.Razor.WebApp.csproj", "{89B1AA45-F4C8-41C8-83B9-04C2D36C8440}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HOW.AspNetCore.Data", "HOW.AspNetCore.Data\HOW.AspNetCore.Data.csproj", "{B310689E-9F64-4146-AB14-BAF50D3766AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{89B1AA45-F4C8-41C8-83B9-04C2D36C8440}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89B1AA45-F4C8-41C8-83B9-04C2D36C8440}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89B1AA45-F4C8-41C8-83B9-04C2D36C8440}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B310689E-9F64-4146-AB14-BAF50D3766AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B310689E-9F64-4146-AB14-BAF50D3766AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B310689E-9F64-4146-AB14-BAF50D3766AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B310689E-9F64-4146-AB14-BAF50D3766AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

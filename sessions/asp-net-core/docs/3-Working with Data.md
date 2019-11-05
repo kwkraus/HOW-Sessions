@@ -1,6 +1,45 @@
 # Working with Data
 
-In this session, we'll be working with data using Entity Framework Core.  We'll discuss how to utilize the built in Dependency Injection system to inject an EF Context into a `PageModel` for retrieving and saving data
+In this session, we'll be working with data using Entity Framework Core.  We'll discuss how to utilize the built in Dependency Injection system to inject an EF Context into a `PageModel` for retrieving and saving data.
+
+>This session will teach you the basics of Entity Framework Core, but is not intended to be a comprehensive walkthrough of this technology
+
+## Configure Entity Framework Core
+
+In production ready systems, it is best practice to manage your data access resource within a separate class library.  
+
+First order of business is to create a new .NET Core Class Library project and install the appropriate Entity Framework Core Nuget packages.
+
+- Name the new Class Library Project `HOW.AspNetCore.Data`
+
+Next, we need to do is install some Nuget packages for Entity Framework Core.  We will be working with SQL LocalDb, so we will need the following packages using the cli or Package Manager Console
+
+[Referenc Doc](https://docs.microsoft.com/en-us/ef/core/get-started/install/#net-core-cli)
+
+- `dotnet add package Microsoft.EntityFrameworkCore`
+
+- `dotnet add package Microsoft.EntityFrameworkCore.SqlServer`
+
+> NOTE: you can also use the Nuget Package Manager in Visual Studio to find and install these packages
+
+### Create Entities
+
+Create folder called `Entities` at the root of the Data project. Copy the `Product.cs` class from the Asp.Net Core project and save it in this folder.  Make sure to change the namespace.
+
+### Create DbContext
+
+Create a folder called `Contexts` at the root of the Data project.  Create a new class within this folder and call it `HowDataContext.cs`
+
+Make this class inherit from DbContext, which is part of Entity Framework Core.
+
+Create a public property of type `DbSet<Product>` and call it `Products`
+
+```cs
+public class HowDataContext : DbContext
+{
+    public DbSet<Product> Products { get; set; }
+}
+```
 
 ## Create a new Product page
 
@@ -37,3 +76,5 @@ In this session, we'll be working with data using Entity Framework Core.  We'll 
   - Tag Helper Scope
 
   - Intellisense Support
+
+## Update Products List page with EF Core
