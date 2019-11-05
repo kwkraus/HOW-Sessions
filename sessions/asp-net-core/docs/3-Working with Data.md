@@ -22,24 +22,32 @@ Next, we need to do is install some Nuget packages for Entity Framework Core.  W
 
 > NOTE: you can also use the Nuget Package Manager in Visual Studio to find and install these packages
 
-### Create Entities
+### Create Product Entity
 
 Create folder called `Entities` at the root of the Data project. Copy the `Product.cs` class from the Asp.Net Core project and save it in this folder.  Make sure to change the namespace.
+
+> Make sure to delete the Entities folder containg the `Product.cs` file from the ASP.NET Core application
 
 ### Create DbContext
 
 Create a folder called `Contexts` at the root of the Data project.  Create a new class within this folder and call it `HowDataContext.cs`
 
-Make this class inherit from DbContext, which is part of Entity Framework Core.
+Make this class inherit from DbContext, which is part of Entity Framework Core.  Because we'll be using Dependency Injection for configuring this context, we need to make sure to add the constructor that takes a `DbContextOptions<HowDataContext>` parameter.  This will allow the DI container to inject the options at runtime. [Reference Doc](https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext#using-dbcontext-with-dependency-injection)
 
 Create a public property of type `DbSet<Product>` and call it `Products`
 
 ```cs
 public class HowDataContext : DbContext
 {
+    public HowDataContext(DbContextOptions<HowDataContext> options)
+      :base(options)
+    { }
+
     public DbSet<Product> Products { get; set; }
 }
 ```
+
+>Don't forget to make sure you create a Project Reference to the new Data project within the ASP.NET Core application
 
 ## Create a new Product page
 

@@ -1,4 +1,4 @@
-﻿using HOW.AspNetCore.Razor.WebApp.Entities;
+﻿using HOW.AspNetCore.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
