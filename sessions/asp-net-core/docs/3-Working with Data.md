@@ -10,6 +10,8 @@ In production ready systems, it is best practice to manage your data access reso
 
 First order of business is to create a new .NET Core Class Library project and install the appropriate Entity Framework Core Nuget packages.
 
+### Create new project
+
 - Name the new Class Library Project `HOW.AspNetCore.Data`
 
 Next, we need to do is install some Nuget packages for Entity Framework Core.  We will be working with SQL LocalDb, so we will need the following packages using the cli or Package Manager Console
