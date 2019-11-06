@@ -16,9 +16,17 @@ Next, we need to do is install some Nuget packages for Entity Framework Core.  W
 
 [Referenc Doc](https://docs.microsoft.com/en-us/ef/core/get-started/install/#net-core-cli)
 
+#### dotnet cli
+
 - `dotnet add package Microsoft.EntityFrameworkCore`
 
 - `dotnet add package Microsoft.EntityFrameworkCore.SqlServer`
+
+#### Package Manager Console
+
+- `Install-Package Microsoft.EntityFrameworkCore`
+
+- `Install-Package Microsoft.EntityFrameworkCore.SqlServer`
 
 > NOTE: you can also use the Nuget Package Manager in Visual Studio to find and install these packages
 
@@ -48,6 +56,18 @@ public class HowDataContext : DbContext
 ```
 
 >Don't forget to make sure you create a Project Reference to the new Data project within the ASP.NET Core application
+
+### Register your DbContext using Dependency Injection
+
+[Reference Doc](https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext#using-dbcontext-with-dependency-injection)
+
+In order to use our new DbContext, we need to register it within the Dependency Injection Services Collection.  We will discuss DI in greater details in a future session.
+
+Add the following code to the `Startup.cs` file within the `ConfigureServices()` method
+
+```cs
+services.AddDbContext<HowDataContext>(options =>     options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HowAspNetCoreDb;Trusted_Connection=True;MultipleActiveResultSets=true"));
+```
 
 ## Create a new Product page
 
