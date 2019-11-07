@@ -188,3 +188,17 @@ Let's create our first Razor pages using Visual Studio.  For this session, we're
     Model.Products.Add(newProduct);
     }
     ```
+
+### Add new Page to Layout navigation
+
+In order to make it easier to navigate to our new page, let's add a navigation link to the `_Layout.cshtml` file.
+
+Find the `<ul>` tag and add the following list item to this unordered list.
+
+```html
+<li class="nav-item">
+    <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">Products</a>
+</li>
+```
+
+Run the application to verify the navigation link is present and it navigates properly to the Products List page.
