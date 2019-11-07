@@ -72,7 +72,7 @@ services.AddDbContext<HowDataContext>(options =>
     options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HowAspNetCoreDb;Trusted_Connection=True;MultipleActiveResultSets=true"));
 ```
 
-## Enable EF Migrations to Create Database
+### Enable EF Migrations to Create Database
 
 Now we need to create an initial migration that represents the initial database schema and create the database based on this initial migration.
 
@@ -126,7 +126,7 @@ public void OnGet()
 
 Start the application and navigate to the Products list page.  You should see only one Product.  This is expected because we haven't created any products within the database, and we are still manually adding a product within the Razor Page.
 
-## Create a new Product page
+## Add Create Product Page
 
 Next we need to create new Products and save them to our newly created database.
 
@@ -154,12 +154,63 @@ Next we need to create new Products and save them to our newly created database.
     </form>
     ```
 
-- Discuss the Razor Tag Helpers present on this page
+### Discuss the Razor Tag Helpers present on this page
 
   [Reference Doc](https://docs.microsoft.com/en-US/aspnet/core/mvc/views/tag-helpers/intro?view=aspnetcore-3.0)
 
-  - Label, Input, Validation
+- Label, Input, Validation
 
-  - Tag Helper Scope
+- Tag Helper Scope
 
-  - Intellisense Support
+- Intellisense Support
+
+### Add Validation
+
+Let's add some validation to the Create page using Entity Data Annotations and see how this affects our page behavior as well as the database schema.
+
+#### Update `Product.cs` Entity
+
+In this example, we'll use DataAnnotations to apply attributes on the Product properties.  These attributes are used by both the ASP.NET Core validation system as well as EF Core's migration system.
+
+```cs
+public int Id { get; set; }
+
+[Required]
+[StringLength(60, MinimumLength = 3)]
+[DisplayName("Product Name")]
+public string Name { get; set; }
+
+[Required]
+[Range(1, 1000)]
+[DataType(DataType.Currency)]
+[Column(TypeName = "decimal(18, 2)")]
+public decimal Price { get; set; }
+```
+
+> Make sure to explain what each attribute does.
+
+#### Update the Index.cshtml Product List page
+
+In order to turn validation on within the cshtml page, you need to add the Validation Scripts at the bottom of the page.
+
+```cs
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+```
+
+#### Create another EF Core migration
+
+Because we added some DataAnnotation attributes to the Product entity, we need to make sure these changes are also represented within our database schema.  In order to update our database, we need to create a new migration and apply it to the database.
+
+- `Add-Migration 'Validation' -project How.AspNetCore.Data`
+
+Apply the migration changes
+
+- `Update-Database`
+
+> Show the effects of these attributes when the application is running.  Also, make sure to show the changes to the Product table schema.
+
+## Add Edit Product Page
+
+## Add Delete Product Page
