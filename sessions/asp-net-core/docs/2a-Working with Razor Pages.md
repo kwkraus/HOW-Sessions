@@ -201,4 +201,4 @@ Find the `<ul>` tag and add the following list item to this unordered list.
 </li>
 ```
 
-Run the application to verify the navigation link is present and it navigates properly to the Products List page.
+Run the application to verify the navigation link is present and it navigates properly to the Products List page.  Products List page should have 4 total Products (3 from the PageModel and 1 from Razor)

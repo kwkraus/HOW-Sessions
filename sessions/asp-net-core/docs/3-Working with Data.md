@@ -213,4 +213,58 @@ Apply the migration changes
 
 ## Add Edit Product Page
 
+```html
+<h1>Edit Product</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Product.Id" class="control-label"></label>
+        <input asp-for="Product.Id" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="Product.Name" class="control-label"></label>
+        <input asp-for="Product.Name" class="form-control" />
+        <span asp-validation-for="Product.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Product.Price" class="control-label"></label>
+        <input asp-for="Product.Price" class="form-control" />
+        <span asp-validation-for="Product.Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Update" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+```
+
+```cs
+[BindProperty]
+public Product Product { get; set; }
+
+public async Task OnGetAsync(int id)
+{
+    Product = await _context.Products.SingleOrDefaultAsync(e => e.Id == id);
+}
+
+public async Task<IActionResult> OnPostAsync()
+{
+    if (!ModelState.IsValid)
+        return Page();
+
+    var productToEdit = _context.Products.Find(Product.Id);
+
+    if (productToEdit == null)
+        return Page();
+
+    _context.Entry(productToEdit).CurrentValues.SetValues(Product);
+    await _context.SaveChangesAsync();
+
+    return RedirectToPage("Index");
+}
+```
+
 ## Add Delete Product Page
