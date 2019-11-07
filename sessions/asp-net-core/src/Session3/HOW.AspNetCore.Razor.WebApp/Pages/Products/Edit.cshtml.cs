@@ -2,7 +2,6 @@
 using HOW.AspNetCore.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
@@ -21,7 +20,7 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
 
         public async Task OnGetAsync(int id)
         {
-            Product = await _context.Products.SingleOrDefaultAsync(e => e.Id == id);
+            Product = await _context.Products.FindAsync(id);
         }
 
         public async Task<IActionResult> OnPostAsync()

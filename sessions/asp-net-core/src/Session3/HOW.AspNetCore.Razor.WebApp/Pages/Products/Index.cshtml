@@ -1,23 +1,10 @@
 ﻿@page
 @model HOW.AspNetCore.Razor.WebApp.Pages.Products.IndexModel
-@using HOW.AspNetCore.Data.Entities
 @{
     ViewData["Title"] = "Products";
 }
 
 <h1>Products</h1>
-<p>@DateTime.Now</p>
-<p>Products last updated: @(DateTime.Now - TimeSpan.FromDays(7))</p>
-
-@{ 
-    var newProduct = new Product
-    {
-        Name = "Chewy Bear",
-        Price = 10.99M
-    };
-
-    Model.Products.Add(newProduct);
-}
 
 <p>
     <a asp-page="Create">Create New</a>

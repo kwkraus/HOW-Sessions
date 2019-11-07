@@ -247,7 +247,7 @@ public Product Product { get; set; }
 
 public async Task OnGetAsync(int id)
 {
-    Product = await _context.Products.SingleOrDefaultAsync(e => e.Id == id);
+    Product = await _context.Products.FindAsync(id);
 }
 
 public async Task<IActionResult> OnPostAsync()
@@ -268,3 +268,14 @@ public async Task<IActionResult> OnPostAsync()
 ```
 
 ## Add Delete Product Page
+
+```cs
+public async Task<IActionResult> OnGetAsync(int id)
+{
+    var productToDelete = await _context.Products.FindAsync(id);
+    _context.Products.Remove(productToDelete);
+    await _context.SaveChangesAsync();
+
+    return RedirectToPage("Index");
+}
+```
