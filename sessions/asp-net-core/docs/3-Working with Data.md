@@ -129,8 +129,30 @@ public void OnGet()
 }
 ```
 
+>NOTE: when you run the application you will still see one `Product` in the Products list.  This is the item we added within the Razor Page using Razor syntax
+
 ## Enable EF Migrations to Create Database
 
-`Add-Migration 'Initial' -project How.AspNetCore.Data`
+Now we need to create an initial migration that represents the initial database schema and create the database based on this initial migration.
 
-`Update-Database`
+### Run these commands
+
+Create the initial migratoin
+
+- `Add-Migration 'Initial' -project How.AspNetCore.Data`
+
+Create the database with initial schema
+
+- `Update-Database`
+
+### What just happened
+
+[Reference Doc](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=vs)
+
+Briefly discuss what these commands did and how they did it.
+
+- Migration files and where they were created
+
+- EF Core inspected DI container to find DbContext to create migration
+
+- EF Core Update command applies all migrations using configured connectionstring
