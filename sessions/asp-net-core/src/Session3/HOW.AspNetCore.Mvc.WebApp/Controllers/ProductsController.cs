@@ -1,33 +1,21 @@
-﻿using HOW.AspNetCore.Mvc.WebApp.Entities;
+﻿using HOW.AspNetCore.Data.Contexts;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace HOW.AspNetCore.Mvc.WebApp.Controllers
 {
     public class ProductsController : Controller
     {
+        private readonly HowDataContext _context;
+
+        public ProductsController(HowDataContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
-            List<Product> products = new List<Product>
-            {
-                new Product
-                {
-                    Name = "Gummy Bears",
-                    Price = 5.99M
-                },
-                new Product
-                {
-                    Name = "Sweeie Bears",
-                    Price = 3.99M
-                },
-                new Product
-                {
-                    Name = "Sour Bears",
-                    Price = 7.99M
-                }
-            };
-
-            return View(products);
+            return View(_context.Products.ToList());
         }
     }
 }

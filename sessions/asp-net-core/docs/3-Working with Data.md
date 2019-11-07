@@ -157,3 +157,8 @@ Briefly discuss what these commands did and how they did it.
 - EF Core inspected DI container to find DbContext to create migration
 
 - EF Core Update command applies all migrations using configured connectionstring
+
+## Run application
+
+Start the application and navigate to the Products list page.  You should see only one Product.  This is expected because we haven't created any products within the database, and we are still manually adding a product within the Razor Page.
+
