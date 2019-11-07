@@ -65,14 +65,70 @@ public class HowDataContext : DbContext
 
 In order to use our new DbContext, we need to register it within the Dependency Injection Services Collection.  We will discuss DI in greater details in a future session.
 
-Add the following code to the `Startup.cs` file within the `ConfigureServices()` method
+Add the following code to the `Startup.cs` file within the `ConfigureServices()` method.
 
 ```cs
 services.AddDbContext<HowDataContext>(options =>
     options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HowAspNetCoreDb;Trusted_Connection=True;MultipleActiveResultSets=true"));
 ```
 
+## Enable EF Migrations to Create Database
+
+Now we need to create an initial migration that represents the initial database schema and create the database based on this initial migration.
+
+### Run these commands
+
+Create the initial migratoin
+
+- `Add-Migration 'Initial' -project How.AspNetCore.Data`
+
+Create the database with initial schema
+
+- `Update-Database`
+
+### What just happened
+
+[Reference Doc](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=vs)
+
+Briefly discuss what these commands did and how they did it.
+
+- Migration files and where they were created
+
+- EF Core inspected DI container to find DbContext to create migration
+
+- EF Core Update command applies all migrations using configured connectionstring
+
+## Update Products List page with EF Core
+
+We now need to remove the hardcoded list of products within the `Index.cshtml.cs` file and return Products using DbContext.  First we need to do is add a constructor to the `IndexModel` class and have the `HowDataContext` injected into the class
+
+```cs
+private readonly HowDataContext _context;
+
+public IndexModel(HowDataContext context)
+{
+    _context = context;
+}
+```
+
+Next, remove the hardcoded list of products and pull the Products from the context
+
+```cs
+public void OnGet()
+{
+    Products = _context.Products.ToList();
+}
+```
+
+>NOTE: when you run the application you will still see one `Product` in the Products list.  This is the item we added within the Razor Page using Razor syntax
+
+### Run application to test
+
+Start the application and navigate to the Products list page.  You should see only one Product.  This is expected because we haven't created any products within the database, and we are still manually adding a product within the Razor Page.
+
 ## Create a new Product page
+
+Next we need to create new Products and save them to our newly created database.
 
 - Add a new Razor Page to the Page/Products folder and call it `Create.cshtml`
 
@@ -107,58 +163,3 @@ services.AddDbContext<HowDataContext>(options =>
   - Tag Helper Scope
 
   - Intellisense Support
-
-## Update Products List page with EF Core
-
-We now need to remove the hardcoded list of products within the `Index.cshtml.cs` file and return Products using DbContext.  First we need to do is add a constructor to the `IndexModel` class and have the `HowDataContext` injected into the class
-
-```cs
-private readonly HowDataContext _context;
-
-public IndexModel(HowDataContext context)
-{
-    _context = context;
-}
-```
-
-Next, remove the hardcoded list of products and pull the Products from the context
-
-```cs
-public void OnGet()
-{
-    Products = _context.Products.ToList();
-}
-```
-
->NOTE: when you run the application you will still see one `Product` in the Products list.  This is the item we added within the Razor Page using Razor syntax
-
-## Enable EF Migrations to Create Database
-
-Now we need to create an initial migration that represents the initial database schema and create the database based on this initial migration.
-
-### Run these commands
-
-Create the initial migratoin
-
-- `Add-Migration 'Initial' -project How.AspNetCore.Data`
-
-Create the database with initial schema
-
-- `Update-Database`
-
-### What just happened
-
-[Reference Doc](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=vs)
-
-Briefly discuss what these commands did and how they did it.
-
-- Migration files and where they were created
-
-- EF Core inspected DI container to find DbContext to create migration
-
-- EF Core Update command applies all migrations using configured connectionstring
-
-## Run application
-
-Start the application and navigate to the Products list page.  You should see only one Product.  This is expected because we haven't created any products within the database, and we are still manually adding a product within the Razor Page.
-

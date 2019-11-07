@@ -85,7 +85,7 @@ Let's create our first Razor pages using Visual Studio.  For this session, we're
     <h1>Products</h1>
 
     <p>
-        <a asp-action="Create">Create New</a>
+        <a asp-page="Create">Create New</a>
     </p>
     <table class="table">
         <thead>
