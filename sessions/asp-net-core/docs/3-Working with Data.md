@@ -68,7 +68,8 @@ In order to use our new DbContext, we need to register it within the Dependency 
 Add the following code to the `Startup.cs` file within the `ConfigureServices()` method
 
 ```cs
-services.AddDbContext<HowDataContext>(options =>     options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HowAspNetCoreDb;Trusted_Connection=True;MultipleActiveResultSets=true"));
+services.AddDbContext<HowDataContext>(options =>
+    options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HowAspNetCoreDb;Trusted_Connection=True;MultipleActiveResultSets=true"));
 ```
 
 ## Create a new Product page
