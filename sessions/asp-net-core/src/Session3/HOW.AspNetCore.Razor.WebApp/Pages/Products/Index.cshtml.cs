@@ -1,37 +1,27 @@
-﻿using HOW.AspNetCore.Data.Entities;
+﻿using HOW.AspNetCore.Data.Contexts;
+using HOW.AspNetCore.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
 {
     public class IndexModel : PageModel
     {
+        private readonly HowDataContext _context;
+
+        public IndexModel(HowDataContext context)
+        {
+            _context = context;
+        }
+
         [BindProperty]
         public List<Product> Products { get; set; }
 
         public void OnGet()
         {
-            List<Product> products = new List<Product>
-            {
-                new Product
-                {
-                    Name = "Gummy Bears",
-                    Price = 5.99M
-                },
-                new Product
-                {
-                    Name = "Sweeie Bears",
-                    Price = 3.99M
-                },
-                new Product
-                {
-                    Name = "Sour Bears",
-                    Price = 7.99M
-                }
-            };
-
-            Products = products;
+            Products = _context.Products.ToList();
         }
     }
 }

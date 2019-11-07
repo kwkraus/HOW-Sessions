@@ -108,3 +108,23 @@ services.AddDbContext<HowDataContext>(options =>     options.UseSqlServer("Serve
   - Intellisense Support
 
 ## Update Products List page with EF Core
+
+We now need to remove the hardcoded list of products within the `Index.cshtml.cs` file and return Products using DbContext.  First we need to do is add a constructor to the `IndexModel` class and have the `HowDataContext` injected into the class
+
+```cs
+private readonly HowDataContext _context;
+
+public IndexModel(HowDataContext context)
+{
+    _context = context;
+}
+```
+
+Next, remove the hardcoded list of products and pull the Products from the context
+
+```cs
+public void OnGet()
+{
+    Products = _context.Products.ToList();
+}
+```
