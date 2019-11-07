@@ -128,3 +128,9 @@ public void OnGet()
     Products = _context.Products.ToList();
 }
 ```
+
+## Enable EF Migrations to Create Database
+
+`Add-Migration 'Initial' -project How.AspNetCore.Data`
+
+`Update-Database`
