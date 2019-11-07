@@ -213,6 +213,12 @@ Apply the migration changes
 
 ## Add Edit Product Page
 
+Next we'll create a simple Edit page that updates an existing Product within the database using EF Core.
+
+Create a new Razor Page within the Products folder called Edit.cshtml.
+
+Copy the following markup into the page.  This markup also supports validation.
+
 ```html
 <h1>Edit Product</h1>
 
@@ -241,6 +247,8 @@ Apply the migration changes
 }
 ```
 
+Open the `Edit.cshtml.cs` file and add the following code to load an existing product into the page and support saving updates to an existing product.
+
 ```cs
 [BindProperty]
 public Product Product { get; set; }
@@ -268,6 +276,10 @@ public async Task<IActionResult> OnPostAsync()
 ```
 
 ## Add Delete Product Page
+
+Finally, we'll create a Delete Page to call so we can delete a product based on the id passed to the page.
+
+Create a new 
 
 ```cs
 public async Task<IActionResult> OnGetAsync(int id)
