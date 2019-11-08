@@ -10,16 +10,15 @@ using HOW.AspNetCore.Data.Entities;
 
 namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
 {
-    public class DeleteModel : PageModel
+    public class DetailsModel : PageModel
     {
         private readonly HOW.AspNetCore.Data.Contexts.HowDataContext _context;
 
-        public DeleteModel(HOW.AspNetCore.Data.Contexts.HowDataContext context)
+        public DetailsModel(HOW.AspNetCore.Data.Contexts.HowDataContext context)
         {
             _context = context;
         }
 
-        [BindProperty]
         public Product Product { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -36,24 +35,6 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
                 return NotFound();
             }
             return Page();
-        }
-
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Product = await _context.Products.FindAsync(id);
-
-            if (Product != null)
-            {
-                _context.Products.Remove(Product);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToPage("./Index");
         }
     }
 }

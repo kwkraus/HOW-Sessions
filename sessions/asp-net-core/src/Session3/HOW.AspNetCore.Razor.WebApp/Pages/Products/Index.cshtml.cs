@@ -1,9 +1,9 @@
 ﻿using HOW.AspNetCore.Data.Contexts;
 using HOW.AspNetCore.Data.Entities;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
 {
@@ -16,12 +16,11 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
             _context = context;
         }
 
-        [BindProperty]
-        public List<Product> Products { get; set; }
+        public IList<Product> Products { get;set; }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            Products = _context.Products.ToList();
+            Products = await _context.Products.ToListAsync();
         }
     }
 }

@@ -1,37 +1,45 @@
-﻿using HOW.AspNetCore.Data.Contexts;
-using HOW.AspNetCore.Data.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using HOW.AspNetCore.Data.Contexts;
+using HOW.AspNetCore.Data.Entities;
 
 namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
 {
     public class CreateModel : PageModel
     {
-        private readonly HowDataContext _context;
+        private readonly HOW.AspNetCore.Data.Contexts.HowDataContext _context;
 
-        public CreateModel(HowDataContext context)
+        public CreateModel(HOW.AspNetCore.Data.Contexts.HowDataContext context)
         {
             _context = context;
+        }
+
+        public IActionResult OnGet()
+        {
+            return Page();
         }
 
         [BindProperty]
         public Product Product { get; set; }
 
-        public void OnGet()
-        {
-
-        }
-
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
+            {
                 return Page();
+            }
 
-            await _context.Products.AddAsync(Product);
+            _context.Products.Add(Product);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("Index");
+            return RedirectToPage("./Index");
         }
     }
 }
