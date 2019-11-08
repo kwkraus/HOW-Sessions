@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HOW.AspNetCore.Data.Contexts;
+using HOW.AspNetCore.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using HOW.AspNetCore.Data.Contexts;
-using HOW.AspNetCore.Data.Entities;
+using System.Threading.Tasks;
 
 namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
 {
     public class EditModel : PageModel
     {
-        private readonly HOW.AspNetCore.Data.Contexts.HowDataContext _context;
+        private readonly HowDataContext _context;
 
-        public EditModel(HOW.AspNetCore.Data.Contexts.HowDataContext context)
+        public EditModel(HowDataContext context)
         {
             _context = context;
         }
@@ -26,52 +22,30 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             Product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
 
             if (Product == null)
-            {
                 return NotFound();
-            }
+
             return Page();
         }
 
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            _context.Attach(Product).State = EntityState.Modified;
+            var productToEdit = _context.Products.Find(Product.Id);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(Product.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            if (productToEdit == null)
+                return Page();
 
-            return RedirectToPage("./Index");
-        }
+            _context.Entry(productToEdit).CurrentValues.SetValues(Product);
+            await _context.SaveChangesAsync();
 
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(e => e.Id == id);
+            return RedirectToPage("Index");
         }
     }
 }

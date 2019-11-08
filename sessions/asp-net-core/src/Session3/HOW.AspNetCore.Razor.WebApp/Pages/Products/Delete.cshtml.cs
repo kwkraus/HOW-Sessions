@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HOW.AspNetCore.Data.Contexts;
+using HOW.AspNetCore.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using HOW.AspNetCore.Data.Contexts;
-using HOW.AspNetCore.Data.Entities;
+using System.Threading.Tasks;
 
 namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
 {
     public class DeleteModel : PageModel
     {
-        private readonly HOW.AspNetCore.Data.Contexts.HowDataContext _context;
+        private readonly HowDataContext _context;
 
-        public DeleteModel(HOW.AspNetCore.Data.Contexts.HowDataContext context)
+        public DeleteModel(HowDataContext context)
         {
             _context = context;
         }
