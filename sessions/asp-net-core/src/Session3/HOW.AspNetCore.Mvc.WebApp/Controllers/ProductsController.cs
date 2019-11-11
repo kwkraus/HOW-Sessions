@@ -1,6 +1,7 @@
 ﻿using HOW.AspNetCore.Data.Contexts;
 using HOW.AspNetCore.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -40,6 +41,20 @@ namespace HOW.AspNetCore.Mvc.WebApp.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var product = await _context.Products.FindAsync(id);
+
+            if (product == null)
+                return NotFound();
+
+            return View(product);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             return View(await _context.Products.FindAsync(id));
@@ -63,12 +78,28 @@ namespace HOW.AspNetCore.Mvc.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            var productToDelete = await _context.Products.FindAsync(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var productToDelete = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
 
             if (productToDelete == null)
-                return View();
+            {
+                return NotFound();
+            }
+
+            return View(productToDelete);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var productToDelete = await _context.Products.FindAsync(id);
 
             _context.Products.Remove(productToDelete);
             await _context.SaveChangesAsync();
