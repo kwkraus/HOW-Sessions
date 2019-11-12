@@ -12,7 +12,7 @@ First order of business is to create a new .NET Core Class Library project and i
 
 ### Create new project
 
-- Name the new Class Library Project `HOW.AspNetCore.Data`
+- Name the new .NET Core Class Library Project `HOW.AspNetCore.Data`
 
 Next, we need to do is install some Nuget packages for Entity Framework Core.  We will be working with SQL LocalDb, so we will need the following packages using the cli or Package Manager Console
 

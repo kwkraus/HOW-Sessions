@@ -1,7 +1,5 @@
 using HOW.AspNetCore.Data.Contexts;
 using HOW.AspNetCore.Services.DependencyInjection;
-using HOW.AspNetCore.Services.Implementation;
-using HOW.AspNetCore.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
