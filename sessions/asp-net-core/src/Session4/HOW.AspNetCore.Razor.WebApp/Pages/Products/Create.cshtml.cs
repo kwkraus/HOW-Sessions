@@ -33,8 +33,6 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
                 return Page();
             }
 
-            var fileLoc = await _storageService.SaveFileAsync("");
-
             _context.Products.Add(Product);
             await _context.SaveChangesAsync();
 
