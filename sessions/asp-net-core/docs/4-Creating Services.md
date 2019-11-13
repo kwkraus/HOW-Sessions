@@ -136,3 +136,23 @@ public CreateModel(IProductService productService)
 ```
 
 > Make sure to update all of the pages in this fashion.
+
+### Update all Razor Pages to use `IProductService`
+
+Next we need to remove all references to the `HowDataContext` member and replace them with `IProductService` method calls.
+
+### Register the `ProductService` class with DI
+
+In order to use the `ProductService` class when a class is expecting a `IProductService` type, we need to register it with the Dependency Injection System, within the `ConfigureServices()` method.
+
+Add the following line of code to the bottom of the `ConfigureServices()` method.
+
+```cs
+services.AddTransient<IProductService, ProductService>();
+```
+
+## Run Application
+
+If the solution compiles, run the application and make sure it works exactly the same as it did before.
+
+## Update Web Application with Product Images
