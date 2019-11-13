@@ -1,19 +1,18 @@
-﻿using HOW.AspNetCore.Data.Contexts;
-using HOW.AspNetCore.Data.Entities;
+﻿using HOW.AspNetCore.Data.Entities;
+using HOW.AspNetCore.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
 {
     public class DeleteModel : PageModel
     {
-        private readonly HowDataContext _context;
+        private readonly IProductService _productSvc;
 
-        public DeleteModel(HowDataContext context)
+        public DeleteModel(IProductService productService)
         {
-            _context = context;
+            _productSvc = productService;
         }
 
         [BindProperty]
@@ -22,33 +21,25 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            Product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+            Product = await _productSvc.GetProductAsync(id.GetValueOrDefault());
 
             if (Product == null)
-            {
                 return NotFound();
-            }
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            Product = await _context.Products.FindAsync(id);
+            Product = await _productSvc.GetProductAsync(id.GetValueOrDefault());
 
             if (Product != null)
-            {
-                _context.Products.Remove(Product);
-                await _context.SaveChangesAsync();
-            }
+                await _productSvc.DeleteProductAsync(id);
 
             return RedirectToPage("./Index");
         }

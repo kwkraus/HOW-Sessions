@@ -82,42 +82,47 @@ Let's create our first Razor pages using Visual Studio.  For this session, we're
 - Open the `Index.cshtml` page and add the following markup
 
     ```html
-    <h1>Create new Product</h1>
+    <h1>Products</h1>
 
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Product.Name" class="control-label"></label>
-                    <input asp-for="Product.Name" class="form-control" />
-                    <span asp-validation-for="Product.Name" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Product.Price" class="control-label"></label>
-                    <input asp-for="Product.Price" class="form-control" />
-                    <span asp-validation-for="Product.Price" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div>
-        <a asp-page="Index">Back to List</a>
-    </div>
-
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Price)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
     ```
 
     > NOTE: Some of the ActionLinks will not work until the pages are created
 
-- Create some products within the IndexModel class and save to a `List<Product>` variable
+- Create some products within the IndexModel class and save to a `Products` property
 
     ```cs
     public class IndexModel : PageModel

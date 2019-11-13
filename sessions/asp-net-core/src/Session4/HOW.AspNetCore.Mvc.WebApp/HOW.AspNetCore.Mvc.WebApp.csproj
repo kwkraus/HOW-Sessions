@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HOW.AspNetCore.Data\HOW.AspNetCore.Data.csproj" />
+    <ProjectReference Include="..\HOW.AspNetCore.Services\HOW.AspNetCore.Services.csproj" />
   </ItemGroup>
 
 </Project>

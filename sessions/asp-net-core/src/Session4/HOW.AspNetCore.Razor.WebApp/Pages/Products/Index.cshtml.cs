@@ -1,5 +1,6 @@
 ﻿using HOW.AspNetCore.Data.Contexts;
 using HOW.AspNetCore.Data.Entities;
+using HOW.AspNetCore.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -9,18 +10,18 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
 {
     public class IndexModel : PageModel
     {
-        private readonly HowDataContext _context;
+        private readonly IProductService _productSvc;
 
-        public IndexModel(HowDataContext context)
+        public IndexModel(IProductService productService)
         {
-            _context = context;
+            _productSvc = productService;
         }
 
-        public IList<Product> Products { get;set; }
+        public IEnumerable<Product> Products { get;set; }
 
         public async Task OnGetAsync()
         {
-            Products = await _context.Products.ToListAsync();
+            Products = await _productSvc.GetAllProducts();
         }
     }
 }

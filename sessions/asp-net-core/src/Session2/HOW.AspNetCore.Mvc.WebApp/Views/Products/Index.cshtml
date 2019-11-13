@@ -25,10 +25,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model[0].Name)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].Price)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Price)
             </th>
             <th></th>
         </tr>

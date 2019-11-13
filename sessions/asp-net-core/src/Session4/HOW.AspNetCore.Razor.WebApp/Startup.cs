@@ -1,5 +1,6 @@
 using HOW.AspNetCore.Data.Contexts;
-using HOW.AspNetCore.Services.DependencyInjection;
+using HOW.AspNetCore.Services.Domains;
+using HOW.AspNetCore.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ namespace HOW.AspNet.WebApp
             services.AddDbContext<HowDataContext>(options => 
                 options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HowAspNetCoreDb;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
-            services.AddHOWAzureStorage();
+            services.AddTransient<IProductService, ProductService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

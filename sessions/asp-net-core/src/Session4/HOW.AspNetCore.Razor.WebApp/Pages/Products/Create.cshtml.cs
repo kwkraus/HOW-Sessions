@@ -1,5 +1,4 @@
-﻿using HOW.AspNetCore.Data.Contexts;
-using HOW.AspNetCore.Data.Entities;
+﻿using HOW.AspNetCore.Data.Entities;
 using HOW.AspNetCore.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,13 +8,11 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
 {
     public class CreateModel : PageModel
     {
-        private readonly HowDataContext _context;
-        private readonly IStorageService _storageService;
+        private readonly IProductService _productSvc;
 
-        public CreateModel(HowDataContext context, IStorageService storageSvc)
+        public CreateModel(IProductService productService)
         {
-            _context = context;
-            _storageService = storageSvc;
+            _productSvc = productService;
         }
 
         public IActionResult OnGet()
@@ -33,8 +30,7 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
                 return Page();
             }
 
-            _context.Products.Add(Product);
-            await _context.SaveChangesAsync();
+            await _productSvc.CreateProductAsync(Product);
 
             return RedirectToPage("./Index");
         }

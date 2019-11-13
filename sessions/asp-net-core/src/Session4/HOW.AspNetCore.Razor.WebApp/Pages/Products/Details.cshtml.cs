@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HOW.AspNetCore.Data.Entities;
+using HOW.AspNetCore.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using HOW.AspNetCore.Data.Contexts;
-using HOW.AspNetCore.Data.Entities;
+using System.Threading.Tasks;
 
 namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
 {
     public class DetailsModel : PageModel
     {
-        private readonly HOW.AspNetCore.Data.Contexts.HowDataContext _context;
+        private readonly IProductService _productSvc;
 
-        public DetailsModel(HOW.AspNetCore.Data.Contexts.HowDataContext context)
+        public DetailsModel(IProductService productService)
         {
-            _context = context;
+            _productSvc = productService;
         }
 
         public Product Product { get; set; }
@@ -24,16 +20,13 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            Product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+            Product = await _productSvc.GetProductAsync(id.GetValueOrDefault());
 
             if (Product == null)
-            {
                 return NotFound();
-            }
+
             return Page();
         }
     }
