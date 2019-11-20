@@ -8,11 +8,11 @@ Concepts focused in this sesssion:
 
 - Interface based programming
 
-- Dependency Injection
+- [Dependency Injection](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.0#overview-of-dependency-injection)
 
-- Configuration Management
+- [Configuration Management](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-3.0)
 
-- Options Pattern
+- [Options Pattern](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options?view=aspnetcore-3.0)
 
 ## Create Services Project
 
@@ -22,7 +22,7 @@ First, we need to create a new .NET Core Class Library project and call it `HOW.
 
 - **Interfaces**
 
-    We will store all Service interfaces within this folder (e.g. `IStorageService`)
+    We will store all Service interfaces within this folder (e.g. `IStorageService` & `IProductService`)
 
 - **Domains**
 
