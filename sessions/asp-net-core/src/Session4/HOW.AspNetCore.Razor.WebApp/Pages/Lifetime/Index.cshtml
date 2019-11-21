@@ -1,0 +1,39 @@
+﻿@page
+@model HOW.AspNetCore.Razor.WebApp.Pages.Lifetime.IndexModel
+@{
+    ViewData["Title"] = "Dependency Injection Sample";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">Operations</h2>
+        </div>
+        <div class="panel-body">
+            <h3>Page Model Operations</h3>
+            <dl>
+                <dt>Transient</dt>
+                <dd>@Model.TransientOperation.OperationId</dd>
+                <dt>Scoped</dt>
+                <dd>@Model.ScopedOperation.OperationId</dd>
+                <dt>Singleton</dt>
+                <dd>@Model.SingletonOperation.OperationId</dd>
+                <dt>Instance</dt>
+                <dd>@Model.SingletonInstanceOperation.OperationId</dd>
+            </dl>
+            <h3>OperationService Operations</h3>
+            <dl>
+                <dt>Transient</dt>
+                <dd>@Model.OperationService.TransientOperation.OperationId</dd>
+                <dt>Scoped</dt>
+                <dd>@Model.OperationService.ScopedOperation.OperationId</dd>
+                <dt>Singleton</dt>
+                <dd>@Model.OperationService.SingletonOperation.OperationId</dd>
+                <dt>Instance</dt>
+                <dd>@Model.OperationService.SingletonInstanceOperation.OperationId</dd>
+            </dl>
+        </div>
+    </div>
+</div>

@@ -14,6 +14,156 @@ Concepts focused in this sesssion:
 
 - [Options Pattern](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options?view=aspnetcore-3.0)
 
+## Dependency Injection Fundamentals
+
+- [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.0#lifetime-and-registration-options)
+
+In order to better understand how to register our new services within ASP.NET Core, we first need to understand lifetime and registration options for types used within the Dependency Injection system.
+
+In order to best demonstrate object lifetimes, we can create an object that implements several interfaces used for the different types of registrations.  We will then register an object for each Interface based on a defined lifetime.  Finally, we'll create a Razor Page that asked for these registered types and display the associated Guid for each object lifetime.
+
+### Create Interfaces
+
+```cs
+public interface IOperation
+{
+    Guid OperationId { get; }
+}
+
+public interface IOperationTransient : IOperation
+{
+}
+
+public interface IOperationScoped : IOperation
+{
+}
+
+public interface IOperationSingleton : IOperation
+{
+}
+
+public interface IOperationSingletonInstance : IOperation
+{
+}
+```
+
+### Create Implementation
+
+```cs
+public class Operation : IOperationTransient,
+    IOperationScoped,
+    IOperationSingleton,
+    IOperationSingletonInstance
+{
+    public Operation() : this(Guid.NewGuid())
+    {
+    }
+
+    public Operation(Guid id)
+    {
+        OperationId = id;
+    }
+
+    public Guid OperationId { get; private set; }
+}
+```
+
+### Create Service Implementation
+
+```cs
+public class OperationService
+{
+    public OperationService(
+        IOperationTransient transientOperation,
+        IOperationScoped scopedOperation,
+        IOperationSingleton singletonOperation,
+        IOperationSingletonInstance instanceOperation)
+    {
+        TransientOperation = transientOperation;
+        ScopedOperation = scopedOperation;
+        SingletonOperation = singletonOperation;
+        SingletonInstanceOperation = instanceOperation;
+    }
+
+    public IOperationTransient TransientOperation { get; }
+    public IOperationScoped ScopedOperation { get; }
+    public IOperationSingleton SingletonOperation { get; }
+    public IOperationSingletonInstance SingletonInstanceOperation { get; }
+}
+```
+
+### Create Index page to display results
+
+```cs
+public class IndexModel : PageModel
+{
+    public IndexModel(
+        OperationService operationService,
+        IOperationTransient transientOperation,
+        IOperationScoped scopedOperation,
+        IOperationSingleton singletonOperation,
+        IOperationSingletonInstance singletonInstanceOperation)
+    {
+        OperationService = operationService;
+        TransientOperation = transientOperation;
+        ScopedOperation = scopedOperation;
+        SingletonOperation = singletonOperation;
+        SingletonInstanceOperation = singletonInstanceOperation;
+    }
+
+    public OperationService OperationService { get; }
+    public IOperationTransient TransientOperation { get; }
+    public IOperationScoped ScopedOperation { get; }
+    public IOperationSingleton SingletonOperation { get; }
+    public IOperationSingletonInstance SingletonInstanceOperation { get; }
+
+    public void OnGet()
+    {
+
+    }
+}
+```
+
+```html
+@{
+    ViewData["Title"] = "Dependency Injection Sample";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">Operations</h2>
+        </div>
+        <div class="panel-body">
+            <h3>Page Model Operations</h3>
+            <dl>
+                <dt>Transient</dt>
+                <dd>@Model.TransientOperation.OperationId</dd>
+                <dt>Scoped</dt>
+                <dd>@Model.ScopedOperation.OperationId</dd>
+                <dt>Singleton</dt>
+                <dd>@Model.SingletonOperation.OperationId</dd>
+                <dt>Instance</dt>
+                <dd>@Model.SingletonInstanceOperation.OperationId</dd>
+            </dl>
+            <h3>OperationService Operations</h3>
+            <dl>
+                <dt>Transient</dt>
+                <dd>@Model.OperationService.TransientOperation.OperationId</dd>
+                <dt>Scoped</dt>
+                <dd>@Model.OperationService.ScopedOperation.OperationId</dd>
+                <dt>Singleton</dt>
+                <dd>@Model.OperationService.SingletonOperation.OperationId</dd>
+                <dt>Instance</dt>
+                <dd>@Model.OperationService.SingletonInstanceOperation.OperationId</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+```
+
 ## Create Services Project
 
 First, we need to create a new .NET Core Class Library project and call it `HOW.AspNetCore.Services`.  This project will reference the `HOW.AspNetCore.Data` project and be the only interface for managing product related activities.
