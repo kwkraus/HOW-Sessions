@@ -3,7 +3,6 @@ using HOW.AspNetCore.Data.Entities;
 using HOW.AspNetCore.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,7 +17,7 @@ namespace HOW.AspNetCore.Services.Domains
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> GetAllProducts()
+        public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
             return await _context.Products.ToListAsync();
         }
@@ -33,7 +32,7 @@ namespace HOW.AspNetCore.Services.Domains
             if (product == null)
                 throw new ArgumentNullException(nameof(product));
 
-            var productToEdit = _context.Products.Find(product.Id);
+            var productToEdit = await _context.Products.FindAsync(product.Id);
 
             if (productToEdit == null)
                 throw new ArgumentException($"Product Id={product.Id} was not found");

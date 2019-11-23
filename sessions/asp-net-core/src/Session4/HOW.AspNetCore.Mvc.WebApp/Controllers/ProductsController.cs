@@ -1,25 +1,23 @@
-﻿using HOW.AspNetCore.Data.Contexts;
-using HOW.AspNetCore.Data.Entities;
+﻿using HOW.AspNetCore.Data.Entities;
+using HOW.AspNetCore.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HOW.AspNetCore.Mvc.WebApp.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly HowDataContext _context;
+        private readonly IProductService _productService;
 
-        public ProductsController(HowDataContext context)
+        public ProductsController(IProductService productSvc)
         {
-            _context = context;
+            _productService = productSvc;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_context.Products.ToList());
+            return View(await _productService.GetAllProductsAsync());
         }
 
         [HttpGet]
@@ -34,8 +32,7 @@ namespace HOW.AspNetCore.Mvc.WebApp.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            await _context.Products.AddAsync(newProduct);
-            await _context.SaveChangesAsync();
+            await _productService.CreateProductAsync(newProduct);
 
             return RedirectToAction("Index");
         }
@@ -46,7 +43,7 @@ namespace HOW.AspNetCore.Mvc.WebApp.Controllers
             if (id == null)
                 return NotFound();
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _productService.GetProductAsync(id.Value);
 
             if (product == null)
                 return NotFound();
@@ -57,7 +54,7 @@ namespace HOW.AspNetCore.Mvc.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            return View(await _context.Products.FindAsync(id));
+            return View(await _productService.GetProductAsync(id));
         }
 
         [HttpPost]
@@ -66,13 +63,7 @@ namespace HOW.AspNetCore.Mvc.WebApp.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var productToEdit = _context.Products.Find(updatedProduct.Id);
-
-            if (productToEdit == null)
-                return View();
-
-            _context.Entry(productToEdit).CurrentValues.SetValues(updatedProduct);
-            await _context.SaveChangesAsync();
+            await _productService.UpdateProductAsync(updatedProduct);
 
             return RedirectToAction("Index");
         }
@@ -85,7 +76,7 @@ namespace HOW.AspNetCore.Mvc.WebApp.Controllers
                 return NotFound();
             }
 
-            var productToDelete = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+            var productToDelete = await _productService.GetProductAsync(id.Value);
 
             if (productToDelete == null)
             {
@@ -99,10 +90,7 @@ namespace HOW.AspNetCore.Mvc.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var productToDelete = await _context.Products.FindAsync(id);
-
-            _context.Products.Remove(productToDelete);
-            await _context.SaveChangesAsync();
+            await _productService.DeleteProductAsync(id);
 
             return RedirectToAction("Index");
         }

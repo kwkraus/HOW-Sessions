@@ -9,7 +9,7 @@ namespace HOW.AspNetCore.Services.Interfaces
         Task<Product> CreateProductAsync(Product product);
         Task DeleteProductAsync(int? id);
         Task<Product> GetProductAsync(int id);
-        Task<IEnumerable<Product>> GetAllProducts();
+        Task<IEnumerable<Product>> GetAllProductsAsync();
         Task UpdateProductAsync(Product product);
     }
 }

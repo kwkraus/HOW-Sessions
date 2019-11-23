@@ -21,7 +21,7 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
 
         public async Task OnGetAsync()
         {
-            Products = await _productSvc.GetAllProducts();
+            Products = await _productSvc.GetAllProductsAsync();
         }
     }
 }
