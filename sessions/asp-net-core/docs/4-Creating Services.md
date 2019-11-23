@@ -20,9 +20,15 @@ Concepts focused in this sesssion:
 
 In order to better understand how to register our new services within ASP.NET Core, we first need to understand lifetime and registration options for types used within the Dependency Injection system.
 
-In order to best demonstrate object lifetimes, we can create an object that implements several interfaces used for the different types of registrations.  We will then register an object for each Interface based on a defined lifetime.  Finally, we'll create a Razor Page that asked for these registered types and display the associated Guid for each object lifetime.
+In order to best demonstrate object lifetimes, we will create an `Operation` class that implements several interfaces used for the different types of registrations.  We will then register an object for each Interface based on a defined lifetime.  
+
+We will also create an `OperationService` class that will ask for these registered interfaces using Dependency Injection.
+
+ Finally, we'll create a Razor Page that also askes for these registered interfaces, as well as the `OperationService` registered type, then display the associated Guid for each injected object to demonstrate lifetime.
 
 ### Create Interfaces
+
+First we will create the interfaces that will be used for each lifetime registration within the DI System.  Each interface will implement a "root" interface since each of the implementations are used just as a mechanism for registration purposes.
 
 ```cs
 public interface IOperation
@@ -49,6 +55,8 @@ public interface IOperationSingletonInstance : IOperation
 
 ### Create Implementation
 
+Next, we'll create an implementation class that inherits from each of the interfaces.  This allows us to use the same implementation class for each lifetime registration.
+
 ```cs
 public class Operation : IOperationTransient,
     IOperationScoped,
@@ -69,6 +77,8 @@ public class Operation : IOperationTransient,
 ```
 
 ### Create Service Implementation
+
+We then create a new `OperationService` class that asks for the registered types for each of the interface lifetimes.
 
 ```cs
 public class OperationService
@@ -93,6 +103,10 @@ public class OperationService
 ```
 
 ### Create Index page to display results
+
+Finally, we create a new `Index.cshtml` Razor Page that askes for the registered types within the DI System.  The IndexModel class will have these registered types injected into the object to demonstrate that the registered types being injected into the PageModel are the same types as the ones injected into the `OperationService` instance.
+
+The Razor page then displays the Guids for each lifetime object to show the matching/unmatching guid results based on lifetime.
 
 ```cs
 public class IndexModel : PageModel
@@ -164,9 +178,15 @@ public class IndexModel : PageModel
 </div>
 ```
 
+- Talk about why the SingletonInstance and Singleton registrations have the same guid
+
+- Talk about why the Scoped registrations have the same guids between client requests, but change after each request
+
+- Talk about the transient registration and why the guid changes for each class it's injected into
+
 ## Create Services Project
 
-First, we need to create a new .NET Core Class Library project and call it `HOW.AspNetCore.Services`.  This project will reference the `HOW.AspNetCore.Data` project and be the only interface for managing product related activities.
+Now, let's focus on creating our own Service Implementation.  First, we need to create a new .NET Core Class Library project and call it `HOW.AspNetCore.Services`.  This project will reference the `HOW.AspNetCore.Data` project and be the only interface for managing product related activities.
 
 ### Create the following folders
 
