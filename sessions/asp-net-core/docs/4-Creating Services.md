@@ -184,9 +184,16 @@ public class IndexModel : PageModel
 
 - Talk about the transient registration and why the guid changes for each class it's injected into
 
-## Create Services Project
+## Create new `ProductService`
 
-Now, let's focus on creating our own Service Implementation.  First, we need to create a new .NET Core Class Library project and call it `HOW.AspNetCore.Services`.  This project will reference the `HOW.AspNetCore.Data` project and be the only interface for managing product related activities.
+The `ProductService` class will be responsible for abstracting away product behavior, as well as CRUD operation utilizing the `HowDataContext` for data access.
+
+The `ProductService` class will implement a new interface called `IProductService`.  We will use this interface for our DI registration as well as within our Unit test project for mocking dependencies.
+
+### Create Service Project
+
+Now, let's focus on creating our own Service Implementation.  First, we need to create a new .NET Core Class Library project and call it
+`HOW.AspNetCore.Services`.  This project will reference the `HOW.AspNetCore.Data` project and be the only interface for managing product related activities.
 
 ### Create the following folders
 
