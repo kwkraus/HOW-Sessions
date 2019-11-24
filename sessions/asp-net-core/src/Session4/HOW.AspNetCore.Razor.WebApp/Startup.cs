@@ -1,5 +1,7 @@
 using HOW.AspNetCore.Data.Contexts;
+using HOW.AspNetCore.Services;
 using HOW.AspNetCore.Services.Domains;
+using HOW.AspNetCore.Services.Implementation;
 using HOW.AspNetCore.Services.Interfaces;
 using HOW.AspNetCore.Services.Lifetime;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.WindowsAzure.Storage;
 using System;
 
 namespace HOW.AspNet.WebApp
@@ -30,15 +33,18 @@ namespace HOW.AspNet.WebApp
                 options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HowAspNetCoreDb;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IStorageService, AzureBlobService>();
+
+            services.Configure<AzureBlobServiceOptions>(Configuration.GetSection("AzureBlobStorage"));
 
             //uncomment to demonstrate lifetime and registration options
-            services.AddTransient<IOperationTransient, Operation>();
-            services.AddScoped<IOperationScoped, Operation>();
-            services.AddSingleton<IOperationSingleton, Operation>();
-            services.AddSingleton<IOperationSingletonInstance>(new Operation(Guid.Empty));
+            //services.AddTransient<IOperationTransient, Operation>();
+            //services.AddScoped<IOperationScoped, Operation>();
+            //services.AddSingleton<IOperationSingleton, Operation>();
+            //services.AddSingleton<IOperationSingletonInstance>(new Operation(Guid.Empty));
 
-            // OperationService depends on each of the other Operation types.
-            services.AddTransient<OperationService, OperationService>();
+            //// OperationService depends on each of the other Operation types.
+            //services.AddTransient<OperationService, OperationService>();
 
         }
 

@@ -13,7 +13,7 @@ namespace HOW.AspNetCore.Services.DependencyInjection
 
         public static void AddHOWAzureStorage(this IServiceCollection services)
         {
-            services.AddTransient<IStorageService, AzureStorageService>();
+            services.AddTransient<IStorageService, AzureBlobService>();
         }
 
     }
