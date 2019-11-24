@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using HOW.AspNetCore.Services.Options;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
@@ -9,17 +10,18 @@ namespace HOW.AspNetCore.Services.Storage
     {
         // Parse the connection string and return a reference to the storage account.
         private readonly CloudStorageAccount _storageAccount;
-        private readonly AzureBlobServiceOptions _options;
+        private readonly AzureQueueServiceOptions _options;
 
-        public AzureQueueService(AzureBlobServiceOptions options)
+        public AzureQueueService(AzureQueueServiceOptions options)
         {
             _options = options;
             _storageAccount = CloudStorageAccount.Parse(_options.ConnectionString);
         }
+
         public async Task SendProcessingMessageAsync<T>(T blobInfo) where T : class
         {
             CloudQueueClient queueClient = _storageAccount.CreateCloudQueueClient();
-            CloudQueue queue = queueClient.GetQueueReference("ProcessingQueue");
+            CloudQueue queue = queueClient.GetQueueReference(_options.ProcessingQueue);
             var queueMessage = new CloudQueueMessage(JsonConvert.SerializeObject(blobInfo));
 
             await queue.CreateIfNotExistsAsync();
@@ -29,7 +31,7 @@ namespace HOW.AspNetCore.Services.Storage
         public async Task<CloudQueueMessage> PeekAtProcessingMessageAsync()
         {
             CloudQueueClient queueClient = _storageAccount.CreateCloudQueueClient();
-            CloudQueue queue = queueClient.GetQueueReference("ProcessingQueue");
+            CloudQueue queue = queueClient.GetQueueReference(_options.ProcessingQueue);
             var message = await queue.PeekMessageAsync();
 
             return message;
@@ -38,7 +40,7 @@ namespace HOW.AspNetCore.Services.Storage
         public async Task<bool> ClearProcessingQueueAsync()
         {
             CloudQueueClient queueClient = _storageAccount.CreateCloudQueueClient();
-            CloudQueue queue = queueClient.GetQueueReference("ProcessingQueue");
+            CloudQueue queue = queueClient.GetQueueReference(_options.ProcessingQueue);
 
             try
             {

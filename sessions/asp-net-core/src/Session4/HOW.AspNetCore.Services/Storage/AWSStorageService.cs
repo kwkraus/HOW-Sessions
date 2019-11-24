@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace HOW.AspNetCore.Services.Implementation
+namespace HOW.AspNetCore.Services.Storage
 {
     public class AWSStorageService : IStorageService
     {

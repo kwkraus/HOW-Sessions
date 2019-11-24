@@ -1,17 +1,14 @@
 using HOW.AspNetCore.Data.Contexts;
-using HOW.AspNetCore.Services;
 using HOW.AspNetCore.Services.Domains;
-using HOW.AspNetCore.Services.Implementation;
 using HOW.AspNetCore.Services.Interfaces;
-using HOW.AspNetCore.Services.Lifetime;
+using HOW.AspNetCore.Services.Options;
+using HOW.AspNetCore.Services.Storage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.WindowsAzure.Storage;
-using System;
 
 namespace HOW.AspNet.WebApp
 {

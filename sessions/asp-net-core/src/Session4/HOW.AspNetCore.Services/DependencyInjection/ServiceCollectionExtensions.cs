@@ -1,5 +1,5 @@
-﻿using HOW.AspNetCore.Services.Implementation;
-using HOW.AspNetCore.Services.Interfaces;
+﻿using HOW.AspNetCore.Services.Interfaces;
+using HOW.AspNetCore.Services.Storage;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HOW.AspNetCore.Services.DependencyInjection
