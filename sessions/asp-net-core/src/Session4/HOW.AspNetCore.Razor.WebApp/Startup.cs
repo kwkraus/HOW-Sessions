@@ -28,11 +28,12 @@ namespace HOW.AspNet.WebApp
 
             services.AddDbContext<HowDataContext>(options =>
                 options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HowAspNetCoreDb;Trusted_Connection=True;MultipleActiveResultSets=true"));
+            
+            services.Configure<AzureBlobServiceOptions>(Configuration.GetSection("AzureBlobStorage"));
 
-            services.AddTransient<IProductService, ProductService>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddTransient<IStorageService, AzureBlobService>();
 
-            services.Configure<AzureBlobServiceOptions>(Configuration.GetSection("AzureBlobStorage"));
 
             //uncomment to demonstrate lifetime and registration options
             //services.AddTransient<IOperationTransient, Operation>();

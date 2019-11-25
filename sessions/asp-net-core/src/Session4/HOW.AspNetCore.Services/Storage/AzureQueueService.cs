@@ -1,4 +1,5 @@
 ﻿using HOW.AspNetCore.Services.Options;
+using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
 using Newtonsoft.Json;
@@ -12,9 +13,9 @@ namespace HOW.AspNetCore.Services.Storage
         private readonly CloudStorageAccount _storageAccount;
         private readonly AzureQueueServiceOptions _options;
 
-        public AzureQueueService(AzureQueueServiceOptions options)
+        public AzureQueueService(IOptionsMonitor<AzureQueueServiceOptions> options)
         {
-            _options = options;
+            _options = options.CurrentValue;
             _storageAccount = CloudStorageAccount.Parse(_options.ConnectionString);
         }
 

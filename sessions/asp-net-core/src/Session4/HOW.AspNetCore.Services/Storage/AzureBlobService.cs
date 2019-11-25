@@ -1,5 +1,6 @@
 ﻿using HOW.AspNetCore.Services.Interfaces;
 using HOW.AspNetCore.Services.Options;
+using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
@@ -14,19 +15,21 @@ namespace HOW.AspNetCore.Services.Storage
         private readonly CloudStorageAccount _storageAccount;
         private readonly AzureBlobServiceOptions _options;
 
-        public AzureBlobService(AzureBlobServiceOptions options)
+        public AzureBlobService(IOptionsMonitor<AzureBlobServiceOptions> options)
         {
-            _options = options;
+            _options = options.CurrentValue;
             _storageAccount = CloudStorageAccount.Parse(_options.ConnectionString);
         }
 
         public async Task<Uri> SaveFileAsync(Stream fileStream, string fileName)
         {
             CloudBlobClient blobClient = _storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer);
+            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer.ToLower());
 
-            // Create the container if it doesn't already exist.
-            await container.CreateIfNotExistsAsync();
+            var options = new BlobRequestOptions();
+
+            // Create the container if it doesn't already exist. Set Public access to container and blobs
+            await container.CreateIfNotExistsAsync(BlobContainerPublicAccessType.Container, options, new OperationContext());
 
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
             await blockBlob.UploadFromStreamAsync(fileStream, fileStream.Length);
@@ -37,7 +40,7 @@ namespace HOW.AspNetCore.Services.Storage
         public async Task<Uri> SaveFileAsync(byte[] fileContents, string fileName)
         {
             CloudBlobClient blobClient = _storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference("filingDocContainer");
+            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer.ToLower());
 
             // Create the container if it doesn't already exist.
             await container.CreateIfNotExistsAsync();
@@ -51,7 +54,7 @@ namespace HOW.AspNetCore.Services.Storage
         public async Task RemoveFileAsync(string blobUrl)
         {
             CloudBlobClient blobClient = _storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer);
+            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer.ToLower());
 
             Uri fileLocation = new Uri(blobUrl);
             string fileToDelete = Path.GetFileName(fileLocation.LocalPath);
@@ -62,7 +65,7 @@ namespace HOW.AspNetCore.Services.Storage
         public async Task<Stream> GetFileAsStreamAsync(string fileName)
         {
             CloudBlobClient blobClient = _storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer);
+            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer.ToLower());
 
             MemoryStream outputStream = new MemoryStream();
             await container.GetBlobReference(fileName).DownloadToStreamAsync(outputStream);
@@ -72,7 +75,7 @@ namespace HOW.AspNetCore.Services.Storage
         public async Task<byte[]> GetFileAsByteArrayAsync(string fileName)
         {
             CloudBlobClient blobClient = _storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer);
+            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer.ToLower());
 
             byte[] fileBytes = new byte[4096];
 
@@ -83,7 +86,7 @@ namespace HOW.AspNetCore.Services.Storage
         private async Task<string> GenerateSASTokenAsync(Uri docUri)
         {
             CloudBlobClient blobClient = _storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer);
+            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer.ToLower());
 
             BlobContainerPermissions permissions = new BlobContainerPermissions
             {
