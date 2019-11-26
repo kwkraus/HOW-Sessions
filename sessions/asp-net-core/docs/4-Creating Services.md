@@ -333,3 +333,59 @@ services.AddTransient<IProductService, ProductService>();
 If the solution compiles, run the application and make sure it works exactly the same as it did before.
 
 ## Update Web Application with Product Images
+
+In this section, we will introduce a new feature to upload a photo of a product.  This feature will be implemented using a new service called `AzureBlobService`.  This service will demonstrate some new concepts around the new .NET Core Configuration system and reinforce what we learned about Dependency Injection.
+
+Concepts in this Section
+
+- Dependency Injection
+
+- Configuration System
+
+- Options Pattern
+
+We will also utilize the following free downloads for emulating Azure Storage on your local machine.
+
+- [Azure Storage Emulator](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator)
+
+- [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/)
+
+### Add Image Support to Products
+
+In order to support product images, we need to add some new fields to the Product Entity, create a new EF Core migration to update the underlying database, and update the associated Razor Pages to be able to add, update, and delete product images associated with product data.
+
+#### Update Product Entity and Database
+
+Open the `Product.cs` entity class and add the following to the end of the class
+
+```cs
+[DisplayName("Image")]
+public string ImageLocation { get; set; }
+
+[NotMapped]
+public IFormFile Image { get; set; }
+```
+
+The `ImageLocation` property will translate to a new column within the Product Table and will hold the location where the Product Image is stored within Azure Storage (Emulator). 
+
+The `Image` property is a unmapped property that is just a container for holding the binary image data during page requests.
+
+#### Create EF Core Migration for Product Image Support
+
+Create a new EF Core migration for Product Images and update the underlying database with new Image support.  Run the following commands from the Package Manager Console.
+
+`Add-Migration 'ProductImage' -project HOW.AspNetCore.Data`
+
+`Update-Database`
+
+#### Update Razor Pages to support Product Images
+
+Now we need to update all Product Razor Pages to enable the new Image support.  Add the following code blocks to the associated cshtml pages.
+
+- Create.cshtml
+
+- Edit.cshtml
+
+- Details.cshtml
+
+### Create `AzureBlobService` class
