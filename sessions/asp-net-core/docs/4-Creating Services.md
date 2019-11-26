@@ -366,7 +366,7 @@ public string ImageLocation { get; set; }
 public IFormFile Image { get; set; }
 ```
 
-The `ImageLocation` property will translate to a new column within the Product Table and will hold the location where the Product Image is stored within Azure Storage (Emulator). 
+The `ImageLocation` property will translate to a new column within the Product Table and will hold the location where the Product Image is stored within Azure Storage (Emulator).
 
 The `Image` property is a unmapped property that is just a container for holding the binary image data during page requests.
 
@@ -380,12 +380,315 @@ Create a new EF Core migration for Product Images and update the underlying data
 
 #### Update Razor Pages to support Product Images
 
-Now we need to update all Product Razor Pages to enable the new Image support.  Add the following code blocks to the associated cshtml pages.
+Now we need to update all Product Razor Pages to enable the new Image support. To do this we need to add `multipart/form-data` support to the html form and a new field to the form that supports file upload.
+
+Add the following code blocks to the associated cshtml pages.
 
 - Create.cshtml
 
+    ```html
+    <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Product.Name" class="control-label"></label>
+            <input asp-for="Product.Name" class="form-control" />
+            <span asp-validation-for="Product.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Product.Price" class="control-label"></label>
+            <input asp-for="Product.Price" class="form-control" />
+            <span asp-validation-for="Product.Price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Product.Image" class="control-label"></label>
+            <input asp-for="Product.Image" class="form-control" />
+            <span asp-validation-for="Product.Image" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+    ```
+
 - Edit.cshtml
+
+    ```html
+    <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Product.Id" />
+        <div class="form-group">
+            <label asp-for="Product.Name" class="control-label"></label>
+            <input asp-for="Product.Name" class="form-control" />
+            <span asp-validation-for="Product.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Product.Price" class="control-label"></label>
+            <input asp-for="Product.Price" class="form-control" />
+            <span asp-validation-for="Product.Price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Product.Image" class="control-label"></label>
+            <input asp-for="Product.Image" class="form-control" />
+            <span asp-validation-for="Product.Image" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="hidden" asp-for="Product.ImageLocation" />
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+    ```
+
+    >NOTE: Notice the `hidden` input field for the `Product.ImageLocation` property
 
 - Details.cshtml
 
-### Create `AzureBlobService` class
+    ```html
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.ImageLocation)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.Product.ImageLocation" />
+        </dd>
+    </dl>
+    ```
+
+    >NOTE: The image will be rendered using the Azure Storage location Uri saved within the database.  Make sure to use Product Images that are smaller in dimensions to ensure the page looks nice.
+
+### Create new `AzureBlobService` class
+
+In order to store and manage Images in a Cloud ready application, we need to utilize Cloud based storage systems, such as Azure Blob Storage.
+
+We need to create a new service class called `AzureBlobStorage` within the `HOW.AspNetCore.Services` project within a new folder called **Storage**.
+
+Replace the contents of this new file with the following implementation
+
+```cs
+using HOW.AspNetCore.Services.Interfaces;
+using HOW.AspNetCore.Services.Options;
+using Microsoft.Extensions.Options;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using System;
+using System.IO;
+using System.Threading.Tasks;
+
+namespace HOW.AspNetCore.Services.Storage
+{
+    public class AzureBlobService
+    {
+        // Parse the connection string and return a reference to the storage account.
+        private readonly CloudStorageAccount _storageAccount;
+        private readonly AzureBlobServiceOptions _options;
+
+        public AzureBlobService(IOptionsMonitor<AzureBlobServiceOptions> options)
+        {
+            _options = options.CurrentValue;
+            _storageAccount = CloudStorageAccount.Parse(_options.ConnectionString);
+        }
+
+        public async Task<Uri> SaveFileAsync(Stream fileStream, string fileName)
+        {
+            CloudBlobClient blobClient = _storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer.ToLower());
+
+            var options = new BlobRequestOptions();
+
+            // Create the container if it doesn't already exist. Set Public access to container and blobs
+            await container.CreateIfNotExistsAsync(BlobContainerPublicAccessType.Container, options, new OperationContext());
+
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
+            await blockBlob.UploadFromStreamAsync(fileStream, fileStream.Length);
+
+            return blockBlob.Uri;
+        }
+
+        public async Task<Uri> SaveFileAsync(byte[] fileContents, string fileName)
+        {
+            CloudBlobClient blobClient = _storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer.ToLower());
+
+            // Create the container if it doesn't already exist.
+            await container.CreateIfNotExistsAsync();
+
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
+            await blockBlob.UploadFromByteArrayAsync(fileContents, 0, fileContents.Length);
+
+            return blockBlob.Uri;
+        }
+
+        public async Task RemoveFileAsync(string blobUrl)
+        {
+            CloudBlobClient blobClient = _storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer.ToLower());
+
+            Uri fileLocation = new Uri(blobUrl);
+            string fileToDelete = Path.GetFileName(fileLocation.LocalPath);
+
+            await container.GetBlobReference(fileToDelete).DeleteIfExistsAsync();
+        }
+
+        public async Task<Stream> GetFileAsStreamAsync(string fileName)
+        {
+            CloudBlobClient blobClient = _storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer.ToLower());
+
+            MemoryStream outputStream = new MemoryStream();
+            await container.GetBlobReference(fileName).DownloadToStreamAsync(outputStream);
+            return outputStream;
+        }
+
+        public async Task<byte[]> GetFileAsByteArrayAsync(string fileName)
+        {
+            CloudBlobClient blobClient = _storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer.ToLower());
+
+            byte[] fileBytes = new byte[4096];
+
+            await container.GetBlobReference(fileName).DownloadToByteArrayAsync(fileBytes, 0);
+            return fileBytes;
+        }
+
+        private async Task<string> GenerateSASTokenAsync(Uri docUri)
+        {
+            CloudBlobClient blobClient = _storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer.ToLower());
+
+            BlobContainerPermissions permissions = new BlobContainerPermissions
+            {
+                PublicAccess = BlobContainerPublicAccessType.Off
+            };
+
+            permissions.SharedAccessPolicies.Clear();
+            permissions.SharedAccessPolicies.Add("twominutepolicy", new SharedAccessBlobPolicy());
+            await container.SetPermissionsAsync(permissions);
+
+            SharedAccessBlobPolicy sharedPolicy = new SharedAccessBlobPolicy()
+            {
+                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-1),
+                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(2),
+                Permissions = SharedAccessBlobPermissions.Read
+            };
+
+            CloudBlockBlob blob = container.GetBlockBlobReference(docUri.ToString());
+
+            return blob.GetSharedAccessSignature(sharedPolicy, "twominutepolicy");
+        }
+    }
+}
+```
+
+>NOTE: This implementation requires follow on work in order to compile
+
+#### Add Azure Storage Nuget Package
+
+Open the Nuget Package Manager within Visual Studio and add the latest version of the `WindowsAzure.Storage` package
+
+__or__
+
+run the following dotnet cli command
+
+`dotnet add package WindowsAzure.Storage`
+
+__or__
+
+run the following command within the Package Manager
+
+`Install-Package WindowsAzure.Storage`
+
+#### Extract Interface from Implemenation
+
+We will need to extract a new Interface from this implementation and use this interface to register a new service within Dependency Injection System.
+
+Using the Visual Studio refactoring tools, extract an Interface using the contextual menu and call it `IStorageService.cs` and save it into a folder called **Interfaces**.
+
+### Update `ProductService` class to utilize `AzureBlobService`
+
+#### Update constructor to inject new `IStorageService`
+```cs
+private readonly IStorageService _storageService;
+
+public ProductService(HowDataContext context, IStorageService storageSvc)
+{
+    _context = context;
+    _storageService = storageSvc;
+}
+```
+
+#### Update CreateProductAsync Method
+
+```cs
+public async Task<Product> CreateProductAsync(Product product)
+{
+    var newProduct = await _context.Products.AddAsync(product);
+    await _context.SaveChangesAsync();
+
+    if (product.Image != null)
+    {
+        var imageLocation = await SaveFileToStorageAsync(product);
+
+        newProduct.Entity.ImageLocation = imageLocation.ToString();
+        await _context.SaveChangesAsync();
+    }
+
+    return newProduct.Entity;
+}
+```
+
+#### Update UpdateProductAsync Method
+
+```cs
+public async Task UpdateProductAsync(Product product)
+{
+    if (product == null)
+        throw new ArgumentNullException(nameof(product));
+
+    var productToEdit = await _context.Products.FindAsync(product.Id);
+
+    if (productToEdit == null)
+        throw new ArgumentException($"Product Id={product.Id} was not found");
+
+    _context.Entry(productToEdit).CurrentValues.SetValues(product);
+    await _context.SaveChangesAsync();
+
+    if (product.Image != null)
+    {
+        var imageLocation = await SaveFileToStorageAsync(product);
+
+        productToEdit.ImageLocation = imageLocation.ToString();
+        await _context.SaveChangesAsync();
+    }
+}
+```
+
+#### Update DeleteProductAsync Method
+
+```cs
+public async Task DeleteProductAsync(int? id)
+{
+    if (id == null)
+        throw new ArgumentNullException(nameof(id));
+
+    var productToDelete = await _context.Products.FindAsync(id);
+
+    if (productToDelete == null)
+        throw new ArgumentException($"Product Id={id} was not found");
+
+    await _storageService.RemoveFileAsync(productToDelete.ImageLocation);
+
+    _context.Products.Remove(productToDelete);
+    await _context.SaveChangesAsync();
+}
+```
