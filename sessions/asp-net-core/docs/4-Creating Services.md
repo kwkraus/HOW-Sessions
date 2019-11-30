@@ -325,10 +325,10 @@ In order to use the `ProductService` class when a class is expecting a `IProduct
 Add the following line of code to the bottom of the `ConfigureServices()` method.
 
 ```cs
-services.AddTransient<IProductService, ProductService>();
+services.AddScoped<IProductService, ProductService>();
 ```
 
-## Run Application
+### Run Application
 
 If the solution compiles, run the application and make sure it works exactly the same as it did before.
 
@@ -590,7 +590,7 @@ namespace HOW.AspNetCore.Services.Storage
 }
 ```
 
->NOTE: This implementation requires follow on work in order to compile
+>NOTE: This implementation requires follow-on work in order to compile
 
 #### Add Azure Storage Nuget Package
 
@@ -604,7 +604,7 @@ run the following dotnet cli command
 
 __or__
 
-run the following command within the Package Manager
+run the following command within the Package Manager Console
 
 `Install-Package WindowsAzure.Storage`
 
@@ -617,6 +617,7 @@ Using the Visual Studio refactoring tools, extract an Interface using the contex
 ### Update `ProductService` class to utilize `AzureBlobService`
 
 #### Update constructor to inject new `IStorageService`
+
 ```cs
 private readonly IStorageService _storageService;
 
@@ -692,3 +693,23 @@ public async Task DeleteProductAsync(int? id)
     await _context.SaveChangesAsync();
 }
 ```
+
+### Register `AzureBlobService` with DI System
+
+In order to use our new `AzureBlobService` class within the `ProductService` we need to register the type with the Dependency Injection system.
+
+Add the following line of code to the `Startup.cs` class within the `ConfigureServices()` method.
+
+```cs
+services.AddTransient<IStorageService, AzureBlobStorage>();
+```
+
+#### Run Application with `AzureBlobService` to test
+
+Now let's see it all run together.  In order to run the application, follow these steps.
+
+- Add Storage connection string to config file
+
+- Run Azure Storage Emulator locally
+
+- Run application and enter a brand new product with an image to upload.
