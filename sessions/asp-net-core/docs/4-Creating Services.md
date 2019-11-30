@@ -614,6 +614,24 @@ We will need to extract a new Interface from this implementation and use this in
 
 Using the Visual Studio refactoring tools, extract an Interface using the contextual menu and call it `IStorageService.cs` and save it into a folder called **Interfaces**.
 
+### Setup configuration for `AzureBlobService`
+
+[Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options?view=aspnetcore-3.0)
+
+In this section we'll introduce the Options Pattern to map configuration sections to POCO classes.  We'll create a new class called `AzureBlobServiceOptions` and then register this type with Dependency Injection in order to have inject it into the `AzureBlobService`.
+
+#### Create Options Class
+
+Create a new class called `AzureBlobServiceOptions` within a new folder called **Options** within the `HOW.AspNetCore.Services` project and add the following code.
+
+```cs
+public class AzureBlobServiceOptions
+{
+    public string ConnectionString { get; set; }
+    public string TargetContainer { get; set; }
+}
+```
+
 ### Update `ProductService` class to utilize `AzureBlobService`
 
 #### Update constructor to inject new `IStorageService`
@@ -704,7 +722,15 @@ Add the following line of code to the `Startup.cs` class within the `ConfigureSe
 services.AddTransient<IStorageService, AzureBlobStorage>();
 ```
 
-#### Run Application with `AzureBlobService` to test
+#### Register `AzureBlobServiceOptions` class with DI System
+
+Add the following code to the `Startup.cs` file within the `ConfigureServices()` method
+
+```cs
+services.Configure<AzureBlobServiceOptions>(Configuration.GetSection("AzureBlobStorage"));
+```
+
+### Run Application with `AzureBlobService` to test
 
 Now let's see it all run together.  In order to run the application, follow these steps.
 
