@@ -278,7 +278,7 @@ public class ProductService
 
 >This `ProductService` looks a lot like a Repository, but that's because we haven't defined other behaviors or added specific business logic that would reside in a Service class.
 
-You'll notice that we're going to inject the `HowDataContext` into the constructor to use within our service.
+Make sure to point out that we're going to inject the `HowDataContext` into the constructor to use within our service.
 
 ### Extract Interface from `ProductService`
 
@@ -288,7 +288,20 @@ Now we will extract an interface from our Service implementation and program to 
 
 When extracting an interface, keep the defaults in the dialog window.  This will create a new interface called `IProductService` within a new file in the same folder as the `ProductService`.  
 
-Make sure you move this interface into the Interfaces folder and update the namespace.
+Make sure you move this interface into the **Interfaces** folder and update the namespace.
+
+Your interface should look similar to this example
+
+```cs
+public interface IProductService
+{
+    Task<Product> CreateProductAsync(Product product);
+    Task DeleteProductAsync(int? id);
+    Task<Product> GetProductAsync(int id);
+    Task<IEnumerable<Product>> GetAllProductsAsync();
+    Task UpdateProductAsync(Product product);
+}
+```
 
 ## Refactor Pages to use the new `ProductService`
 
