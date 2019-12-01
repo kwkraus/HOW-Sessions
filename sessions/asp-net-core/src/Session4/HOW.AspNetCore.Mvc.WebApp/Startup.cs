@@ -29,7 +29,7 @@ namespace HOW.AspNetCore.Mvc.WebApp
             services.AddDbContext<HowDataContext>(options =>
                 options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HowAspNetCoreDb;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
-            services.Configure<AzureBlobServiceOptions>(Configuration.GetSection("AzureBlobStorage"));
+            services.Configure<AzureBlobServiceOptions>(Configuration);
 
             services.AddScoped<IProductService, ProductService>();
             services.AddTransient<IStorageService, AzureBlobService>();

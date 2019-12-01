@@ -473,7 +473,7 @@ In order to store and manage Images in a Cloud ready application, we need to uti
 
 We need to create a new service class called `AzureBlobStorage` within the `HOW.AspNetCore.Services` project within a new folder called **Storage**.
 
-Replace the contents of this new file with the following implementation
+It is best to live code the `AzureBlobService` implementation shown below, but if under time constraints, you can copy and paste the following implementation.
 
 ```cs
 using HOW.AspNetCore.Services.Interfaces;
@@ -618,7 +618,7 @@ Using the Visual Studio refactoring tools, extract an Interface using the contex
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options?view=aspnetcore-3.0)
 
-In this section we'll introduce the Options Pattern to map configuration sections to POCO classes.  We'll create a new class called `AzureBlobServiceOptions` and then register this type with Dependency Injection in order to have inject it into the `AzureBlobService`.
+In this section we'll introduce the Options Pattern to map configuration sections to POCO classes.  We'll create a new class called `AzureBlobServiceOptions` and then register this type with Dependency Injection in order to have it injected into the `AzureBlobService` using `IOptionsMonitor<>`.
 
 #### Create Options Class
 
