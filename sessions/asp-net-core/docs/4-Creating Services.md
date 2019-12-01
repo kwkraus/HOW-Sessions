@@ -303,7 +303,7 @@ public interface IProductService
 }
 ```
 
-## Refactor Pages to use the new `ProductService`
+## Update ASP.NET Core application to use `ProductService`
 
 In this section, we'll remove the `HowDataContext` and its usage from all Razor Pages and inject our newly created `ProductService` using the `IProductService` interface to program against.
 
@@ -311,11 +311,11 @@ In this section, we'll remove the `HowDataContext` and its usage from all Razor 
 
 Within the Razor page application, add a project reference to the Services class library.
 
-### Remove `HowDataContext` from PageModel constructors
+### Refactor PageModel constructors to use `ProductService`
 
 In our previous session, we injected the `HowDataContext` class into each Product Razor page.  Replace the `HowDataContext` constructor parameter with `IProductService` parameter.
 
-It should look similar to the following
+It should look similar to the following:
 
 ```cs
 private readonly IProductService _productSvc;
