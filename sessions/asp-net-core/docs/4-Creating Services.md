@@ -16,20 +16,18 @@ Concepts for this sesssion:
 
 ## Visual Studio Project for Services
 
-The `ProductService` class will be responsible for abstracting away product behavior, as well as CRUD operation utilizing the `HowDataContext` for data access.
-
-The `ProductService` class will implement a new interface called `IProductService`.  We will use this interface for our DI registration as well as within our Unit test project for mocking dependencies.
+In the coming sections, we'll be creating new services and we need a good place to house these new resources.  Not only will we have an implementation class for each service, we'll also need to create interfaces for these implementations.
 
 ### Create Service Project
 
-Now, let's focus on creating our own Service Implementation.  First, we need to create a new .NET Core Class Library project and call it
-`HOW.AspNetCore.Services`.  This project will reference the `HOW.AspNetCore.Data` project and be the only interface for managing product related activities.
+From within Visual Studio, create a new .NET Core Class Library project and call it
+`HOW.AspNetCore.Services`.  This project will reference the `HOW.AspNetCore.Data` project and be the only API for managing product related activities.
 
 ### Create the following folders
 
 - **Interfaces**
 
-    We will store all Service interfaces within this folder (e.g. `IStorageService` & `IProductService`)
+    We will store all Service interfaces within this folder
 
 - **Domains**
 
