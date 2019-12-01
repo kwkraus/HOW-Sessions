@@ -1,10 +1,10 @@
-# Creating Services
+# Creating Services in ASP.NET Core
 
-In this session, we'll learn how to build and use the Services Pattern to abstract away the use of `HowDataContext` from the pages.  We will also implement the Specification Pattern for composing different specifications to query results from Entity Framework Core.
+In this session, we'll learn how to build and use the Services Pattern to abstract away the use of `HowDataContext` from the pages.
 
 We will build two services, `ProductService` for managing Products, and `AzureStorageService` for saving images to Azure Storage.  All pages will interact with the `ProductService` which will consume the `AzureStorageService` for saving product images.
 
-Concepts focused in this sesssion:
+Concepts for this sesssion:
 
 - Interface based programming
 
@@ -14,17 +14,46 @@ Concepts focused in this sesssion:
 
 - [Options Pattern](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options?view=aspnetcore-3.0)
 
+## Visual Studio Project for Services
+
+The `ProductService` class will be responsible for abstracting away product behavior, as well as CRUD operation utilizing the `HowDataContext` for data access.
+
+The `ProductService` class will implement a new interface called `IProductService`.  We will use this interface for our DI registration as well as within our Unit test project for mocking dependencies.
+
+### Create Service Project
+
+Now, let's focus on creating our own Service Implementation.  First, we need to create a new .NET Core Class Library project and call it
+`HOW.AspNetCore.Services`.  This project will reference the `HOW.AspNetCore.Data` project and be the only interface for managing product related activities.
+
+### Create the following folders
+
+- **Interfaces**
+
+    We will store all Service interfaces within this folder (e.g. `IStorageService` & `IProductService`)
+
+- **Domains**
+
+    Domain specific Services will live here (e.g. `ProductService`)
+
+- **Storage**
+
+    Our Storage Service implementations will live here (e.g. `AzureStorageService`)
+
+### Add Project Reference to Data Project
+
+Make sure to add a reference to the `HOW.AspNetCore.Data` project.  This will provide access to the `HowDataContext` class using Dependency Injection.
+
 ## Dependency Injection Fundamentals
 
 - [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.0#lifetime-and-registration-options)
 
-In order to better understand how to register our new services within ASP.NET Core, we first need to understand lifetime and registration options for types used within the Dependency Injection system.
+Before we create our new services, first we need a good example to help explain how Dependency Injection works within ASP.NET Core, such as  lifetime and registration options for types used within the Dependency Injection system.
 
 In order to best demonstrate object lifetimes, we will create an `Operation` class that implements several interfaces used for the different types of registrations.  We will then register an object for each Interface based on a defined lifetime.  
 
 We will also create an `OperationService` class that will ask for these registered interfaces using Dependency Injection.
 
- Finally, we'll create a Razor Page that also askes for these registered interfaces, as well as the `OperationService` registered type, then display the associated Guid for each injected object to demonstrate lifetime.
+Finally, we'll create a Razor Page that also askes for these registered interfaces, as well as the `OperationService` registered type, then display the associated Guid for each injected object to demonstrate lifetime.
 
 ### Create Interfaces
 
@@ -184,40 +213,11 @@ public class IndexModel : PageModel
 
 - Talk about the transient registration and why the guid changes for each class it's injected into
 
-## Create new `ProductService`
-
-The `ProductService` class will be responsible for abstracting away product behavior, as well as CRUD operation utilizing the `HowDataContext` for data access.
-
-The `ProductService` class will implement a new interface called `IProductService`.  We will use this interface for our DI registration as well as within our Unit test project for mocking dependencies.
-
-### Create Service Project
-
-Now, let's focus on creating our own Service Implementation.  First, we need to create a new .NET Core Class Library project and call it
-`HOW.AspNetCore.Services`.  This project will reference the `HOW.AspNetCore.Data` project and be the only interface for managing product related activities.
-
-### Create the following folders
-
-- **Interfaces**
-
-    We will store all Service interfaces within this folder (e.g. `IStorageService` & `IProductService`)
-
-- **Domains**
-
-    Domain specific Services will live here (e.g. `ProductService`)
-
-- **Storage**
-
-    Our Storage Service implementations will live here (e.g. `AzureStorageService`)
-
-### Add Project Reference to Data Project
-
-Make sure to add a reference to the `HOW.AspNetCore.Data` project.  This will provide access to the `HowDataContext` class using Dependency Injection.
-
-## Add our first Service
+## Create new Service for managing Products
 
 Our first Service class will be the `ProductService`.  Services encapuslate CRUD and Behavior business logic into a sharable component.
 
-### Create the ProductService class
+### Add new `ProductService` class
 
 Add a new public class named `ProductService.cs` within the Domains folder and add the following code.
 
@@ -289,7 +289,7 @@ When extracting an interface, keep the defaults in the dialog window.  This will
 
 Make sure you move this interface into the Interfaces folder and update the namespace.
 
-## Refactor Pages to use `ProductService`
+## Refactor Pages to use the new `ProductService`
 
 In this section, we'll remove the `HowDataContext` and its usage from all Razor Pages and inject our newly created `ProductService` using the `IProductService` interface to program against.
 
@@ -336,7 +336,7 @@ If the solution compiles, run the application and make sure it works exactly the
 
 In this section, we will introduce a new feature to upload a photo of a product.  This feature will be implemented using a new service called `AzureBlobService`.  This service will demonstrate some new concepts around the new .NET Core Configuration system and reinforce what we learned about Dependency Injection.
 
-Concepts in this Section
+Concepts in this Section:
 
 - Dependency Injection
 
