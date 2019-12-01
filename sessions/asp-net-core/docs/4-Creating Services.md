@@ -220,56 +220,59 @@ Our first Service class will be the `ProductService`.  Services encapuslate CRUD
 Add a new public class named `ProductService.cs` within the Domains folder and add the following code.
 
 ```cs
-private readonly HowDataContext _context;
-
-public ProductService(HowDataContext context)
+public class ProductService
 {
-    _context = context;
-}
+    private readonly HowDataContext _context;
 
-public async Task<IEnumerable<Product>> GetAllProducts()
-{
-    return await _context.Products.ToListAsync();
-}
+    public ProductService(HowDataContext context)
+    {
+        _context = context;
+    }
 
-public async Task<Product> GetProductAsync(int id)
-{
-    return await _context.Products.FindAsync(id);
-}
+    public async Task<IEnumerable<Product>> GetAllProductsAsync()
+    {
+        return await _context.Products.ToListAsync();
+    }
 
-public async Task UpdateProductAsync(Product product)
-{
-    if (product == null)
-        throw new ArgumentNullException(nameof(product));
+    public async Task<Product> GetProductAsync(int id)
+    {
+        return await _context.Products.FindAsync(id);
+    }
 
-    var productToEdit = _context.Products.Find(product.Id);
+    public async Task UpdateProductAsync(Product product)
+    {
+        if (product == null)
+            throw new ArgumentNullException(nameof(product));
 
-    if (productToEdit == null)
-        throw new ArgumentException($"Product Id={product.Id} was not found");
+        var productToEdit = _context.Products.Find(product.Id);
 
-    _context.Entry(productToEdit).CurrentValues.SetValues(product);
-    await _context.SaveChangesAsync();
-}
+        if (productToEdit == null)
+            throw new ArgumentException($"Product Id={product.Id} was not found");
 
-public async Task DeleteProductAsync(int? id)
-{
-    if (id == null)
-        throw new ArgumentNullException(nameof(id));
+        _context.Entry(productToEdit).CurrentValues.SetValues(product);
+        await _context.SaveChangesAsync();
+    }
 
-    var productToDelete = await _context.Products.FindAsync(id);
+    public async Task DeleteProductAsync(int? id)
+    {
+        if (id == null)
+            throw new ArgumentNullException(nameof(id));
 
-    if (productToDelete == null)
-        throw new ArgumentException($"Product Id={id} was not found");
+        var productToDelete = await _context.Products.FindAsync(id);
 
-    _context.Products.Remove(productToDelete);
-    await _context.SaveChangesAsync();
-}
+        if (productToDelete == null)
+            throw new ArgumentException($"Product Id={id} was not found");
 
-public async Task<Product> CreateProductAsync(Product product)
-{
-    var newProduct = _context.Products.Add(product);
-    await _context.SaveChangesAsync();
-    return newProduct.Entity;
+        _context.Products.Remove(productToDelete);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<Product> CreateProductAsync(Product product)
+    {
+        var newProduct = _context.Products.Add(product);
+        await _context.SaveChangesAsync();
+        return newProduct.Entity;
+    }
 }
 ```
 
