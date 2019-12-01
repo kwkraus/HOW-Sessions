@@ -313,7 +313,7 @@ Within the Razor page application, add a project reference to the Services class
 
 ### Refactor PageModel constructors to use `ProductService`
 
-In our previous session, we injected the `HowDataContext` class into each Product Razor page.  Replace the `HowDataContext` constructor parameter with `IProductService` parameter.
+In our previous session, we injected the `HowDataContext` class into each Product Razor page.  For each Razor page, replace the `HowDataContext` constructor parameter with an `IProductService` parameter.
 
 It should look similar to the following:
 
@@ -328,9 +328,11 @@ public CreateModel(IProductService productService)
 
 > Make sure to update all of the pages in this fashion.
 
-### Update all Razor Pages to use `IProductService`
+#### Update all Razor Pages to use `IProductService`
 
-Next we need to remove all references to the `HowDataContext` member and replace them with `IProductService` method calls.
+Next we need to remove all references to the `HowDataContext` private member and replace them with `IProductService` method calls.
+
+For each Razor Page, remove the `_context` references and replace with `_productSvc` API calls.  
 
 ### Register the `ProductService` class with DI
 
@@ -346,7 +348,7 @@ services.AddScoped<IProductService, ProductService>();
 
 If the solution compiles, run the application and make sure it works exactly the same as it did before.
 
-## Update Web Application with Product Images
+## Add Images to Products
 
 In this section, we will introduce a new feature to upload a photo of a product.  This feature will be implemented using a new service called `AzureBlobService`.  This service will demonstrate some new concepts around the new .NET Core Configuration system and reinforce what we learned about Dependency Injection.
 
@@ -368,7 +370,7 @@ We will also utilize the following free downloads for emulating Azure Storage on
 
 In order to support product images, we need to add some new fields to the Product Entity, create a new EF Core migration to update the underlying database, and update the associated Razor Pages to be able to add, update, and delete product images associated with product data.
 
-#### Update Product Entity and Database
+#### Update Product Entity
 
 Open the `Product.cs` entity class and add the following to the end of the class
 
@@ -384,7 +386,7 @@ The `ImageLocation` property will translate to a new column within the Product T
 
 The `Image` property is a unmapped property that is just a container for holding the binary image data during page requests.
 
-#### Create EF Core Migration for Product Image Support
+#### Update Product table in Database
 
 Create a new EF Core migration for Product Images and update the underlying database with new Image support.  Run the following commands from the Package Manager Console.
 
@@ -485,7 +487,7 @@ Add the following code blocks to the associated cshtml pages.
 
 In order to store and manage Images in a Cloud ready application, we need to utilize Cloud based storage systems, such as Azure Blob Storage.
 
-We need to create a new service class called `AzureBlobStorage` within the `HOW.AspNetCore.Services` project within a new folder called **Storage**.
+We need to create a new service class called `AzureBlobStorage` within the `HOW.AspNetCore.Services` project within the folder called **Storage**.
 
 It is best to live code the `AzureBlobService` implementation shown below, but if under time constraints, you can copy and paste the following implementation.
 
@@ -633,6 +635,16 @@ Using the Visual Studio refactoring tools, extract an Interface using the contex
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options?view=aspnetcore-3.0)
 
 In this section we'll introduce the Options Pattern to map configuration sections to POCO classes.  We'll create a new class called `AzureBlobServiceOptions` and then register this type with Dependency Injection in order to have it injected into the `AzureBlobService` using `IOptionsMonitor<>`.
+
+#### Options Pattern Fundamentals
+
+Before creating our own Options class for configuring the `AzureBlobService` class, it is appropriate to first discuss the fundamentals of how the Options Pattern works and the different scenarios.
+
+- OptionsMonitor<>
+
+- Named Options
+
+- OptionsSnapshot<>
 
 #### Create Options Class
 
