@@ -26,10 +26,10 @@ namespace HOW.AspNetCore.Mvc.WebApp
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<HowDataContext>(options =>
-                options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HowAspNetCoreDb;Trusted_Connection=True;MultipleActiveResultSets=true"));
+            services.AddDbContext<HowDataContext>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.Configure<AzureBlobServiceOptions>(Configuration);
+            services.Configure<AzureBlobServiceOptions>(Configuration.GetSection("AzureBlobServiceOptions"));
 
             services.AddScoped<IProductService, ProductService>();
             services.AddTransient<IStorageService, AzureBlobService>();

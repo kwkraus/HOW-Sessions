@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 
 namespace HOW.AspNetCore.Services.Storage
 {
+    /// <summary>
+    /// This AWS Implementation is for demonstration purposes only
+    /// Use this class to demonstrate how to register different types that implement IStorageService
+    /// </summary>
     public class AWSStorageService : IStorageService
     {
         public Task<byte[]> GetFileAsByteArrayAsync(string fileName)

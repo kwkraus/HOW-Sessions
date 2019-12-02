@@ -11,7 +11,6 @@ namespace HOW.AspNetCore.Services.Storage
 {
     public class AzureBlobService : IStorageService
     {
-        // Parse the connection string and return a reference to the storage account.
         private readonly CloudStorageAccount _storageAccount;
         private readonly AzureBlobServiceOptions _options;
 

@@ -26,10 +26,10 @@ namespace HOW.AspNet.WebApp
         {
             services.AddRazorPages();
 
-            services.AddDbContext<HowDataContext>(options =>
-                options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HowAspNetCoreDb;Trusted_Connection=True;MultipleActiveResultSets=true"));
-            
-            services.Configure<AzureBlobServiceOptions>(Configuration.GetSection("AzureBlobStorage"));
+            services.AddDbContext<HowDataContext>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.Configure<AzureBlobServiceOptions>(Configuration.GetSection("AzureBlobServiceOptions"));
 
             services.AddScoped<IProductService, ProductService>();
             services.AddTransient<IStorageService, AzureBlobService>();
@@ -43,7 +43,6 @@ namespace HOW.AspNet.WebApp
 
             //// OperationService depends on each of the other Operation types.
             //services.AddTransient<OperationService, OperationService>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
