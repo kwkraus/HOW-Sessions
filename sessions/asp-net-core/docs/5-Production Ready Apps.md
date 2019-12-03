@@ -1,8 +1,16 @@
 # Production Ready ASP.NET Core Applications
 
+In this session, we'll learn about how to make our ASP.NET Core application production ready by propertly managing unhandled exceptions, logging exception details for troubleshooting, and different caching options to improve performance.
+
 ## Handling Errors
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-3.0)
+
+Even when an application has a well defined exception management pattern, unhandled exceptions can always sneak through.
+
+Other types of errors can include HTTP status code errors, such as 404-NotFound and 403-Forbidden.  
+
+In this section, we'll go over error handling in both development and production environments, how to introduce a custom status code page, as well as using Exception filters.
 
 ### Developer Exception Page
 

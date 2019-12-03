@@ -33,7 +33,7 @@ Engaging attendees through Hands On Walkthroughs ensures three key goals:
 
 - Greater retention of content (Hands on Keyboard)
 
-- attendance skills are appropriate for content
+- Attendance skills are appropriate for content
 
 ### Instructor guidance over Hands On Labs
 

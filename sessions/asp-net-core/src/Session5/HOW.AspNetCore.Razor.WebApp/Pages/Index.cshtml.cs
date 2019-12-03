@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace HOW.AspNet.WebApp.Pages
 {
@@ -19,7 +15,10 @@ namespace HOW.AspNet.WebApp.Pages
 
         public void OnGet()
         {
-
+            if (HttpContext.Request.Query.ContainsKey("throw"))
+            {
+                throw new FileNotFoundException("File not found exception thrown in index.chtml");
+            }
         }
     }
 }
