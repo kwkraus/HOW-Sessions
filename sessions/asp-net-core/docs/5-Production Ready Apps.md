@@ -16,9 +16,41 @@ In this section, we'll go over error handling in both development and production
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-3.0#developer-exception-page)
 
+The out of the box Visual Studio Razor Page template implements the Developer Exception Page when the environment is set to **Development**.
+
+```cs
+if (env.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+```
+
+#### Throw an Exception
+
+Open the `Index.cshtml.cs` page and add the following code to the page in order to force an exception and show the Developer Exception Page.
+
+```cs
+if (HttpContext.Request.Query.ContainsKey("throw"))
+{
+    throw new FileNotFoundException("File not found exception thrown in index.chtml");
+}
+```
+
+When you launch the application, add the querystring `?throw=true` to the `index.cshtml` page to force a thrown exception.  You should be send to the Developer Exception Page to view the details.
+
+>Discuss the details of the Developer Exception Page and what it provides
+
 ### Exception Handler Page
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-3.0#exception-handler-page)
+
+When the environment is changed to something other than **Development**, the out of the box template is set to utilize the Exception Handler Page called `Error.cshtml`.
 
 ### Use Status Code Pages
 
@@ -63,4 +95,3 @@ In this section, we'll go over error handling in both development and production
 #### Distributed Redis Caching
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-3.0#distributed-redis-cache)
-

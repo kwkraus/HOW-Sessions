@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HOW.AspNetCore.Mvc.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using HOW.AspNetCore.Mvc.WebApp.Models;
+using System.Diagnostics;
+using System.IO;
 
 namespace HOW.AspNetCore.Mvc.WebApp.Controllers
 {
@@ -20,6 +17,11 @@ namespace HOW.AspNetCore.Mvc.WebApp.Controllers
 
         public IActionResult Index()
         {
+            if (HttpContext.Request.Query.ContainsKey("throw"))
+            {
+                throw new FileNotFoundException("File not found exception thrown in index.chtml");
+            }
+
             return View();
         }
 
