@@ -49,17 +49,17 @@ namespace HOW.AspNet.WebApp
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-            //#region snippet_DevPageAndHandlerPage
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-            //else
-            //{
-            //    app.UseExceptionHandler("/Error");
-            //    app.UseHsts();
-            //}
-            //#endregion
+            #region snippet_DevPageAndHandlerPage
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
+            #endregion
 
             //#region snippet_HandlerPageLambda
             //if (env.IsDevelopment())
@@ -108,9 +108,9 @@ namespace HOW.AspNet.WebApp
             //    "text/plain", "Status code page, status code: {0}");
             //#endregion
 
-            #region snippet_StatusCodePagesWithRedirect
-            app.UseStatusCodePagesWithRedirects("/StatusCode?code={0}");
-            #endregion
+            //#region snippet_StatusCodePagesWithRedirect
+            //app.UseStatusCodePagesWithRedirects("/StatusCode?code={0}");
+            //#endregion
 
             //#region snippet_StatusCodePagesWithReExecute
             //app.UseStatusCodePagesWithReExecute("/StatusCode","?code={0}");
