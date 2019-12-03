@@ -13,13 +13,13 @@ Cloud Native Development
 
 Benefits of a HOW Session:
 
-- Guided documentation: Tech/Tools change too frequently, instead of click here, goto dropdown, etc...  it would say Create new MVC app from dotnet cli, or download npm package and install globally.  These docs can have links to docs.microsoft.com or other resources, allowing the consultant to learn.
+- **Guided documentation:** Tech/Tools change too frequently, instead of click here, goto dropdown, etc...  it would say Create new MVC app from dotnet cli, or download npm package and install globally.  These docs can have links to docs.microsoft.com or other resources, allowing the consultant to learn.
 
-- Less Slides More Live Coding/Work: Any Slides or Markdown should be to "set the stage" for the live coding session.  less artifacts that we need to maintain, the easier it is to manage the life of the session content.  Hands on keyboards is always the optimal way to retain knowledge.
+- **Less Slides More Live Coding/Work:** Any Slides or Markdown should be to "set the stage" for the live coding session.  less artifacts that we need to maintain, the easier it is to manage the life of the session content.  Hands on keyboards is always the optimal way to retain knowledge.
 
-- Pair Programming: Attendees can get stuck, depending on their skill level, implementing pair programming allows consultant to troubleshoot less potential problems, and allows them to pair up different skill levels to potentially allow attendees to figure out issues.  This will be a suggestion not a requirement.
+- **Pair Programming:** Attendees can get stuck, depending on their skill level, implementing pair programming allows consultant to troubleshoot less potential problems, and allows them to pair up different skill levels to potentially allow attendees to figure out issues.  This will be a suggestion not a requirement.
 
-- Attendees keep work: Work is done on attendee laptops and or Azure subscriptions.  All work created will stay with the customer.  
+- **Attendees keep work:** Work is done on attendee laptops and or Azure subscriptions.  All work created will stay with the customer.  
 
 ## Tenants of HOW Sessions
 
