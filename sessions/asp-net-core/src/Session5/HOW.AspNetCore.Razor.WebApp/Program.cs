@@ -19,24 +19,24 @@ namespace HOW.AspNet.WebApp
                 {
                     webBuilder.ConfigureAppConfiguration((context, config) =>
                      {
-                         if (context.HostingEnvironment.IsProduction())
-                         {
-                             var builtConfig = config.Build();
-                             var kvConfig = builtConfig.GetSection("AzureKeyVault");
+                         //if (context.HostingEnvironment.IsProduction())
+                         //{
+                         //    var builtConfig = config.Build();
+                         //    var kvConfig = builtConfig.GetSection("AzureKeyVault");
 
-                             using var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-                             store.Open(OpenFlags.ReadOnly);
-                             var certs = store.Certificates
-                                 .Find(X509FindType.FindByThumbprint,
-                                     kvConfig["AzureADCertThumbprint"], false);
+                         //    using var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+                         //    store.Open(OpenFlags.ReadOnly);
+                         //    var certs = store.Certificates
+                         //        .Find(X509FindType.FindByThumbprint,
+                         //            kvConfig["AzureADCertThumbprint"], false);
 
-                             config.AddAzureKeyVault(
-                                 $"https://{kvConfig["VaultName"]}.vault.azure.net/",
-                                 kvConfig["AzureADApplicationId"],
-                                 certs.OfType<X509Certificate2>().Single());
+                         //    config.AddAzureKeyVault(
+                         //        $"https://{kvConfig["VaultName"]}.vault.azure.net/",
+                         //        kvConfig["AzureADApplicationId"],
+                         //        certs.OfType<X509Certificate2>().Single());
 
-                             store.Close();
-                         }
+                         //    store.Close();
+                         //}
                      })
                     .UseStartup<Startup>();
                 });

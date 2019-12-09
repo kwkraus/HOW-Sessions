@@ -52,9 +52,95 @@ When you launch the application, add the querystring `?throw=true` to the `index
 
 When the environment is changed to something other than **Development**, the out of the box template is set to utilize the Exception Handler Page called `Error.cshtml`.
 
+Change the environment to something other than **Development** and run the application.  Add `?throw=true` to the root url to view the `Error.cshtml` page output and discuss the implementation.
+
+>NOTE: Make sure to discuss the Exception Handler middleware behavior and show the automatic logging in the console window.
+
+#### Exception Handler using Lambdas
+
+[Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-3.0#exception-handler-lambda)
+
+You can also use a lambda expression when registering the middleware and gain access to the exception prior to sending a response.  To access the exception information, use the `IExceptionHandlerPathFeature` type.
+
+To test the middleware, add the following code block to the startup.cs file and run the application to view the error response.
+
+```cs
+if (env.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler(errorApp =>
+    {
+        errorApp.Run(async context =>
+        {
+                context.Response.StatusCode = 500;
+                context.Response.ContentType = "text/html";
+
+                await context.Response.WriteAsync("<html lang=\"en\"><body>\r\n");
+                await context.Response.WriteAsync("ERROR!<br><br>\r\n");
+
+                var exceptionHandlerPathFeature =
+                    context.Features.Get<IExceptionHandlerPathFeature>();
+
+            // Use exceptionHandlerPathFeature to process the exception (for example, 
+            // logging), but do NOT expose sensitive error information directly to 
+            // the client.
+
+            if (exceptionHandlerPathFeature?.Error is FileNotFoundException)
+                {
+                    await context.Response.WriteAsync("File error thrown!<br><br>\r\n");
+                }
+
+                await context.Response.WriteAsync("<a href=\"/\">Home</a><br>\r\n");
+                await context.Response.WriteAsync("</body></html>\r\n");
+                await context.Response.WriteAsync(new string(' ', 512)); // IE padding
+        });
+    });
+    app.UseHsts();
+}
+```
+
 ### Use Status Code Pages
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-3.0#usestatuscodepages)
+
+To enable default text-only handlers for common error status codes, register the UseStatusCodePages middleware within the startup.cs file
+
+`app.UseStatusCodePages();`
+
+>Note: order is important, make sure it is registered prior to other request handling middleware registrations.
+
+When you run the application, go to a product details page and enter an invalid id to the querystring.  This should force a 404-NotFound status code, and the default text will display in the browser.
+
+Time permitting, discuss the following StatusCodePage() overloads
+
+- [StatusCodePages using Format String](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-3.0#usestatuscodepages-with-format-string)
+
+- [StatusCodePages with Lambda](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-3.0#usestatuscodepages-with-lambda)
+
+#### UseStatusCodePagesWithRedirects
+
+[Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-3.0#usestatuscodepageswithredirects)
+
+Discuss the reasons and benefits of this middleware registration.
+
+This method is commonly used when the app:
+
+- Should redirect the client to a different endpoint, usually in cases where a different app processes the error. For web apps, the client's browser address bar reflects the redirected endpoint.
+
+- Shouldn't preserve and return the original status code with the initial redirect response.
+
+#### UseStatusCodePagesWithReExexute
+
+[Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-3.0#usestatuscodepageswithreexecute)
+
+This method is commonly used when the app should:
+
+- Process the request without redirecting to a different endpoint. For web apps, the client's browser address bar reflects the originally requested endpoint.
+
+- Preserve and return the original status code with the response.
 
 ### Exception Filters
 
