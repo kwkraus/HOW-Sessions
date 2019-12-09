@@ -2,7 +2,15 @@
 
 In this session, we'll be working with data using Entity Framework Core.  We'll discuss how to utilize the built in Dependency Injection system to inject an EF Context into a `PageModel` for retrieving and saving data.
 
->This session will teach you the basics of Entity Framework Core, but is not intended to be a comprehensive walkthrough of this technology
+Concepts for this sesssion:
+
+- [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
+
+- [Dependency Injection](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.0#overview-of-dependency-injection)
+
+- [Configuration Management](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-3.0)
+
+>NOTE: This session will teach the basics of Entity Framework Core, but is not intended to be a comprehensive walkthrough of this technology.
 
 ## Configure Entity Framework Core
 
