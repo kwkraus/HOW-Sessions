@@ -239,6 +239,8 @@ To log an event, we can add the following code to the `OnGet()` method.  Add the
 _logger.LogCritical("We're about to throw an exception... get ready for it...");
 ```
 
+When you run the application, you will see a new log event just prior to the exception logging.
+
 ### Change Logging Providers
 
 We can add/remove the default logging providers through the `IHostBuilder` within the `Program.cs` class.
@@ -253,15 +255,27 @@ To remove all configured providers and add just the Console provider, add the fo
 })
 ```
 
-When you run the application, you will see a new log event just prior to the exception logging.
+Run the application and demonstrate that logging is still working for the Console output, but we are no longer logging to the Event Viewer.
 
 ### Application Insights
 
-Application Insights is...
+[Reference Doc](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)
+
+Application Insights, a feature of Azure Monitor, is an extensible Application Performance Management (APM) service for web developers on multiple platforms.
+
+It works as an installed instrumentation package in your application, and works against an Application Insights resource in Azure. The instrumentation monitors your app and sends telemetry data to Azure Monitor.
+
+There are several ways to leverage Application Insights for Logging purposes.
+
+- Application Insights SDK
+
+- ILogger Support
+
+- Third Party Logging Providers
 
 #### Application Insights SDK
 
-The Application Insights SDK provides these benefits:
+The Application Insights SDK provides the following benefits:
 
 - **Comprehensive data collection**: Data like user retention, unique users, and unique sessions is available in Application Insights only when you use the Application Insights SDK.
 
@@ -271,11 +285,72 @@ The Application Insights SDK provides these benefits:
 
 - **Local telemetry in Visual Studio**: Telemetry data from applications instrumented with the SDK can be viewed locally in Visual Studio when you run the app in the debugger.
 
-#### Application Insights trace logging
+#### ILogger Support
 
-[Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-3.1#azure-application-insights-trace-logging)
+[Reference Doc](https://docs.microsoft.com/en-us/azure/azure-monitor/app/ilogger)
 
-The Visual Studio Razor Page template sets up a default configuration for logging using the `CreateDefaultBuilder(args)` call within the `Program.cs` file.
+Application Insights does support logging event data through the ILogger interface.  It is recommended that you utilize this mechanism if you have current ILogger code within your application and don't want to retool your entire application.
+
+#### Third Party Logging Providers
+
+[Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-3.1#third-party-logging-providers)
+
+ASP.NET Core supports the use of Third Party logging providers, enabling user to choice what best works for their solution.
+
+In this section, we'll implement one of the more popular providers, Serilog, and discuss basic configuration and the sink to support Application Insights logging.
+
+First, we'll install Serilog into our application.  To install the Serilog nuget package, run one of the following commands.
+
+##### dotnet cli
+
+- `dotnet add package Serilog.AspNetCore`
+
+##### Package Manager Console
+
+- `Install-Package Serilog.AspNetCore`
+
+> NOTE: you can also use the Nuget Package Manager in Visual Studio to find and install these packages
+
+Enable Serilog within your application by adding the following code blocks to your `Program.cs` file.
+
+Within the `Main()` method
+
+```cs
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .CreateLogger();
+
+try
+{
+    Log.Information("Starting web host");
+    CreateHostBuilder(args).Build().Run();
+    return 0;
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+    return 1;
+}
+finally
+{
+    Log.CloseAndFlush();
+}
+```
+
+Within the `CreateHostBuilder()`
+
+```cs
+.ConfigureWebHostDefaults(webBuilder =>
+{
+    webBuilder.UseStartup<Startup>();
+    webBuilder.UseSerilog();
+});
+```
+
+This default configuration will log output to the Console sink and minimumly log all information events from Microsoft.
 
 ## Caching
 
