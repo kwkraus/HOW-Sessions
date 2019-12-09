@@ -1,6 +1,14 @@
 # Production Ready ASP.NET Core Applications
 
-In this session, we'll learn about how to make our ASP.NET Core application production ready by propertly managing unhandled exceptions, logging exception details for troubleshooting, and different caching options to improve performance.
+In this session, we'll learn about how to make our ASP.NET Core application production ready by properly managing errors within the application, logging exception details for troubleshooting, and different caching options to improve performance.
+
+Concepts for this sesssion:
+
+- Error Handling
+
+- Logging
+
+- Caching
 
 ## Handling Errors
 
