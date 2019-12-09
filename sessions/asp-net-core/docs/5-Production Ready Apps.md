@@ -200,7 +200,19 @@ This relates to logging because we need to log all of this exception context as 
 
 The default logging configuration is set through the use of the `CreateDefaultBuilder(args)` method that is called within the `Program.cs` class at startup.
 
-Discuss what loggers are configured within this method.
+The following providers are added:
+
+- Console
+
+- Debug
+
+- EventSource
+
+- EventLog (only when running on Windows)
+
+To demonstrate the default logging capabilities, run the application and add `?throw` to the root url to generate an exception.  Show the exception output through the console.
+
+You can also open the Event Viewer on Windows and show the output entry in the Application log.
 
 ### Inject Logger within Application
 
@@ -219,7 +231,7 @@ public IndexModel(ILogger<IndexModel> logger)
 }
 ```
 
-ASP.NET Core will try to create a new IndexModel and recognize that it's asking for an ILogger.  It will inject the configured logger for the application where we can utilize the event logging APIs.
+When an IndexModel class is created, ASP.NET Core will recognize that it's asking for an ILogger.  It will inject the configured logger for the application and we can call logging APIs.
 
 To log an event, we can add the following code to the `OnGet()` method.  Add the following line of code to the if statement for the "throw" check.  This will log a critical event just prior to throwing the exception.
 
@@ -227,9 +239,39 @@ To log an event, we can add the following code to the `OnGet()` method.  Add the
 _logger.LogCritical("We're about to throw an exception... get ready for it...");
 ```
 
+### Change Logging Providers
+
+We can add/remove the default logging providers through the `IHostBuilder` within the `Program.cs` class.
+
+To remove all configured providers and add just the Console provider, add the following code to the `Program.cs` class within the `CreateHostBuilder()` method.
+
+```cs
+.ConfigureLogging(logging =>
+{
+    logging.ClearProviders();
+    logging.AddConsole();
+})
+```
+
 When you run the application, you will see a new log event just prior to the exception logging.
 
-### Application Insights trace logger
+### Application Insights
+
+Application Insights is...
+
+#### Application Insights SDK
+
+The Application Insights SDK provides these benefits:
+
+- **Comprehensive data collection**: Data like user retention, unique users, and unique sessions is available in Application Insights only when you use the Application Insights SDK.
+
+- **Custom telemetry**: With the SDK, you can add code to your application to capture events and metrics that are specific to your app and its business domain.
+
+- **Advanced features**: Some Application Insights features are available only when you use the SDK. For example, Live Metrics Stream lets you watch and drill down into metrics in real time.
+
+- **Local telemetry in Visual Studio**: Telemetry data from applications instrumented with the SDK can be viewed locally in Visual Studio when you run the app in the debugger.
+
+#### Application Insights trace logging
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-3.1#azure-application-insights-trace-logging)
 
