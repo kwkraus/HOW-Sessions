@@ -50,7 +50,7 @@ if (HttpContext.Request.Query.ContainsKey("throw"))
 }
 ```
 
-When you launch the application, add the querystring `?throw=true` to the `index.cshtml` page to force a thrown exception.  You should be send to the Developer Exception Page to view the details.
+When you launch the application, add the querystring `?throw` to the `index.cshtml` page to force a thrown exception.  You should be send to the Developer Exception Page to view the details.
 
 >Discuss the details of the Developer Exception Page and what it provides
 
@@ -60,7 +60,7 @@ When you launch the application, add the querystring `?throw=true` to the `index
 
 When the environment is changed to something other than **Development**, the out of the box template is set to utilize the Exception Handler Page called `Error.cshtml`.
 
-Change the environment to something other than **Development** and run the application.  Add `?throw=true` to the root url to view the `Error.cshtml` page output and discuss the implementation.
+Change the environment to something other than **Development** and run the application.  Add `?throw` to the root url to view the `Error.cshtml` page output and discuss the implementation.
 
 >NOTE: Make sure to discuss the Exception Handler middleware behavior and show the automatic logging in the console window.
 
@@ -144,6 +144,8 @@ This method is commonly used when the app:
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-3.0#usestatuscodepageswithreexecute)
 
+Discuss the reasons and benefits of this middleware registration.
+
 This method is commonly used when the app should:
 
 - Process the request without redirecting to a different endpoint. For web apps, the client's browser address bar reflects the originally requested endpoint.
@@ -157,6 +159,81 @@ This method is commonly used when the app should:
 ## Logging
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-3.0)
+
+In this section, we'll discuss the default logging configuration and how to add additional logging providers based on your logging needs.
+
+We'll demonstrate how to inject the logger into classes and how to utilize the logging API.
+
+We'll also touch on how to log errors and telemetry to Azure Application Insights, as well as how to integrate Application Insights with existing logging providers.
+
+### Logging Fundamentals
+
+Why Log? The goal of logging is to know what’s really happening in your app and diagnose issues quickly.  In order to do this, we need to follow a few principals.
+
+- **Basic logging around everything** – For every key transaction in your code you should have some basic logging in your code
+
+- **Log contextual data** – Logging “something happened” is not enough. You need relevant, contextual logs
+
+- **Aggregate logs** – Consolidate and aggregate all of our logging to a central location, available to all devs, and easy to distill.
+
+- **Proactively use logs** – Monitor your logging for errors and key things that are problematic
+
+Within a production application, logging "noise" can become a problem and sifting through this noise to find the root of a problem can be time consuming.
+
+Logging frameworks have long implemented Logging Levels that allow for filtering certain levels of events to create less noise.  Production systems are typically only concerned with exceptions thrown and/or warning levels that may indicate health issues.
+
+#### Exception Logging Strategies
+
+[Reference Doc](https://docs.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions)
+
+Microsoft has several exceptions handling best practices that can be shared with students, but the main points to be made in this section are the following:
+
+- Only handle exceptions that you can actually do something about
+
+- Preserve the stacktrace by calling `throw;` for an existing caught exception or by wrapping a caught exception with a new contextually pertinent exception.
+
+This relates to logging because we need to log all of this exception context as some point.  When using the Exception Handler middleware, we will be able to inspect the full stacktrace through the default logging, which is a good thing.
+
+### Default Logging Configuration
+
+[Reference Doc](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.host.createdefaultbuilder?view=dotnet-plat-ext-3.0)
+
+The default logging configuration is set through the use of the `CreateDefaultBuilder(args)` method that is called within the `Program.cs` class at startup.
+
+Discuss what loggers are configured within this method.
+
+### Inject Logger within Application
+
+You can gain access to the logger through dependency injection and log events throughout your application.
+
+Let's inject a logger into one of our pages and log an event.
+
+Open the `Index.cshtml.cs` home page within the Pages folder and add the following code to the constructor.  This will create a new ILogger with a category of IndexModel.
+
+```cs
+private readonly ILogger<IndexModel> _logger;
+
+public IndexModel(ILogger<IndexModel> logger)
+{
+    _logger = logger;
+}
+```
+
+ASP.NET Core will try to create a new IndexModel and recognize that it's asking for an ILogger.  It will inject the configured logger for the application where we can utilize the event logging APIs.
+
+To log an event, we can add the following code to the `OnGet()` method.  Add the following line of code to the if statement for the "throw" check.  This will log a critical event just prior to throwing the exception.
+
+```cs
+_logger.LogCritical("We're about to throw an exception... get ready for it...");
+```
+
+When you run the application, you will see a new log event just prior to the exception logging.
+
+### Application Insights trace logger
+
+[Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-3.1#azure-application-insights-trace-logging)
+
+The Visual Studio Razor Page template sets up a default configuration for logging using the `CreateDefaultBuilder(args)` call within the `Program.cs` file.
 
 ## Caching
 

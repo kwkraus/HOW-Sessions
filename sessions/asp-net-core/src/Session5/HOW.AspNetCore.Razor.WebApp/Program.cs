@@ -1,44 +1,51 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
+using System;
 
 namespace HOW.AspNet.WebApp
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
+
+            //Log.Logger = new LoggerConfiguration()
+            //    .MinimumLevel.Debug()
+            //    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+            //    .Enrich.FromLogContext()
+            //    .WriteTo.Console()
+            //    .CreateLogger();
+
+            //try
+            //{
+            //    Log.Information("Starting web host");
+            //    CreateHostBuilder(args).Build().Run();
+            //    return 0;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Log.Fatal(ex, "Host terminated unexpectedly");
+            //    return 1;
+            //}
+            //finally
+            //{
+            //    Log.CloseAndFlush();
+            //}
+
             CreateHostBuilder(args).Build().Run();
+            return 0;
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.ConfigureAppConfiguration((context, config) =>
-                     {
-                         //if (context.HostingEnvironment.IsProduction())
-                         //{
-                         //    var builtConfig = config.Build();
-                         //    var kvConfig = builtConfig.GetSection("AzureKeyVault");
-
-                         //    using var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-                         //    store.Open(OpenFlags.ReadOnly);
-                         //    var certs = store.Certificates
-                         //        .Find(X509FindType.FindByThumbprint,
-                         //            kvConfig["AzureADCertThumbprint"], false);
-
-                         //    config.AddAzureKeyVault(
-                         //        $"https://{kvConfig["VaultName"]}.vault.azure.net/",
-                         //        kvConfig["AzureADApplicationId"],
-                         //        certs.OfType<X509Certificate2>().Single());
-
-                         //    store.Close();
-                         //}
-                     })
-                    .UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>();
+                    //webBuilder.UseSerilog();
                 });
     }
 }
