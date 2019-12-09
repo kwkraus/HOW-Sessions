@@ -2,7 +2,17 @@
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-3.0&tabs=visual-studio)
 
-In this session, we'll take a look at ASP.NET Core Razor pages and their programming model.  We'll also look at the Razor page syntax for View pages
+In this session, we'll take a look at ASP.NET Core Razor pages and their programming model.  We'll also look at the Razor page syntax for View pages.
+
+Concepts for this sesssion:
+
+- The PageModel
+
+- Property Binding
+
+- Razor Syntax
+
+- Shared Views
 
 ## What's in Razor Page Template
 
