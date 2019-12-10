@@ -5,7 +5,7 @@
     This session breaks down the out of the box experience and templates used to start a new ASP.NET Core
     development project. It explains, in detail, how .NET Core works and the core features of an ASP.NET Core project.
 
-- Working with Pages ([Razor Pages](2a-Working with Razor Pages.md)/[MVC](2b-Working with MVC.md))
+- Working with Pages ([Razor Pages](2a-Working%20with%20Razor%20Pages.md)/[MVC](2b-Working%20with%20MVC.md))
 
     Choose between MVC or Razor Page development models. Students will code along with Instructor to create their
     first web pages and learn Page request handling, Razor coding syntax, Page Routing, and Property Binding.
