@@ -10,20 +10,20 @@
     Choose between MVC or Razor Page development models. Students will code along with Instructor to create their
     first web pages and learn Page request handling, Razor coding syntax, Page Routing, and Property Binding.
 
-- Working with Data
+- [Working with Data](3-Working%20with%20Data.md)
 
     In this session, students will code along with the instructor to implement data persistence utilizing Entity
     Framework Core and SQL LocalDb. Students will learn about the built in Dependency Injection (DI) system along
     with some of the core features of Entity Framework Core for SQL Server. Introduction to managing secrets using
     the Secrets Manager.
 
-- Creating Services
+- [Creating Services](4-Creating%20Services.md)
 
     Students will create services using the Services Pattern and apply custom configuration. Students will learn how to
     manage environment specific configuration, work with the Options pattern, and work with multiple configuration
     files.
 
-- Production Ready Applications
+- [Production Ready Applications](5-Production%20Ready%20Apps.md)
 
     Students will implement exception management best practices, including custom error pages, implementing third
     party logging providers, and an introduction to Azure Application Insights. Understand caching mechanisms and
