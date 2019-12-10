@@ -29,12 +29,12 @@
     party logging providers, and an introduction to Azure Application Insights. Understand caching mechanisms and
     best practices.
 
-- Testing your Application
+- [Testing your Application](6-Testing.md)
 
     Create unit tests using mocking and faking techniques. Utilize Entity Framework Core’s inMemory provider for
     managing data for tests. Create functional tests using Selenium to test the UI layer.
 
-- Optional Advanced Topics
+- [Optional Advanced Topics](7-Advanced.md)
 
     Customer can add additional advanced sessions based on need. Sessions include Authentication/Authorization,
     Deploying to Azure, and others. Talk to your Microsoft representative for a comprehensive list.
