@@ -1,5 +1,6 @@
 ﻿using HOW.AspNetCore.Services.Interfaces;
 using HOW.AspNetCore.Services.Options;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -12,12 +13,14 @@ namespace HOW.AspNetCore.Services.Storage
     public class AzureBlobService : IStorageService
     {
         private readonly CloudStorageAccount _storageAccount;
+        private readonly ILogger<AzureBlobService> _logger;
         private readonly AzureBlobServiceOptions _options;
 
-        public AzureBlobService(IOptionsMonitor<AzureBlobServiceOptions> options)
+        public AzureBlobService(IOptionsMonitor<AzureBlobServiceOptions> options, ILogger<AzureBlobService> logger)
         {
             _options = options.CurrentValue;
             _storageAccount = CloudStorageAccount.Parse(_options.ConnectionString);
+            _logger = logger;
         }
 
         public async Task<Uri> SaveFileAsync(Stream fileStream, string fileName)
@@ -52,13 +55,22 @@ namespace HOW.AspNetCore.Services.Storage
 
         public async Task RemoveFileAsync(string blobUrl)
         {
+            var methodName = nameof(RemoveFileAsync);
+
+            _logger.LogDebug($"Entering {methodName}", blobUrl);
+
             CloudBlobClient blobClient = _storageAccount.CreateCloudBlobClient();
             CloudBlobContainer container = blobClient.GetContainerReference(_options.TargetContainer.ToLower());
 
             Uri fileLocation = new Uri(blobUrl);
             string fileToDelete = Path.GetFileName(fileLocation.LocalPath);
 
+            //Demo Exception thrown when Trace level logging is enabled
+            //throw new IOException("Lost Network Connectivity");
+
             await container.GetBlobReference(fileToDelete).DeleteIfExistsAsync();
+
+            _logger.LogDebug($"Leaving {methodName}", blobUrl);
         }
 
         public async Task<Stream> GetFileAsStreamAsync(string fileName)

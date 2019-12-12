@@ -2,6 +2,7 @@
 using HOW.AspNetCore.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
@@ -9,10 +10,12 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
     public class DeleteModel : PageModel
     {
         private readonly IProductService _productSvc;
+        private readonly ILogger<DeleteModel> _logger;
 
-        public DeleteModel(IProductService productService)
+        public DeleteModel(IProductService productService, ILogger<DeleteModel> logger)
         {
             _productSvc = productService;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -20,6 +23,10 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            var methodName = nameof(OnPostAsync);
+
+            _logger.LogDebug($"Entering {methodName} method", id.GetValueOrDefault());
+
             if (id == null)
                 return NotFound();
 
@@ -28,19 +35,26 @@ namespace HOW.AspNetCore.Razor.WebApp.Pages.Products
             if (Product == null)
                 return NotFound();
 
+            _logger.LogDebug($"Leaving {methodName} method", id.GetValueOrDefault());
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null)
-                return NotFound();
+            var methodName = nameof(OnPostAsync);
 
-            Product = await _productSvc.GetProductAsync(id.GetValueOrDefault());
+            using (_logger.BeginScope("Delete Product Id={id} Logging Scope ", id))
+            {
+                _logger.LogDebug($"Entering {methodName} method");
 
-            if (Product != null)
+                if (id == null)
+                    return NotFound();
+
                 await _productSvc.DeleteProductAsync(id);
 
+                _logger.LogDebug($"Leaving {methodName} method");
+            }
             return RedirectToPage("./Index");
         }
     }

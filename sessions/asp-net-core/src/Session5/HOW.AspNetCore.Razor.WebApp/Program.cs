@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using System;
@@ -10,39 +11,45 @@ namespace HOW.AspNet.WebApp
     {
         public static int Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .CreateLogger();
+            //Log.Logger = new LoggerConfiguration()
+            //    .MinimumLevel.Debug()
+            //    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+            //    .Enrich.FromLogContext()
+            //    .WriteTo.Console()
+            //    .CreateLogger();
 
-            try
-            {
-                Log.Information("Starting web host");
-                CreateHostBuilder(args).Build().Run();
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "Host terminated unexpectedly");
-                return 1;
-            }
-            finally
-            {
-                Log.CloseAndFlush();
-            }
+            //try
+            //{
+            //    Log.Information("Starting web host");
+            //    CreateHostBuilder(args).Build().Run();
+            //    return 0;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Log.Fatal(ex, "Host terminated unexpectedly");
+            //    return 1;
+            //}
+            //finally
+            //{
+            //    Log.CloseAndFlush();
+            //}
 
-            //CreateHostBuilder(args).Build().Run();
-            //return 0;
+            CreateHostBuilder(args).Build().Run();
+            return 0;
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    //logging.AddConsole(options => options.IncludeScopes = true);
+                    logging.AddSeq();
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseSerilog();
+                    //webBuilder.UseSerilog();
                 });
     }
 }

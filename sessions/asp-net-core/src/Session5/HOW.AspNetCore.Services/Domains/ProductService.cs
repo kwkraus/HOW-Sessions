@@ -2,6 +2,7 @@
 using HOW.AspNetCore.Data.Entities;
 using HOW.AspNetCore.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,11 +14,13 @@ namespace HOW.AspNetCore.Services.Domains
     {
         private readonly HowDataContext _context;
         private readonly IStorageService _storageService;
+        private readonly ILogger<ProductService> _logger;
 
-        public ProductService(HowDataContext context, IStorageService storageSvc)
+        public ProductService(HowDataContext context, IStorageService storageSvc, ILogger<ProductService> logger)
         {
             _context = context;
             _storageService = storageSvc;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
@@ -54,6 +57,10 @@ namespace HOW.AspNetCore.Services.Domains
 
         public async Task DeleteProductAsync(int? id)
         {
+            var methodName = nameof(DeleteProductAsync);
+
+            _logger.LogDebug($"Entering {methodName}", id.GetValueOrDefault());
+
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
 
@@ -62,10 +69,19 @@ namespace HOW.AspNetCore.Services.Domains
             if (productToDelete == null)
                 throw new ArgumentException($"Product Id={id} was not found");
 
-            await _storageService.RemoveFileAsync(productToDelete.ImageLocation);
+            try
+            {
+                await _storageService.RemoveFileAsync(productToDelete.ImageLocation);
+            }
+            catch
+            {
+                //Exception buried 
+            }
 
             _context.Products.Remove(productToDelete);
             await _context.SaveChangesAsync();
+
+            _logger.LogDebug($"Leaving {methodName}", id.GetValueOrDefault());
         }
 
         public async Task<Product> CreateProductAsync(Product product)
