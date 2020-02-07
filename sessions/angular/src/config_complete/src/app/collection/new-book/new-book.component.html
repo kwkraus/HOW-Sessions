@@ -15,7 +15,7 @@
         <input matInput placeholder="Author" [(ngModel)]="book.author" name="author" required />
       </mat-form-field>
       <p class="rating-label">Rating</p>
-      <my-rating [rating]="book.rating" [book]="book">
+      <my-rating [rating]="book.rating" (ratingClicked)="onRatingUpdate($event)">
       </my-rating>
       <mat-slide-toggle color="primary" [(ngModel)]="book.isCheckedOut" name="checkedOut">Checked out?</mat-slide-toggle>
     </mat-card-content>

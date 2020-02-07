@@ -45,7 +45,8 @@ export class BookDetailComponent implements OnInit, OnDestroy {
       error => this.updateMessage(<any>error, 'Error'));
   }
 
-  onRatingUpdate(book: IBook): void {
+  onRatingUpdate(book: IBook, rating: number): void {
+    book.rating = rating;
     this.updateBook(book);
   }
 
