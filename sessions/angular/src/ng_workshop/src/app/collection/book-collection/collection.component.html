@@ -37,7 +37,7 @@
         <span>{{book.author}}</span>
       </p>
       <p mat-line>
-        <my-rating [rating]="book.rating" [book]="book" (ratingClicked)="onRatingUpdate($event)">
+        <my-rating [rating]="book.rating" (ratingClicked)="onRatingUpdate(book, $event)">
         </my-rating>
       </p>
       <p mat-line>

@@ -48,8 +48,8 @@ export class CollectionComponent implements OnInit {
     }
   }
 
-
-  onRatingUpdate(book: IBook): void {
+  onRatingUpdate(book: IBook, rating: number): void {
+    book.rating = rating;
     this.updateBook(book);
     this.updateMessage(book.title, ' Rating has been updated');
   }
