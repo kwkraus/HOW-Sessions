@@ -53,16 +53,21 @@ export interface IAppConfig {
 ### app.module APP_INITIALIZER
 ```javascript
 export function initializeApp(appConfig: AppConfig) {
-    const promise = appConfig.load().then(() => {
-        if (AppConfig.settings && AppConfig.settings.logging &&
-            AppConfig.settings.logging.appInsights) {
-            const config: Microsoft.ApplicationInsights.IConfig = {
-                instrumentationKey: AppConfig.settings.appInsights.instrumentationKey
-            };
-            AppInsights.downloadAndSetup(config);
-        }
-    });
-    return () => promise;
+  const promise = appConfig.load().then(() => {
+      if (AppConfig.settings && AppConfig.settings.logging &&
+          AppConfig.settings.logging.appInsights) {
+          const appInsights = new ApplicationInsights({
+              config: {
+                  instrumentationKey: AppConfig.settings.appInsights.instrumentationKey,
+                  enableAutoRouteTracking: true // option to log all route changes
+              }
+          });
+          appInsights.loadAppInsights();
+          appInsights.trackPageView();
+          AppConfig.appMonitor = appInsights;
+      }
+  });
+  return () => promise;
 }
 ```
 
@@ -76,19 +81,67 @@ However, if you want to catch exceptions, you will need to manually log those ex
 ### package.json file
 ```json
 "dependencies": {
-    "applicationinsights-js": "~1.0.20"
+    "@microsoft/applicationinsights-web": "~2.4.4"
 },
-"devDependencies": {
-    "@types/applicationinsights-js": "~1.0.9"
-}
 ```
 
 ### applicationinsights-js documentation
-https://github.com/Microsoft/ApplicationInsights-JS/blob/master/API-reference.md
+https://github.com/microsoft/applicationinsights-js
 
 ## Step 4 - Consume the Application Insights SDK in custom logging class
 Create a TypeScript class as a wrapper around the Application Insights JavaScript API and import the AppInsights class using the module loading system. Include methods for each method in the SDK that you want to support.
 
+### add interface for ApplicationInsights library
+To remove any dependency directly on App Insights in our custom logging service,
+create an interface.
+```
+export interface IAppMonitor {
+    trackEvent(event: {name: string}, customProperties?: {
+        [key: string]: any;
+    }): void;
+    trackPageView(pageView: {
+        name?: string;
+        uri?: string;
+        refUri?: string;
+        pageType?: string;
+        isLoggedIn?: boolean;
+        properties?: {
+            duration?: number;
+            [key: string]: any;
+        }
+    }): void;
+    trackPageViewPerformance(pageViewPerformance: {
+        name?: string;
+        uri?: string;
+        perfTotal?: string;
+        duration?: string;
+        networkConnect?: string;
+        sentRequest?: string;
+        receivedResponse?: string;
+        domProcessing?: string;
+    }): void;
+    trackException(exception: { exception: Error, severityLevel?: number; }): void;
+    trackTrace(trace: {message: string}, customProperties?: {
+        [key: string]: any;
+    }): void;
+    trackMetric(metric: { name: string, average: number }, customProperties?: {
+        [key: string]: any;
+    }): void;
+    startTrackPage(name?: string): void;
+    stopTrackPage(name?: string, url?: string, customProperties?: {
+        [key: string]: any;
+    }, measurements?: {
+        [key: string]: number;
+    }): void;
+    startTrackEvent(name?: string): void;
+    stopTrackEvent(name: string, properties?: {
+        [key: string]: string;
+    }, measurements?: {
+        [key: string]: number;
+    }): void;
+    flush(async?: boolean): void;
+}
+```
 ### logging.models.ts
 ```javascript
 export enum SeverityLevel {
@@ -99,20 +152,39 @@ export enum SeverityLevel {
     Critical = 4,
 }
 ```
+
+Add a property to the AppConfig class to store the one ApplicationInsights instance
+### app.config.ts
+```javascript
+export class AppConfig {
+  static appMonitor: IAppMonitor;
+```
 ### logging.service.ts
 ```javascript
 import { Injectable } from '@angular/core';
-import { AppInsights } from 'applicationinsights-js';
 import { AppConfig } from '../app.config';
 import { SeverityLevel } from '../models/logging.models';
 
 @Injectable({ providedIn: 'root'})
 export class LoggingService {
 
-    logPageView(name?: string, url?: string, properties?: any, measurements?: any, duration?: number) {
-        if (AppConfig.settings && AppConfig.settings.logging &&
-            AppConfig.settings.logging.appInsights) {
-            AppInsights.trackPageView(name, url, properties, measurements, duration);
+    // Option if not using dynamic configuration file
+    // appInsights: ApplicationInsights;
+    // constructor() {
+    //     this.appInsights = new ApplicationInsights({
+    //         config: {
+    //             instrumentationKey: environment.instrumentationKey,
+    //             enableAutoRouteTracking: true // option to log all route changes
+    //         }
+    //     });
+    //     this.appInsights.loadAppInsights();
+    // }
+    logPageView(name?: string, url?: string) {
+        if (AppConfig.settings && AppConfig.settings.logging && AppConfig.settings.logging.appInsights) {
+            AppConfig.appMonitor.trackPageView({
+                name: name,
+                uri: url
+            });
         }
     }
 
@@ -123,36 +195,30 @@ export class LoggingService {
         }
     }
 
-    logEvent(name: string, properties?: any, measurements?: any) {
-        if (AppConfig.settings && AppConfig.settings.logging &&
-            AppConfig.settings.logging.appInsights) {
-            AppInsights.trackEvent(name, properties, measurements);
+    logEvent(name: string, properties?: { [key: string]: any }) {
+        if (AppConfig.settings && AppConfig.settings.logging && AppConfig.settings.logging.appInsights) {
+            AppConfig.appMonitor.trackEvent({ name: name}, properties);
         }
     }
 
-    logMetric(name: string, average: number, sampleCount?: number, min?: number, max?: number,
-            properties?: any) {
-        if (AppConfig.settings && AppConfig.settings.logging &&
-            AppConfig.settings.logging.appInsights) {
-            AppInsights.trackMetric(name, average, sampleCount, min, max, properties);
+    logMetric(name: string, average: number, properties?: { [key: string]: any }) {
+        if (AppConfig.settings && AppConfig.settings.logging && AppConfig.settings.logging.appInsights) {
+            AppConfig.appMonitor.trackMetric({ name: name, average: average }, properties);
         }
     }
 
-    logException(exception: Error, severityLevel?: SeverityLevel, handledAt?: string,
-        properties?:any, measurements?: any) {
+    logException(exception: Error, severityLevel?: SeverityLevel) {
         if (AppConfig.settings && AppConfig.settings.logging && AppConfig.settings.logging.console) {
             this.sendToConsole(exception, severityLevel);
         }
-        if (AppConfig.settings && AppConfig.settings.logging && 
-            AppConfig.settings.logging.appInsights) {
-            AppInsights.trackException(exception, handledAt, properties, measurements, <AI.SeverityLevel>severityLevel);
+        if (AppConfig.settings && AppConfig.settings.logging && AppConfig.settings.logging.appInsights) {
+            AppConfig.appMonitor.trackException({ exception: exception, severityLevel: severityLevel });
         }
     }
 
-    logTrace(message: string, properties?: any) {
-        if (AppConfig.settings && AppConfig.settings.logging &&
-            AppConfig.settings.logging.appInsights) {
-            AppInsights.trackTrace(message, properties);
+    logTrace(message: string, properties?: { [key: string]: any }) {
+        if (AppConfig.settings && AppConfig.settings.logging && AppConfig.settings.logging.appInsights) {
+            AppConfig.appMonitor.trackTrace({ message: message}, properties);
         }
     }
 
@@ -243,6 +309,10 @@ Add code to collection.component.ts ngOnInit() to cause an exception to occur
     const test = (<any>testObject).address.city;
 ```
 
+View the browser network tab to see track requests and see how App Insights send data.
+
 Navigate to the Azure portal and the App Insights service - Failures.
 Filter by Browser, Exceptions
 Drill into Exceptions, click on one and "Show what happened before and after..."
+
+Also view the Performance tab to see page views.

@@ -9,7 +9,7 @@ import {
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-
+import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
@@ -19,17 +19,21 @@ import { environment } from '../environments/environment';
 import { NewsLetterComponent } from './newsletter/newsletter.component';
 import { AppConfig } from './app.config';
 import { ErrorHandlerService } from './services/error-handler.service';
-import { AppInsights } from 'applicationinsights-js';
 
 export function initializeApp(appConfig: AppConfig) {
   const promise = appConfig.load().then(() => {
-    if (AppConfig.settings && AppConfig.settings.logging &&
-      AppConfig.settings.logging.appInsights) {
-      const config: Microsoft.ApplicationInsights.IConfig = {
-          instrumentationKey: AppConfig.settings.appInsights.instrumentationKey
-      };
-      AppInsights.downloadAndSetup(config);
-  }
+      if (AppConfig.settings && AppConfig.settings.logging &&
+          AppConfig.settings.logging.appInsights) {
+          const appInsights = new ApplicationInsights({
+              config: {
+                  instrumentationKey: AppConfig.settings.appInsights.instrumentationKey,
+                  enableAutoRouteTracking: true // option to log all route changes
+              }
+          });
+          appInsights.loadAppInsights();
+          appInsights.trackPageView();
+          AppConfig.appMonitor = appInsights;
+      }
   });
   return () => promise;
 }

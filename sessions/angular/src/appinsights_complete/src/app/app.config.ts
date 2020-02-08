@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IAppConfig } from './models/app-config.models';
 import { environment } from '../environments/environment';
+import { IAppMonitor } from './models/app-monitor';
 
 @Injectable({ providedIn: 'root'})
 export class AppConfig {
 
     static settings: IAppConfig;
+    static appMonitor: IAppMonitor;
 
     constructor(private http: HttpClient) {
     }
