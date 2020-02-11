@@ -1,0 +1,29 @@
+.mat-card-avatar {
+    width: 64px;
+    height: 64px;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+  }
+  .mat-card-header {
+    margin-bottom: 25px;
+  }
+  .mat-card-header h4 {
+    margin-bottom: 0;
+    margin-top: 15px;
+    font-size: 24px;
+  }
+  .mat-form-field {
+    width: 100%;
+    line-height:2.23;
+    margin-bottom:15px;
+  }
+  p.rating-label {
+    color: rgba(0,0,0,.38);
+  }
+  .mat-slide-toggle {
+    height: 45px;
+    line-height: 45px;
+    margin: 10px 0;
+  }
+  
