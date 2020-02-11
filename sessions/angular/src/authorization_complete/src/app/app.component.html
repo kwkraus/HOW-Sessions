@@ -1,0 +1,11 @@
+<div class="container">
+  <mat-toolbar color="warn">
+    <span>{{title}}</span>
+    <span class="fill-remaining-space"></span>
+    <button mat-button *ngIf="!isLoggedIn()" (click)="signIn()">Sign in</button>
+    <i *ngIf="isLoggedIn()" class="fa fa-user"></i>{{userName()}}
+    <button mat-button *ngIf="isLoggedIn()" (click)="signOut()">Logout</button>
+    <img src="assets/img/books-icon.png" class="center-block" style="max-height:100px" />
+  </mat-toolbar>
+  <app-tabs></app-tabs>
+</div>

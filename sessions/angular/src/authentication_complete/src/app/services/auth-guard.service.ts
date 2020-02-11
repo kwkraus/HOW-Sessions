@@ -9,7 +9,7 @@ export class AuthGuardService implements CanActivate {
     constructor(private authService: AuthService) {
     }
 
-    canActivate(): Promise<boolean> | boolean {
+    canActivate(): boolean {
         if (!AppConfig.settings.aad.requireAuth || this.authService.isUserAuthenticated) {
             return true;
         }
