@@ -154,7 +154,7 @@ For other development environments, choose the .NET Core CLI tools.
 ## Create a migration
 
 
-![FirstMigration](/images/firstmigration.jpg)
+![FirstMigration](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/firstmigration.jpg)
 
 After you've defined your initial model, it's time to create the database. To add an initial migration, run the following command.
 
@@ -180,7 +180,7 @@ Key take away is before you run the updated-database command on your intailzing 
 
 - Before Migrating with an existing database scheme and data delete all code from the Up method as shown below on InitialCreate first model migration to create a empty migration:
 
-![](/images/deleteCodeUp.jpg)
+![](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/deleteCodeUp.jpg)
 
 Next, you want to run this migration against your database so type and run the following command: 
 
