@@ -1,14 +1,15 @@
 # Entity Framework Core
 
-![FirstMigration](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/orm.jpg)
-
-
-
 Entity Framework (EF) Core is a lightweight, extensible, open source and cross-platform version of the popular Entity Framework data access technology.
 
 EF Core can serve as an object-relational mapper (O/RM), enabling .NET developers to work with a database using .NET objects, and eliminating the need for most of the data-access code they usually need to write.
 
 EF Core supports many database engines, see [Database Providers](https://docs.microsoft.com/en-us/ef/core/providers/index?tabs=dotnet-core-cli) for details.
+
+![FirstMigration](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/orm.jpg)
+
+
+
 
 ## The Model
 
