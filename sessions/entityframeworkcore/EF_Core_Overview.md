@@ -1,6 +1,6 @@
 # Entity Framework Core
 
-![FirstMigration](/images/orm.jpg)
+![FirstMigration](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/orm.jpg)
 
 
 
