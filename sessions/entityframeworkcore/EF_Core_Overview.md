@@ -1,5 +1,8 @@
 # Entity Framework Core
 
+![FirstMigration](/images/orm.jpg)
+
+
 
 Entity Framework (EF) Core is a lightweight, extensible, open source and cross-platform version of the popular Entity Framework data access technology.
 
@@ -68,6 +71,7 @@ AuditEntry because it is specified in OnModelCreating.
       public class Blog
     {
         public int BlogId { get; set; }
+        public string Name {get; set;}
         public string Url { get; set; }
         public int Rating { get; set; }
         public List<Post> Posts { get; set; }
@@ -149,6 +153,9 @@ For other development environments, choose the .NET Core CLI tools.
 
 ## Create a migration
 
+
+![FirstMigration](/images/firstmigration.jpg)
+
 After you've defined your initial model, it's time to create the database. To add an initial migration, run the following command.
 
 ```powershell 
@@ -177,7 +184,7 @@ Key take away is before you run the updated-database command on your intailzing 
 
 Next, you want to run this migration against your database so type and run the following command: 
 
-```
+```powershell
     dotnet ef database update
 ```
 
