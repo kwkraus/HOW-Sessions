@@ -6,9 +6,7 @@ EF Core can serve as an object-relational mapper (O/RM), enabling .NET developer
 
 EF Core supports many database engines, see [Database Providers](https://docs.microsoft.com/en-us/ef/core/providers/index?tabs=dotnet-core-cli) for details.
 
-![FirstMigration](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/orm.jpg)
-
-
+![ORM](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/orm.jpg)
 
 
 ## The Model
@@ -162,6 +160,8 @@ After you've defined your initial model, it's time to create the database. To ad
 ```powershell 
     Add-Migration InitialCreate
 ```
+
+![FirstMigration](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/firstmigration.jpg)
 
 Three files are added to your project under the Migrations directory:
 
