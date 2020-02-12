@@ -217,7 +217,7 @@ export class HideIfUnauthorizedDirective implements OnInit {
 }
 ```
 
-### collection.module.ts ###
+### collection.module.ts
 Add the directive to the declarations section of the CollectionModule.
 
 ```javascript
@@ -230,7 +230,7 @@ Add the directive to the declarations section of the CollectionModule.
 
 ## Step 7 - Use the directive to hide the Add Book button
 
-### collection.component.html ###
+### collection.component.html
 Require that the user has ADMIN permision.
 
 ```html
@@ -246,7 +246,7 @@ Try changing the permission to [appHideIfUnauthorized]="'UPDATE'" and then the A
 ## Step 8 - Disable menu item if user does not have permission
 The implementation of this feature would depend on the menu component used in your particular application. The demo app uses a Material Design menu which has a disabled property for each menu item. So, we'll set that based on the user's permission.
 
-### tabs/inavlink.ts ###
+### tabs/inavlink.ts
 This interface is used by the tabs component to pass in the data needed to build the menu bar. Add another property so that the interface looks like this:
 ```javascript
 export interface INavlink {
@@ -256,7 +256,7 @@ export interface INavlink {
 }
 ```
 
-### tabs/tabs.component.ts ###
+### tabs/tabs.component.ts
 Require that the user has ADMIN permision to be able to click the "Surprise Me" menu item.
 
 ```javascript
@@ -272,7 +272,7 @@ export class TabsComponent {
     }
 ```
 
-### tabs/tabs.component.html ###
+### tabs/tabs.component.html
 ```html
   <a mat-tab-link *ngFor="let link of navLinks"
     [routerLink]="link.path"

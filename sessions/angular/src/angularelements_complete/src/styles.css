@@ -1,0 +1,51 @@
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+html {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body {
+  font-family: Roboto, sans-serif;
+  margin-top: 25px;
+  font-size: 15px;
+  line-height: 1.42857143;
+  color: #2c3e50;
+  background-color: #ffffff;
+}
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+.plr-15 {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.material-icons {
+  width: 24px;
+}
+
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+.full-width {
+  width: 100%;
+}
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 25px;
+  padding-right: 25px;
+}

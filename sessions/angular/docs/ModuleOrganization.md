@@ -106,7 +106,7 @@ export class CoreModule { }
 
 ## Step 3 - Now that we have a CoreModule, move all shared services and models from the AppModule into the CoreModule
 
-### Services ###
+### Services
 1. auth-guard.service.ts
 2. auth-interceptor.service.ts
 3. auth.service.ts
@@ -116,12 +116,12 @@ export class CoreModule { }
 7. logging.service.ts
 8. notification.service.ts
 
-### Models ###
+### Models
 1. authorization.types.ts
 2. logging.models.ts
 3. notification-message.models.ts
 
-### Move the providers from the AppModule to the CoreModule ###
+### Move the providers from the AppModule to the CoreModule
 Since we just moved these services into the CoreModule, it makes sense to also move the code that specifies to use them into the CoreModule as well. Also, we can go ahead and move the adal services into the CoreModule where the code is using these services.
 
 ```javascript
