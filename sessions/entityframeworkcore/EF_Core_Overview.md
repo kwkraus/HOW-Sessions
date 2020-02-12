@@ -152,9 +152,6 @@ For other development environments, choose the .NET Core CLI tools.
 
 ## Create a migration
 
-
-![FirstMigration](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/firstmigration.jpg)
-
 After you've defined your initial model, it's time to create the database. To add an initial migration, run the following command.
 
 ```powershell 
