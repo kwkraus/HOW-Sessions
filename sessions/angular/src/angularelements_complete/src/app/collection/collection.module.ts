@@ -1,8 +1,15 @@
 import { NgModule } from '@angular/core';
-import { MatListModule, MatTabsModule, MatSnackBarModule,
-  MatDialogModule, MatCardModule, MatIconModule,
-  MatSlideToggleModule, MatButtonModule, MatLineModule,
-  MatInputModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatLineModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CollectionRoutingModule } from './collection-routing.module';

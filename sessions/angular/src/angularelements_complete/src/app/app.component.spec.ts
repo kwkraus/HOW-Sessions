@@ -1,5 +1,7 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { MatTabsModule, MatToolbarModule, MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AppComponent } from './app.component';
