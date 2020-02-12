@@ -162,10 +162,15 @@ After you've defined your initial model, it's time to create the database. To ad
 
 Three files are added to your project under the Migrations directory:
 
-XXXXXXXXXXXXXX_InitialCreate.cs--The main migrations file. Contains the operations necessary to apply the migration (in Up()) and to revert it (in Down()).
-XXXXXXXXXXXXXX_InitialCreate.Designer.cs--The migrations metadata file. Contains information used by EF.
-MyContextModelSnapshot.cs--A snapshot of your current model. Used to determine what changed when adding the next migration.
+- XXXXXXXXXXXXXX_InitialCreate.cs The main migrations file. Contains the operations necessary to apply the migration (in Up()) and to revert it (in Down()).
+
+- XXXXXXXXXXXXXX_InitialCreate.Designer.cs The migrations metadata file. Contains information used by EF.
+MyContextModelSnapshot.cs A snapshot of your current model. Used to determine what changed when adding the next migration.
+
 The timestamp in the filename helps keep them ordered chronologically so you can see the progression of changes.
+
+## Database First Migration
+When using a database first appoarch there are important considerations for migrations.
 
 [Read this article by Christos Matskas](https://cmatskas.com/ef-core-migrations-with-existing-database-schema-and-data/) before Migrating with an existing database scheme and data.
 
