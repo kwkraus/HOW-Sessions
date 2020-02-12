@@ -125,21 +125,30 @@ Another commonly requested feature is the ability to update the model from the d
 1. Create the Application
 
 To keep things simple we’re going to build a basic console application that uses Code First to perform data access:
-Open Visual Studio
-File -> New -> Project…
-Select Windows from the left menu and Console Application
-Enter CodeFirstExistingDatabaseSample as the name
-Select OK
- 
+
+* Open Visual Studio
+
+* `File` -> `New` -> `Project…`
+
+* Select `Windows` from the left menu and `Console Application`
+
+* Enter `CodeFirstExistingDatabaseSample` as the name
+
+* Select `OK`
+
 2. Reverse Engineer Model
 
 We’re going to make use of the Entity Framework Tools for Visual Studio to help us generate some initial code to map to the database. These tools are just generating code that you could also type by hand if you prefer.
 
-- Project -> Add New Item…
-- Select `Data` from the left menu and then `ADO.NET Entity - Data Model`
-- Enter `BloggingContext` as the name and click `OK`
-- This launches the `Entity Data Model Wizard`
-- Select `Code First from Database` and click `Next`
+* `Project` -> `Add New Item`…
+
+* Select `Data` from the left menu and then `ADO.NET Entity - Data Model`
+
+* Enter `BloggingContext` as the name and click `OK`
+
+* This launches the `Entity Data Model Wizard`
+
+* Select `Code First from Database` and click `Next`
 
 ![StepOne](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/wizardonecfe.png)
 
@@ -147,22 +156,22 @@ Select the connection to the database you created in the first section and click
 
 ![StepOne](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/wizardtwocfe.png)
 
-Click the checkbox next to Tables to import all tables and click Finish
+Click the checkbox next to Tables to import all tables and click `Finish`
+
 ![StepOne](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/wizardthreecfe.png)
 
 Once the reverse engineer process completes a number of items will have been added to the project, let's take a look at what's been added.
 Configuration file
 
-An App.config file has been added to the project, this file contains the connection string to the existing database.
+An appsettings.json file has been added to the project, this file contains the connection string to the existing database.
 
-```XML
+```JSON
 
-<connectionStrings>
-  <add  
-    name="BloggingContext"  
-    connectionString="data source=(localdb)\mssqllocaldb;initial catalog=Blogging;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"  
-    providerName="System.Data.SqlClient" />
-</connectionStrings>
+{
+  "ConnectionStrings": {
+    "BloggingDatabase": "Server=(localdb)\\mssqllocaldb;Database=EFGetStarted.ConsoleApp.NewDb;Trusted_Connection=True;"
+  },
+}
 ```
 
 You’ll notice some other settings in the configuration file too, these are default EF settings that tell Code First where to create databases. Since we are mapping to an existing database these setting will be ignored in our application.
