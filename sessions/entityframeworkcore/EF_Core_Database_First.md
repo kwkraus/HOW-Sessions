@@ -14,14 +14,19 @@ How you quote and escape the connection string depends on which shell you are us
 
 PowerShell
 
-Copy
+```powershell
 Scaffold-DbContext 'Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Chinook' Microsoft.EntityFrameworkCore.SqlServer
+```
+
 .NET Core CLI
 
-Copy
+```cli
 dotnet ef dbcontext scaffold "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Chinook" Microsoft.EntityFrameworkCore.SqlServer
-Configuration and User Secrets
-If you have an ASP.NET Core project, you can use the Name=<connection-string> syntax to read the connection string from configuration.
+```
+
+## Configuration and User Secrets
+
+If you have an ASP.NET Core project, you can use the `Name=<connection-string>` syntax to read the connection string from configuration.
 
 This works well with the Secret Manager tool to keep your database password separate from your codebase.
 
@@ -30,33 +35,45 @@ dotnet user-secrets set ConnectionStrings.Chinook "Data Source=(localdb)\MSSQLLo
 dotnet ef dbcontext scaffold Name=Chinook Microsoft.EntityFrameworkCore.SqlServer
 ```
 
-Provider name
+## Provider name
+
 The second argument is the provider name. The provider name is typically the same as the provider's NuGet package name.
 
-Specifying tables
+## Specifying tables
+
 All tables in the database schema are reverse engineered into entity types by default. You can limit which tables are reverse engineered by specifying schemas and tables.
 
-The -Schemas parameter in PMC and the --schema option in the CLI can be used to include every table within a schema.
+The `-Schemas` parameter in PMC and the `--schema` option in the CLI can be used to include every table within a schema.
 
--Tables (PMC) and --table (CLI) can be used to include specific tables.
+`-Tables` (PMC) and `--table` (CLI) can be used to include specific tables.
 
 To include multiple tables in PMC, use an array.
+
+### Powershell
 
 ```powershell
     Scaffold-DbContext ... -Tables Artist, Album
 ```
+
 To include multiple tables in the CLI, specify the option multiple times.
 
-```powershell
+### .Net Core CLI
+
+```cli
     dotnet ef dbcontext scaffold ... --table Artist --table Album
 ```
+
 ## Preserving names
+
 Table and column names are fixed up to better match the .NET naming conventions for types and properties by default. Specifying the -UseDatabaseNames switch in PMC or the --use-database-names option in the CLI will disable this behavior preserving the original database names as much as possible. Invalid .NET identifiers will still be fixed and synthesized names like navigation properties will still conform to .NET naming conventions.
 
-Fluent API or Data Annotations
+## Fluent API or Data Annotations
+
 Entity types are configured using the Fluent API by default. Specify -DataAnnotations (PMC) or --data-annotations (CLI) to instead use data annotations when possible.
 
 For example, using the Fluent API will scaffold this:
+
+### C#
 
 ```C#
     entity.Property(e => e.Title)
@@ -66,6 +83,8 @@ For example, using the Fluent API will scaffold this:
 
 While using Data Annotations will scaffold this:
 
+### C#
+
 ```C#
     [Required]
     [StringLength(160)]
@@ -73,22 +92,29 @@ While using Data Annotations will scaffold this:
 ```
 
 ## DbContext name
-The scaffolded DbContext class name will be the name of the database suffixed with Context by default. To specify a different one, use -Context in PMC and --context in the CLI.
+
+The scaffolded DbContext class name will be the name of the database suffixed with Context by default. To specify a different one, use `-Context` in PMC and `--context` in the CLI.
 
 ## Directories and namespaces
-The entity classes and a DbContext class are scaffolded into the project's root directory and use the project's default namespace. You can specify the directory where classes are scaffolded using -OutputDir (PMC) or --output-dir (CLI). The namespace will be the root namespace plus the names of any subdirectories under the project's root directory.
 
-You can also use -ContextDir (PMC) and --context-dir (CLI) to scaffold the DbContext class into a separate directory from the entity type classes.
+The entity classes and a DbContext class are scaffolded into the project's root directory and use the project's default namespace. You can specify the directory where classes are scaffolded using `-OutputDir` (PMC) or `--output-dir` (CLI). The namespace will be the root namespace plus the names of any subdirectories under the project's root directory.
+
+You can also use `-ContextDir` (PMC) and `--context-dir` (CLI) to scaffold the DbContext class into a separate directory from the entity type classes.
+
+### Powershell 
 
 ```powershell
-    Scaffold-DbContext ... -ContextDir Data -OutputDir Models
+Scaffold-DbContext ... -ContextDir Data -OutputDir Models
 ```
 
+### .Net Core CLI
+
 ```powershell
-    dotnet ef dbcontext scaffold ... --context-dir Data --output-dir Models
+dotnet ef dbcontext scaffold ... --context-dir Data --output-dir Models
 ```
 
 ## How it works
+
 Reverse engineering starts by reading the database schema. It reads information about tables, columns, constraints, and indexes.
 
 Next, it uses the schema information to create an EF Core model. Tables are used to create entity types; columns are used to create properties; and foreign keys are used to create relationships.
@@ -97,10 +123,12 @@ Finally, the model is used to generate code. The corresponding entity type class
 
 ## Limitations
 
-* Not everything about a model can be represented using a database  schema. For example, information about inheritance hierarchies,  owned types, and table splitting are not present in the database  schema. Because of this, these constructs will never be reverse  engineered.
-* In addition, some column types may not be supported by the EF Core provider. These columns won't be included in the model.
-You can define concurrency tokens, in an EF Core model to prevent two users from updating the same entity at the same time. Some  databases have a special type to represent this type of column (for example, rowversion in SQL Server) in which case we can reverse engineer this information; however, other concurrency tokens will  not be reverse engineered.
-* The C# 8 nullable reference type feature is currently unsupported in reverse engineering: EF Core always generates C# code that assumes the feature is disabled. For example, nullable text columns will be scaffolded as a property with type string , not string?, with either the Fluent API or Data Annotations used to configure whether a property is required or not. You can edit the scaffolded code and replace these with C# nullability annotations. Scaffolding support for nullable reference types is tracked by issue #15520.
+* Not everything about a model can be represented using a database  schema. For example, information about **[inheritance hierarchies](https://docs.microsoft.com/en-us/ef/core/modeling/inheritance),  [owned types](https://docs.microsoft.com/en-us/ef/core/modeling/owned-entities)**, and [**table splitting**](https://docs.microsoft.com/en-us/ef/core/modeling/table-splitting) are not present in the database  schema. Because of this, these constructs will never be reverse  engineered.
+
+* In addition, **some column types** may not be supported by the EF Core provider. These columns won't be included in the model.
+You can define [**concurrency tokens**](https://docs.microsoft.com/en-us/ef/core/modeling/concurrency?tabs=data-annotations), in an EF Core model to prevent two users from updating the same entity at the same time. Some  databases have a special type to represent this type of column (for example, rowversion in SQL Server) in which case we can reverse engineer this information; however, other concurrency tokens will  not be reverse engineered.
+
+* **The C# 8 nullable reference type feature** is currently unsupported in reverse engineering: EF Core always generates C# code that assumes the feature is disabled. For example, nullable text columns will be scaffolded as a property with type string , not string?, with either the Fluent API or Data Annotations used to configure whether a property is required or not. You can edit the scaffolded code and replace these with C# nullability annotations. Scaffolding support for nullable reference types is tracked by issue [#15520](https://github.com/dotnet/efcore/issues/15520).
 
 ## Customizing the model
 
@@ -111,14 +139,49 @@ Customize the entity type classes and DbContext class to fit your needs. For exa
 You can also add additional constructors, methods, properties, etc. using another partial class in a separate file. This approach works even when you intend to reverse engineer the model again.
 
 ## Updating the model
+
 After making changes to the database, you may need to update your EF Core model to reflect those changes. If the database changes are simple, it may be easiest just to manually make the changes to your EF Core model. For example, renaming a table or column, removing a column, or updating a column's type are trivial changes to make in code.
 
-More significant changes, however, are not as easy make manually. One common workflow is to reverse engineer the model from the database again using -Force (PMC) or --force (CLI) to overwrite the existing model with an updated one.
+More significant changes, however, are not as easy make manually. One common workflow is to reverse engineer the model from the database again using `-Force` (PMC) or `--force` (CLI) to overwrite the existing model with an updated one.
 
-Another commonly requested feature is the ability to update the model from the database while preserving customization like renames, type hierarchies, etc. Use issue #831 to track the progress of this feature.
+Another commonly requested feature is the ability to update the model from the database while preserving customization like renames, type hierarchies, etc. Use issue [#831](https://github.com/dotnet/efcore/issues/831) to track the progress of this feature.
 
 >Warning
 >If you reverse engineer the model from the database again, any changes you've made to the files will be lost.
+
+## Create DataBase 
+
+1. Create an Existing Database
+Typically when you are targeting an existing database it will already be created, but for this walkthrough we need to create a database to access.
+
+* Let's go ahead and generate the database.
+
+* Open Visual Studio
+
+* View -> Server Explorer
+
+* Right click on Data Connections -> Add Connection…
+
+* If you haven’t connected to a database from Server Explorer before you’ll need to select Microsoft SQL Server as the data source
+
+![Select Data Source](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/selectdatasource.png)
+
+Connect to your LocalDB instance, and enter Blogging as the database name
+
+![LocalDB Connection](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/localdbconnection.png)
+
+Select **OK** and you will be asked if you want to create a new database, select Yes
+
+![Create Database Dialog](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/createdatabasedialog.png)
+
+* The new database will now appear in Server Explorer, right-click on it and select **New Query**
+
+* Copy the following SQL into the new query, then right-click on the query and select **Execute**
+
+
+[SQL Click here open file copy and paste](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/Scripts/instnwnd.sql)
+
+
 
 ## Create New Reverse Engineering Database EF Core Applicaton
 
