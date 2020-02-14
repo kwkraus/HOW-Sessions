@@ -146,7 +146,7 @@ To require the user to authenticate for all collection components, add the CanAc
     canActivate: [AuthGuardService],
 ```
 
-## Step 5 - Register the ADAL services in the module
+## Step 8 - Register the ADAL services in the module
 
 ### app.module.ts
 ```javascript
@@ -156,7 +156,7 @@ To require the user to authenticate for all collection components, add the CanAc
 
 Run the application and it should redirect to login when the user navigates to the collection route.
 
-## Step 6 - Add a login/logout button
+## Step 9 - Add a login/logout button
 
 ### app.component.ts
 ```javascript
@@ -189,7 +189,7 @@ Run the application and it should redirect to login when the user navigates to t
     <img src="assets/img/books-icon.png" class="center-block" style="max-height:100px" />
   </mat-toolbar>
 ```
-## Step 7 - Add Http Interceptor
+## Step 10 - Add Http Interceptor
 In order to send the token to the API for authentication on the backend, we should use an http interceptor.
 
 Normally, we could use the AdalInterceptor provided in the adal-angular4 library, but this fails when the request is made to download our config JSON file. To solve this, create a child class that inherits from AdalInterceptor.
@@ -227,7 +227,7 @@ providers: [
 
 When a request is made to the book service, you can look at the Network tab in the dev tools in the browser and see that the request header includes the Bearer token.
 
-## Step 8 - ASP.NET API
+## Step 11 - ASP.NET API
 Instead of calling https://bookservicelaurie.azurewebsites.net, download the ASP.NET solution in bookservice_api folder and run locally. The [Authorize] attribute on the controller forces the user to be logged in to have access to the actions.
 
 Set a breakpoint inside one of the GET methods and look at the debugger to see this.User.
