@@ -6,13 +6,18 @@
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#1976d2">
 </head>
 <body>
-  <app-root></app-root>
+  <image-search id="imageSearch" searchstring='pandas' subscriptionkey="5b53d2dde8fc42a3a66bae7a4291da6d"></image-search>
+  <h4>Selected image</h4>
+  <img id="imageResult" width="400px" />
+  <script>
+    const element = document.getElementById('imageSearch');
+    element.addEventListener('imageUrlSelected', e => {
+      if (e) {
+        document.getElementById('imageResult').setAttribute('src', e.detail);
+      }
+    });
+  </script>
 </body>
 </html>

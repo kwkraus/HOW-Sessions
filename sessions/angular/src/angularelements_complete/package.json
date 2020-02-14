@@ -1,5 +1,5 @@
 {
-  "name": "angular-workshop",
+  "name": "image-search",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -8,11 +8,7 @@
     "build": "ng build",
     "test": "ng test --browsers=Chrome",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "build-image": "docker build -t angularworkshop:prod .",
-    "build-image-dev": "docker build -t angularworkshop:dev --build-arg configuration=development .",
-    "run-image": "docker run -p 3000:80 angularworkshop:prod",
-    "run-image-dev": "docker run -p 3000:80 angularworkshop:dev"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -22,14 +18,14 @@
     "@angular/common": "~9.0.0",
     "@angular/compiler": "~9.0.0",
     "@angular/core": "~9.0.0",
+    "@angular/elements": "^9.0.0",
     "@angular/forms": "~9.0.0",
     "@angular/material": "~9.0.0",
     "@angular/platform-browser": "~9.0.0",
     "@angular/platform-browser-dynamic": "~9.0.0",
     "@angular/router": "~9.0.0",
-    "@angular/service-worker": "~9.0.0",
-    "@microsoft/applicationinsights-web": "~2.4.4",
-    "adal-angular4": "~4.0.12",
+    "@webcomponents/custom-elements": "~1.3.2",
+    "ngx-build-plus": "^9.0.6",
     "rxjs": "^6.5.3",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
@@ -42,7 +38,6 @@
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
-    "@types/adal-angular": "~1.0.1",
     "codelyzer": "^5.1.2",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
