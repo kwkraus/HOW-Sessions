@@ -7,8 +7,7 @@ You can follow the tutorial by using Visual Studio on Windows.
 
 [View this article's sample on GitHub.](https://github.com/aspnet/EntityFramework.Docs/tree/master/samples/core/GetStarted)
 
-
-## Install the following software:
+## Install the following software
 
 Visual Studio 2019 version 16.3 or later with this workload:
 .NET Core cross-platform development (under Other Toolsets)
@@ -20,24 +19,39 @@ Click Create a new project
 Select Console App (.NET Core) with the C# tag and click Next
 Enter EFCoreCodeFirst for the name and click Create
 
-
 ## Create the model
 
 Define a context class and entity classes that make up the model.
 
+1. Add using statements to the top of the Program.cs
+
 ```C#
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+```
 
-namespace EFCoreCodeFirst
-{
+2. Add the below code to Program.cs just below the class Program.  As shown below:
+
+
+```C#
+
+    class Program
+       {
+           static void Main(string[] args)
+           {
+               //this will be replaced
+               Console.WriteLine("Hello World!");
+           }
+       }
+
+    //Add Code below to Program file  
     public class BloggingContext : DbContext
     {
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite("Data Source=blogging.db");
+            => options.UseSqlServer("Data Source=.;Initial Catalog=Blogging;Integrated Security=True");
     }
 
     public class Blog
@@ -57,7 +71,7 @@ namespace EFCoreCodeFirst
         public int BlogId { get; set; }
         public Blog Blog { get; set; }
     }
-}
+
 
 ```
 
@@ -66,17 +80,28 @@ namespace EFCoreCodeFirst
 > Tip: In a real app, you put each class in a separate file and put the connection string in a configuration file or environment variable. To keep the tutorial simple, everything is contained in one file.
 
 ## Create the database
+
 The following steps use migrations to create a database.
+
+Double click on project to open `<projectname>.csproj`
+observer the project file to see what pacakages are currently installed.
 
 Run the following commands in Package Manager Console
 
-```Console
+```powershell
 Install-Package Microsoft.EntityFrameworkCore.Tools
+Install-Package Microsoft.EntityFrameworkCore.SqlServer
+```
+>Notice the packages in the .csproj file being added
+
+Now we will add our first migration by running the `Add-Migration` command.
+```powershell
 Add-Migration InitialCreate
 Update-Database
 ```
 
 ## Create, read, update & delete
+
 Open Program.cs and replace the contents with the following code:
 
 ```C#

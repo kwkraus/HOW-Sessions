@@ -5,6 +5,150 @@ Reverse engineering is the process of scaffolding entity type classes and a DbCo
 Installing
 Before reverse engineering, you'll need to install either the [PMC tools](https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/powershell) (Visual Studio only) or the [CLI tools](https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dotnet). See links for details.
 
+1. Create the Application
+
+To keep things simple we’re going to build a basic console application that uses Code First to perform data access:
+
+* Open Visual Studio
+
+* `Create a new project` -> `Console App(.Net Core)` -> `Next` 
+
+* Configure your new project  -> Project Name `ExistingDatabaseSample`
+
+* Select `Create`
+
+2. Install Nuget packages:
+
+* Right `click` on project select `Manage Nuget Packages...` 
+* Click `Browse` and past in the below in search and install each nuget package.
+
+* Microsoft.EntityFrameworkCore.SqlServer
+* Microsoft.EntityFrameworkCore.Tools
+* Microsoft.VisualStudio.Web.CodeGeneration.Design
+
+
+You'll also need to install an appropriate [database provider](https://docs.microsoft.com/en-us/ef/core/providers/index?tabs=dotnet-core-cli) for the database schema you want to reverse engineer.
+
+In our case the is Microsoft.EntityFrameworkCore.SqlServer.
+
+## Connection string
+
+The first argument to the command is a connection string to the database. The tools will use this connection string to read the database schema.
+
+How you quote and escape the connection string depends on which shell you are using to execute the command. Refer to your shell's documentation for specifics. For example, PowerShell requires you to escape the $ character, but not \.
+
+PowerShell
+
+```powershell
+Scaffold-DbContext 'Scaffold-DbContext 'Data Source=.;Initial Catalog=Blogging;Integrated Security=True' Microsoft.EntityFrameworkCore.SqlServer' Microsoft.EntityFrameworkCore.SqlServer
+```
+
+.NET Core CLI
+
+```cli
+dotnet ef dbcontext scaffold "Scaffold-DbContext 'Data Source=.;Initial Catalog=Blogging;Integrated Security=True' Microsoft.EntityFrameworkCore.SqlServer" Microsoft.EntityFrameworkCore.SqlServer
+```
+
+
+## Derived Context
+
+A BloggingContext class has been added to the project. The context represents a session with the database, allowing us to query and save data. The context exposes a DbSet<TEntity> for each type in our model. You’ll also notice that the default constructor calls a base constructor using the name= syntax. This tells Code First that the connection string to use for this context should be loaded from the configuration file.
+
+```C#
+
+
+public partial class BloggingContext : DbContext
+    {
+        public BloggingContext()
+            : base("name=BloggingContext")
+        {
+        }
+
+        public virtual DbSet<Blog> Blogs { get; set; }
+        public virtual DbSet<Post> Posts { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+        }
+```
+
+You should always use the name= syntax when you are using a connection string in the config file. This ensures that if the connection string is not present then Entity Framework will throw rather than creating a new database by convention.
+Model classes
+
+Finally, a Blog and Post class have also been added to the project. These are the domain classes that make up our model. You'll see Data Annotations applied to the classes to specify configuration where the Code First conventions would not align with the structure of the existing database. For example, you'll see the StringLength annotation on Blog.Name and Blog.Url since they have a maximum length of 200 in the database (the Code First default is to use the maximun length supported by the database provider - nvarchar(max) in SQL Server).
+
+```C#
+public partial class Blog
+{
+    public Blog()
+    {
+        Posts = new HashSet<Post>();
+    }
+
+    public int BlogId { get; set; }
+
+    [StringLength(200)]
+    public string Name { get; set; }
+
+    [StringLength(200)]
+    public string Url { get; set; }
+
+    public virtual ICollection<Post> Posts { get; set; }
+}
+
+```
+
+4. Reading & Writing Data
+
+Now that we have a model it’s time to use it to access some data. Implement the Main method in Program.cs as shown below. This code creates a new instance of our context and then uses it to insert a new Blog. Then it uses a LINQ query to retrieve all Blogs from the database ordered alphabetically by Title.
+```C#
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        using (var db = new BloggingContext())
+        {
+            // Create and save a new Blog
+            Console.Write("Enter a name for a new Blog: ");
+            var name = Console.ReadLine();
+
+            var blog = new Blog { Name = name };
+            db.Blogs.Add(blog);
+            db.SaveChanges();
+
+            // Display all Blogs from the database
+            var query = from b in db.Blogs
+                        orderby b.Name
+                        select b;
+
+            Console.WriteLine("All blogs in the database:");
+            foreach (var item in query)
+            {
+                Console.WriteLine(item.Name);
+            }
+
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadKey();
+        }
+    }
+}
+```
+
+You can now run the application and test it out.
+
+```console
+Enter a name for a new Blog: ADO.NET Blog
+All blogs in the database:
+.NET Framework Blog
+ADO.NET Blog
+The Visual Studio Blog
+Press any key to exit...
+```
+
+## Taking a Closer look
+
+
 You'll also need to install an appropriate [database provider](https://docs.microsoft.com/en-us/ef/core/providers/index?tabs=dotnet-core-cli) for the database schema you want to reverse engineer.
 
 Connection string
@@ -183,7 +327,7 @@ Select **OK** and you will be asked if you want to create a new database, select
 
 
 
-## Create New Reverse Engineering Database EF Core Applicaton
+## Create New Reverse Engineering Database EF 6 Applicaton
 
 1. Create the Application
 
