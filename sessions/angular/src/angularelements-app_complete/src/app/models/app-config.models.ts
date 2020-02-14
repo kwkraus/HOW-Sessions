@@ -17,9 +17,4 @@ export interface IAppConfig {
         clientId: string;
         endpoints: { [key: string]: string };
     };
-    cognitiveApiService: {
-        subscriptionKeys: {
-            bingSearch: string;
-        };
-    };
 }

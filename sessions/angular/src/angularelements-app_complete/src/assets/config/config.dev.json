@@ -17,10 +17,5 @@
         "endpoints": {
             "api": "5fb2a243-96aa-4583-abb7-a8a7e252cd1a"
         }
-    },
-    "cognitiveApiService": {
-        "subscriptionKeys": {
-            "bingSearch": "5b53d2dde8fc42a3a66bae7a4291da6d"
-        }
     }
 }
