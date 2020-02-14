@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>AngularWorkshop</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <image-search id="imageSearch" searchstring='pandas' subscriptionkey="5b53d2dde8fc42a3a66bae7a4291da6d"></image-search>
+  <h4>Selected image</h4>
+  <img id="imageResult" width="400px" />
+  <script>
+    const element = document.getElementById('imageSearch');
+    element.addEventListener('imageUrlSelected', e => {
+      if (e) {
+        document.getElementById('imageResult').setAttribute('src', e.detail);
+      }
+    });
+  </script>
+</body>
+</html>
