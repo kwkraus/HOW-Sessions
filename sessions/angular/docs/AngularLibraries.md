@@ -214,6 +214,7 @@ https://stackoverflow.com/questions/53833985/no-provider-for-viewcontainerref-wh
 ```
 
 Another fix I needed to make was in angular.json.
+Error: "Two or more projects are using identical roots. Unable to determine project using current working directory. Using default workspace project instead."
 ```json
     "angular-workshop-e2e": {
       "root": "e2e",
@@ -305,3 +306,6 @@ npm install ../angularlibraries_complete/dist/my-about-component/my-about-compon
 npm install ../angularlibraries_complete/my-common-services/dist/my-common-services-0.0.1.tgz
 ```
 With the tgz files, we can remove the ```"preserveSymlinks": true,``` from angular.json file.
+
+## Library Best Practices
+https://angular.io/guide/creating-libraries#refactoring-parts-of-an-app-into-a-library
