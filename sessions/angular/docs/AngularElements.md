@@ -315,7 +315,7 @@ Remove the <app-root> since we are not loading the app component.
 </body>
 ```
 
-This will fail because the tsconfig file is sett to target E@5 which does bit include web components. We could modify the target in the tsconfig.json to be ES2015 or we can add polyfills so we can target older browsers.
+This will fail because the tsconfig file is sett to target ES5 which does bit include web components. We could modify the target in the tsconfig.json to be ES2015 or we can add polyfills so we can target older browsers.
 
 ## Add polyfills
 https://www.webcomponents.org/polyfills
@@ -324,7 +324,7 @@ https://www.webcomponents.org/polyfills
 ```
     "@webcomponents/custom-elements": "~1.3.2"
 ```
-### tsconfig.json
+### polyfills.ts
 ```javascript
 
 // NOTE: one copy is zone.js is required.
@@ -368,6 +368,7 @@ Open IIS and add a web app that points to the dist folder.
 
 ## Use this web component within the previous application to get book covers - angularelements-app_complete
 
+## Option 1 - copy the generated files
 ### assets
 Copy the generated JS files from the dist folder.
 Include the main.#.js plus polyfills.#.js and polyfills-es5.#.js
@@ -381,6 +382,22 @@ Make sure the polyfills JS files come before main.js
         "src/assets/main.fbe290b5856eaa26f6e4.js"
     ]
 ```
+
+## Option 2 - npm
+```
+npm link ../angularelements_complete
+```
+
+### angular.json
+Make sure the polyfills JS files come before main.js
+```json
+    "scripts": [
+        "./node_modules/image-search/dist/polyfills.c78f934af02c23a04d15.js",
+        "./node_modules/image-search/dist/polyfills-es5.8b0c7cc98c3f7ae85ca2.js",
+        "./node_modules/image-search/dist/main.fbe290b5856eaa26f6e4.js"
+    ]
+```
+
 ### book.models.ts
 Add another property for the url to book cover
 ```javascript

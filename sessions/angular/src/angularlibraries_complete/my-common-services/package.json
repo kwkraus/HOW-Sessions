@@ -1,0 +1,14 @@
+{
+    "name": "my-common-services",
+    "version": "0.0.1",
+    "peerDependencies": {
+        "@angular/core": ">=8.0.0",
+        "@angular/common": ">=8.0.0"
+    },
+    "ngPackage": {
+        "lib": {
+            "entryFile": "public_api.ts"
+        }
+    },
+    "dest": "dist"
+}
