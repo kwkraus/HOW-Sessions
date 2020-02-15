@@ -19,6 +19,7 @@ import { environment } from '../environments/environment';
 import { NewsLetterComponent } from './newsletter/newsletter.component';
 import { AppConfig } from './app.config';
 import { CoreModule } from './core/core.module';
+import { MyAboutComponentModule } from 'my-about-component';
 
 export function initializeApp(appConfig: AppConfig) {
   const promise = appConfig.load().then(() => {
@@ -63,6 +64,7 @@ export function initializeApp(appConfig: AppConfig) {
     MatToolbarModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    MyAboutComponentModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

@@ -11,6 +11,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -24,11 +25,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [
-              "./node_modules/image-search/dist/polyfills.c78f934af02c23a04d15.js",
-              "./node_modules/image-search/dist/polyfills-es5.8b0c7cc98c3f7ae85ca2.js",
-              "./node_modules/image-search/dist/main.fbe290b5856eaa26f6e4.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -101,7 +98,7 @@
       }
     },
     "angular-workshop-e2e": {
-      "root": "",
+      "root": "e2e",
       "sourceRoot": "",
       "projectType": "application",
       "architect": {
@@ -117,6 +114,46 @@
           "options": {
             "tsConfig": [
               "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "my-about-component": {
+      "projectType": "library",
+      "root": "projects/my-about-component",
+      "sourceRoot": "projects/my-about-component/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/my-about-component/tsconfig.lib.json",
+            "project": "projects/my-about-component/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/my-about-component/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/my-about-component/src/test.ts",
+            "tsConfig": "projects/my-about-component/tsconfig.spec.json",
+            "karmaConfig": "projects/my-about-component/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/my-about-component/tsconfig.lib.json",
+              "projects/my-about-component/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

@@ -3,7 +3,7 @@ import { UpdateService } from './services/update.service';
 import { MatSnackBar } from '@angular/material';
 import { AdalService } from 'adal-angular4';
 
-import { NotificationService } from './core/services/notification.service';
+import { NotificationService } from 'my-common-services';
 import { AppConfig } from './app.config';
 import { AuthService } from './core/services/auth.service';
 

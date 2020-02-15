@@ -15,6 +15,13 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "my-about-component": [
+        "dist/my-about-component/my-about-component",
+        "dist/my-about-component"
+      ]
+    }
   }
 }

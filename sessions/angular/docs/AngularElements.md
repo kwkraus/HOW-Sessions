@@ -315,7 +315,7 @@ Remove the <app-root> since we are not loading the app component.
 </body>
 ```
 
-This will fail because the tsconfig file is sett to target E@5 which does bit include web components. We could modify the target in the tsconfig.json to be ES2015 or we can add polyfills so we can target older browsers.
+This will fail because the tsconfig file is sett to target ES5 which does bit include web components. We could modify the target in the tsconfig.json to be ES2015 or we can add polyfills so we can target older browsers.
 
 ## Add polyfills
 https://www.webcomponents.org/polyfills
@@ -324,7 +324,7 @@ https://www.webcomponents.org/polyfills
 ```
     "@webcomponents/custom-elements": "~1.3.2"
 ```
-### tsconfig.json
+### polyfills.ts
 ```javascript
 
 // NOTE: one copy is zone.js is required.

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
-import { NotificationService } from './notification.service';
+import { NotificationService } from 'my-common-services';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
-
 
 @Injectable( { providedIn: 'root' })
 export class ErrorNotificationInterceptor implements HttpInterceptor {

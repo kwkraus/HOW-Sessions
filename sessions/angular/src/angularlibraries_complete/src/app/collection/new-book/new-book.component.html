@@ -18,10 +18,6 @@
       <my-rating [rating]="book.rating" (ratingClicked)="onRatingUpdate($event)">
       </my-rating>
       <mat-slide-toggle color="primary" [(ngModel)]="book.isCheckedOut" name="checkedOut">Checked out?</mat-slide-toggle>
-      <image-search searchstring="{{book.title}}"
-        subscriptionkey="5b53d2dde8fc42a3a66bae7a4291da6d"
-        (imageUrlSelected)="book.coverUrl = $event.detail">
-      </image-search>
       <img [src]="book.coverUrl" style="max-width: 150px" />
     </mat-card-content>
     <mat-card-actions>

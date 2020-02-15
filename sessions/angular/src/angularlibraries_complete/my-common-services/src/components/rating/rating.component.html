@@ -1,0 +1,6 @@
+<div>
+  <a *ngFor="let item of [1, 2, 3, 4, 5]" (click)="click(item)">
+    <i class="material-icons {{rating >= item ? 'active' : ''}}">star_rate</i>
+  </a>
+</div>
+

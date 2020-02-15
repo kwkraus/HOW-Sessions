@@ -8,12 +8,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { CollectionRoutingModule } from './collection-routing.module';
 import { CollectionComponent } from './book-collection/collection.component';
 import { RatingCategoryPipe } from '../pipes/rating-category.pipe';
-import { RatingComponent } from '../rating/rating.component';
+
 import { NewBookComponent } from './new-book/new-book.component';
 import { BookDetailComponent } from './book-detail/book-detail.component';
 import { BookGuardService } from '../guards/book-guard.service';
 import { CollectionResolver } from './collection.resolver';
 import { SharedModule } from '../shared/shared.module';
+import { MyCommonServicesModule } from 'my-common-services';
 
 @NgModule({
   imports: [
@@ -31,14 +32,14 @@ import { SharedModule } from '../shared/shared.module';
     MatButtonModule,
     MatLineModule,
     MatInputModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MyCommonServicesModule
   ],
   entryComponents: [
       NewBookComponent
   ],
   declarations: [
     CollectionComponent,
-    RatingComponent,
     BookDetailComponent,
     NewBookComponent,
     RatingCategoryPipe
