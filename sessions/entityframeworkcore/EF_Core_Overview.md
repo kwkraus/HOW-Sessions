@@ -98,7 +98,383 @@ AuditEntry because it is specified in OnModelCreating.
     }
 ```
 
-## Querying
+# Entity Properties
+
+Each entity type in your model has a set of properties, which EF Core will read and write from the database. If you're using a relational database, entity properties map to table columns.
+
+## Included and excluded properties
+
+By convention, all public properties with a getter and a setter will be included in the model.
+
+Specific properties can be excluded as follows:
+
+### Data Annotations:
+
+```C#
+public class Blog
+{
+    public int BlogId { get; set; }
+    public string Url { get; set; }
+
+    [NotMapped]
+    public DateTime LoadedFromDatabase { get; set; }
+}
+
+```
+
+### Fluent API:
+
+```C#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Blog>()
+        .Ignore(b => b.LoadedFromDatabase);
+}
+
+```
+
+## Column names
+
+By convention, when using a relational database, entity properties are mapped to table columns having the same name as the property.
+
+If you prefer to configure your columns with different names, you can do so as following:
+
+
+### Data Annotations:
+
+```C#
+public class Blog
+{
+    [Column("blog_id")]
+    public int BlogId { get; set; }
+    public string Url { get; set; }
+}
+
+```
+
+
+### Fluent API:
+
+```C#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Blog>()
+        .Property(b => b.BlogId)
+        .HasColumnName("blog_id");
+}
+
+```
+
+
+## Column data types
+
+When using a relational database, the database provider selects a data type based on the .NET type of the property. It also takes into account other metadata, such as the configured [maximum length](https://docs.microsoft.com/en-us/ef/core/modeling/entity-properties?tabs=fluent-api%2Cwithout-nrt#maximum-length), whether the property is part of a primary key, etc.
+
+For example, SQL Server maps DateTime properties to datetime2(7) columns, and string properties to nvarchar(max) columns (or to nvarchar(450) for properties that are used as a key).
+
+You can also configure your columns to specify an exact data type for a column. For example the following code configures Url as a non-unicode string with maximum length of 200 and Rating as decimal with precision of 5 and scale of 2:
+
+### Data Annotations:
+
+```C#
+public class Blog
+{
+    public int BlogId { get; set; }
+    [Column(TypeName = "varchar(200)")]
+    public string Url { get; set; }
+    [Column(TypeName = "decimal(5, 2)")]
+    public decimal Rating { get; set; }
+}
+
+```
+
+
+### Fluent API:
+
+```C#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Blog>(eb =>
+    {
+        eb.Property(b => b.Url).HasColumnType("varchar(200)");
+        eb.Property(b => b.Rating).HasColumnType("decimal(5, 2)");
+    });
+}
+
+```
+
+## Maximum length
+
+Configuring a maximum length provides a hint to the database provider about the appropriate column data type to choose for a given property. Maximum length only applies to array data types, such as string and byte[].
+
+ >**Note**   
+>Entity Framework does not do any validation of maximum length before passing data to the provider. It is up to the provider or data store to validate if appropriate. For example, when targeting SQL Server, exceeding the maximum length will result in an exception as the data type of the underlying column will not allow excess data to be stored.
+
+In the following example, configuring a maximum length of 500 will cause a column of type nvarchar(500) to be created on SQL Server:
+
+### Data Annotations:
+
+```C#
+public class Blog
+{
+    public int BlogId { get; set; }
+    [MaxLength(500)]
+    public string Url { get; set; }
+}
+
+```
+
+### Fluent API:
+
+```C#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Blog>()
+        .Property(b => b.Url)
+        .HasMaxLength(500);
+}
+```
+
+## Required and optional properties
+
+A property is considered optional if it is valid for it to contain `null`. If `null` is not a valid value to be assigned to a property then it is considered to be a required property. When mapping to a relational database schema, required properties are created as non-nullable columns, and optional properties are created as nullable columns.
+
+Conventions
+By convention, a property whose .NET type can contain null will be configured as optional, whereas properties whose .NET type cannot contain null will be configured as required. For example, all properties with .NET value types (`int`, `decimal`, `bool`, etc.) are configured as required, and all properties with nullable .NET value types (`int?`, `decimal?`, `bool?`, etc.) are configured as optional.
+
+C# 8 introduced a new feature called [nullable reference types](https://docs.microsoft.com/en-us/dotnet/csharp/tutorials/nullable-reference-types), which allows reference types to be annotated, indicating whether it is valid for them to contain null or not. This feature is disabled by default, and if enabled, it modifies EF Core's behavior in the following way:
+
+If nullable reference types are disabled (the default), all properties with .NET reference types are configured as optional by convention (e.g. `string`).
+If nullable reference types are enabled, properties will be configured based on the C# nullability of their .NET type: `string?` will be configured as optional, whereas string will be configured as required.
+The following example shows an entity type with required and optional properties, with the nullable reference feature disabled (the default) and enabled:
+
+### Without nullable reference types (default)
+
+```C#
+public class CustomerWithoutNullableReferenceTypes
+{
+    public int Id { get; set; }
+    [Required]                               // Data annotations needed to configure as required
+    public string FirstName { get; set; }    
+    [Required]
+    public string LastName { get; set; }     // Data annotations needed to configure as required
+    public string MiddleName { get; set; }   // Optional by convention
+}
+
+```
+
+### With nullable reference types
+
+```C#
+public class Customer
+{
+    public int Id { get; set; }
+    public string FirstName { get; set; }    // Required by convention
+    public string LastName { get; set; }     // Required by convention
+    public string? MiddleName { get; set; }  // Optional by convention
+
+    public Customer(string firstName, string lastName, string? middleName = null)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        MiddleName = middleName;
+    }
+}
+```
+
+Using nullable reference types is recommended since it flows the nullability expressed in C# code to EF Core's model and to the database, and obviates the use of the Fluent API or Data Annotations to express the same concept twice.
+
+ >**Note**   
+>Exercise caution when enabling nullable reference types on an existing project: reference type properties which were previously configured as optional will now be configured as required, unless they are explicitly annotated to be nullable. When managing a relational database schema, this may cause migrations to be generated which alter the database column's nullability.
+
+For more information on nullable reference types and how to use them with EF Core, see the [dedicated documentation page for this feature](https://docs.microsoft.com/en-us/ef/core/miscellaneous/nullable-reference-types).
+
+## Explicit configuration
+A property that would be optional by convention can be configured to be required as follows:
+
+### Data Annotations:
+
+```C#
+public class Blog
+{
+    public int BlogId { get; set; }
+    [Required]
+    public string Url { get; set; }
+}
+
+```
+
+### Fluent API:
+
+```C#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Blog>()
+        .Property(b => b.Url)
+        .IsRequired();
+}
+```
+
+Keys
+
+A key serves as a unique identifier for each entity instance. Most entities in EF have a single key, which maps to the concept of a primary key in relational databases (for entities without keys, see Keyless entities). Entities can have additional keys beyond the primary key (see Alternate Keys for more information).
+
+By convention, a property named Id or <type name>Id will be configured as the primary key of an entity.
+
+### C#:
+
+```C#
+class Car
+{
+    public string Id { get; set; }
+
+    public string Make { get; set; }
+    public string Model { get; set; }
+}
+
+class Truck
+{
+    public string TruckId { get; set; }
+
+    public string Make { get; set; }
+    public string Model { get; set; }
+}
+
+```
+
+>**Note**           
+>Owned entity types use different rules to define keys.
+
+You can configure a single property to be the primary key of an entity as follows:
+
+### Data Annotations:
+
+```C#
+class Car
+{
+    [Key]
+    public string LicensePlate { get; set; }
+
+    public string Make { get; set; }
+    public string Model { get; set; }
+}
+
+```
+
+### Fluent API:
+
+```C#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Car>()
+        .HasKey(c => c.LicensePlate);
+}
+```
+
+You can also configure multiple properties to be the key of an entity - this is known as a composite key. Composite keys can only be configured using the Fluent API; conventions will never setup a composite key, and you can not use Data Annotations to configure one.
+
+
+### C#:
+
+```C#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Car>()
+        .HasKey(c => new { c.State, c.LicensePlate });
+}
+```
+
+## Key types and values
+
+While EF Core supports using properties of any primitive type as the primary key, including `string`, `Guid`, `byte[]` and others, not all databases support all types as keys. In some cases the key values can be converted to a supported type automatically, otherwise the conversion should be specified manually.
+
+Key properties must always have a non-default value when adding a new entity to the context, but some types will be generated by the database. In that case EF will try to generate a temporary value when the entity is added for tracking purposes. After SaveChanges is called the temporary value will be replaced by the value generated by the database.
+
+> **Important**   
+>If a key property has its value generated by the database and a non-default value is specified when an entity is added, then EF will assume that the entity already exists in the database and will try to update it instead of inserting a new one. To avoid this turn off value generation or see how to specify explicit values for generated properties.
+
+## Alternate Keys
+
+An alternate key serves as an alternate unique identifier for each entity instance in addition to the primary key; it can be used as the target of a relationship. When using a relational database this maps to the concept of a unique index/constraint on the alternate key column(s) and one or more foreign key constraints that reference the column(s).
+
+ >**Tip**   
+>If you just want to enforce uniqueness on a column, define a unique index rather than an alternate key (see Indexes). In EF, alternate keys are read-only and provide additional semantics over unique indexes because they can be used as the target of a foreign key.
+
+Alternate keys are typically introduced for you when needed and you do not need to manually configure them. By convention, an alternate key is introduced for you when you identify a property which isn't the primary key as the target of a relationship.
+
+### C#:
+
+```C#
+class MyContext : DbContext
+{
+    public DbSet<Blog> Blogs { get; set; }
+    public DbSet<Post> Posts { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Post>()
+            .HasOne(p => p.Blog)
+            .WithMany(b => b.Posts)
+            .HasForeignKey(p => p.BlogUrl)
+            .HasPrincipalKey(b => b.Url);
+    }
+}
+
+public class Blog
+{
+    public int BlogId { get; set; }
+    public string Url { get; set; }
+
+    public List<Post> Posts { get; set; }
+}
+
+public class Post
+{
+    public int PostId { get; set; }
+    public string Title { get; set; }
+    public string Content { get; set; }
+
+    public string BlogUrl { get; set; }
+    public Blog Blog { get; set; }
+}
+```
+You can also configure a single property to be an alternate key:
+
+### C#:
+
+```C#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Car>()
+        .HasAlternateKey(c => c.LicensePlate);
+}
+```
+You can also configure multiple properties to be an alternate key (known as a composite alternate key):
+
+### C#:
+
+```C#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Car>()
+        .HasAlternateKey(c => new { c.State, c.LicensePlate });
+}
+```
+
+Finally, by convention, the index and constraint that are introduced for an alternate key will be named AK_<type name>_<property name> (for composite alternate keys <property name> becomes an underscore separated list of property names). You can configure the name of the alternate key's index and unique constraint:
+
+### C#:
+
+```C#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Car>()
+        .HasAlternateKey(c => c.LicensePlate)
+        .HasName("AlternateKey_LicensePlate");
+}
+```
+
+# Querying
 
 Instances of your entity classes are retrieved from the database using Language Integrated Query (LINQ). See Querying Data to learn more.
 
@@ -126,7 +502,7 @@ Data is created, deleted, and modified in the database using instances of your e
 
 ```
 
-## Migrations
+# Migrations
 
 A data model changes during development and gets out of sync with the database. You can drop the database and let EF create a new one that matches the model, but this procedure results in the loss of data. The migrations feature in EF Core provides a way to incrementally update the database schema to keep it in sync with the application's data model while preserving existing data in the database.
 

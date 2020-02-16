@@ -75,8 +75,6 @@ using Microsoft.EntityFrameworkCore;
 
 ```
 
-
-
 > Tip: In a real app, you put each class in a separate file and put the connection string in a configuration file or environment variable. To keep the tutorial simple, everything is contained in one file.
 
 ## Create the database
@@ -92,11 +90,17 @@ Run the following commands in Package Manager Console
 Install-Package Microsoft.EntityFrameworkCore.Tools
 Install-Package Microsoft.EntityFrameworkCore.SqlServer
 ```
+
 >Notice the packages in the .csproj file being added
 
 Now we will add our first migration by running the `Add-Migration` command.
+
 ```powershell
 Add-Migration InitialCreate
+```
+Now lets create the tables in the database by running `Update-Database`
+
+```powershell
 Update-Database
 ```
 
@@ -105,15 +109,13 @@ Update-Database
 Open Program.cs and replace the contents with the following code:
 
 ```C#
-using System;
-using System.Linq;
 
-namespace EFCoreCodeFirst
-{
     class Program
     {
         static void Main()
         {
+
+            //replace heloo world with below code
             using (var db = new BloggingContext())
             {
                 // Create
@@ -145,9 +147,8 @@ namespace EFCoreCodeFirst
             }
         }
     }
-}
-```
 
+```
 
 ## Run the app
 
