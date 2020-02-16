@@ -25,9 +25,9 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/assets/polyfills.c78f934af02c23a04d15.js",
-              "src/assets/polyfills-es5.8b0c7cc98c3f7ae85ca2.js",
-              "src/assets/main.fbe290b5856eaa26f6e4.js"
+              "./node_modules/image-search/dist/polyfills.c78f934af02c23a04d15.js",
+              "./node_modules/image-search/dist/polyfills-es5.8b0c7cc98c3f7ae85ca2.js",
+              "./node_modules/image-search/dist/main.fbe290b5856eaa26f6e4.js"
             ]
           },
           "configurations": {
