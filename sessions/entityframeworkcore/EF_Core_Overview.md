@@ -672,6 +672,11 @@ If you already applied a migration (or several migrations) to the database but n
 
 When debugging your migrations or deploying them to a production database, it's useful to generate a SQL script. The script can then be further reviewed for accuracy and tuned to fit the needs of a production database. The script can also be used in conjunction with a deployment technology. The basic command is as follows.
 
+```powershell
+   Script-Migration
+```
+
+
 ## Apply migrations at runtime
 
 Some apps may want to apply migrations at runtime during startup or first run. Do this using the `Migrate()` method.

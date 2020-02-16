@@ -327,6 +327,18 @@ Select **OK** and you will be asked if you want to create a new database, select
 
 
 
+# Reverse Engineering with EF Core Power Tools 
+
+
+Generate POCO classes, derived DbContext and mapping for an existing database using EFCore PowerTools
+
+[Power Tools Reverser Engineer](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering)
+
+[EntityFramework Reverse POCO Generator](https://marketplace.visualstudio.com/items?itemName=SimonHughes.EntityFrameworkReversePOCOGenerator)
+
+[EntityFramework-Reverse-POCO-Code-First-Generator](https://github.com/sjh37/EntityFramework-Reverse-POCO-Code-First-Generator)
+
+
 ## Create New Reverse Engineering Database EF 6 Applicaton
 
 1. Create the Application
