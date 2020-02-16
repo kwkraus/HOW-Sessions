@@ -1,14 +1,8 @@
 import { NgModule } from '@angular/core';
-import { MatListModule } from '@angular/material/list';
-import { MatCardModule } from '@angular/material/card';
-import { MatSlideToggleModule} from '@angular/material/slide-toggle';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule} from '@angular/material/input';
-import { MatSnackBarModule} from '@angular/material/snack-bar';
-import { MatTabsModule} from '@angular/material/tabs';
-import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatListModule, MatTabsModule, MatSnackBarModule,
+  MatDialogModule, MatCardModule, MatIconModule,
+  MatSlideToggleModule, MatButtonModule, MatLineModule,
+  MatInputModule, MatToolbarModule } from '@angular/material';
 
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';

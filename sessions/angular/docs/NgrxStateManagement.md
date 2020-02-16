@@ -5,7 +5,7 @@ https://ngrx.io/guide/store#diagram
 
 https://ngrx.io/docs#when-should-i-use-ngrx-for-state-management
 
-## Start with ngrx_workshop_v9
+## Start with ngrx_start
 
 ## Add the required libraries
 We could add dependencies to package.json and then start creating reducers, etc.

@@ -2,22 +2,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { MatListModule } from '@angular/material/list';
-import { MatCardModule } from '@angular/material/card';
-import { MatSlideToggleModule} from '@angular/material/slide-toggle';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule} from '@angular/material/input';
-import { MatSnackBarModule} from '@angular/material/snack-bar';
-import { MatTabsModule} from '@angular/material/tabs';
-import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
-
+import {
+  MatListModule, MatCardModule, MatSlideToggleModule, MatDialogModule,
+  MatIconModule, MatInputModule, MatSnackBarModule, MatTabsModule,
+  MatButtonModule, MatLineModule, MatToolbarModule
+} from '@angular/material';
 import { TabsComponent } from './tabs/tabs.component';
 import { environment } from '../environments/environment';
 import { AppConfig } from './app.config';

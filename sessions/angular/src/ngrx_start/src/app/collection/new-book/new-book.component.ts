@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IBook } from '../../models/book.models';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-new-book',

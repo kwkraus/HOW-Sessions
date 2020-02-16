@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { IBook } from '../../models/book.models';
 import { DataService } from '../../services/data.service';
