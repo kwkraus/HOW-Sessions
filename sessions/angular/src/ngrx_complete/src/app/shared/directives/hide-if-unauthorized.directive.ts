@@ -1,0 +1,20 @@
+import { OnInit } from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
+import { ActionCode } from '../../core/models/authorization.types';
+import { AuthorizationService } from '../../core/services/authorization.service';
+
+@Directive({
+    selector: '[appHideIfUnauthorized]'
+})
+export class HideIfUnauthorizedDirective implements OnInit {
+    @Input('appHideIfUnauthorized') permission: ActionCode;
+
+    constructor(private el: ElementRef, private authorizationService: AuthorizationService) {
+    }
+
+    ngOnInit() {
+        if (!this.authorizationService.hasPermission(this.permission)) {
+            this.el.nativeElement.style.display = 'none';
+        }
+    }
+}
