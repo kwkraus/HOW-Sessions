@@ -290,6 +290,37 @@ More significant changes, however, are not as easy make manually. One common wor
 
 Another commonly requested feature is the ability to update the model from the database while preserving customization like renames, type hierarchies, etc. Use issue [#831](https://github.com/dotnet/efcore/issues/831) to track the progress of this feature.
 
+
+## Database First Migration
+When using a database first appoarch there are important considerations for migrations.
+
+[Read this article by Christos Matskas](https://cmatskas.com/ef-core-migrations-with-existing-database-schema-and-data/) before Migrating with an existing database scheme and data.
+
+>Tip:   
+Key take away is before you run the updated-database command on your intailzing first migration you need to do the following:
+
+>Now go to the file created under `DbProject\Migrations\<MigrationName>.cs` and remove all the code inside the [Up()](##Delete-Code-from-Up-Method) method. This will ensure that the migration will run against your database without altering your existing schema (assuming there are no changes). You can leave the Down() method as is. 
+
+## Delete Code from Up Method on Database First Initial Migration
+
+- Before Migrating with an existing database scheme and data delete all code from the Up method as shown below on InitialCreate first model migration to create a empty migration:
+
+![](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/deleteCodeUp.jpg)
+
+Next, you want to run this migration against your database so type and run the following command: 
+
+```powershell
+    dotnet ef database update
+```
+
+
+
+> Tip
+You are free to move Migrations files and change their namespace. New migrations are created as siblings of the last migration.
+
+
+
+
 >Warning
 >If you reverse engineer the model from the database again, any changes you've made to the files will be lost.
 
@@ -365,171 +396,5 @@ public List<EmployeeSalesByCountryReturnModel> EmployeeSalesByCountry(DateTime? 
 
 [Code First Insert, Update, and Delete Stored Procedures](https://docs.microsoft.com/en-us/ef/ef6/modeling/code-first/fluent/cud-stored-procedures)
 
-
-
-## Create New Reverse Engineering Database EF 6 Applicaton
-
-1. Create the Application
-
-To keep things simple we’re going to build a basic console application that uses Code First to perform data access:
-
-* Open Visual Studio
-
-* `File` -> `New` -> `Project…`
-
-* Select `Windows` from the left menu and `Console Application`
-
-* Enter `CodeFirstExistingDatabaseSample` as the name
-
-* Select `OK`
-
-2. Reverse Engineer Model
-
-We’re going to make use of the Entity Framework Tools for Visual Studio to help us generate some initial code to map to the database. These tools are just generating code that you could also type by hand if you prefer.
-
-* `Project` -> `Add New Item`…
-
-* Select `Data` from the left menu and then `ADO.NET Entity - Data Model`
-
-* Enter `BloggingContext` as the name and click `OK`
-
-* This launches the `Entity Data Model Wizard`
-
-* Select `Code First from Database` and click `Next`
-
-![StepOne](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/wizardonecfe.png)
-
-Select the connection to the database you created in the first section and click `Next`
-
-![StepOne](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/wizardtwocfe.png)
-
-Click the checkbox next to Tables to import all tables and click `Finish`
-
-![StepOne](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/wizardthreecfe.png)
-
-Once the reverse engineer process completes a number of items will have been added to the project, let's take a look at what's been added.
-Configuration file
-
-An appsettings.json file has been added to the project, this file contains the connection string to the existing database.
-
-```JSON
-
-{
-  "ConnectionStrings": {
-    "BloggingDatabase": "Server=(localdb)\\mssqllocaldb;Database=EFGetStarted.ConsoleApp.NewDb;Trusted_Connection=True;"
-  },
-}
-```
-
-You’ll notice some other settings in the configuration file too, these are default EF settings that tell Code First where to create databases. Since we are mapping to an existing database these setting will be ignored in our application.
-Derived Context
-
-A BloggingContext class has been added to the project. The context represents a session with the database, allowing us to query and save data. The context exposes a DbSet<TEntity> for each type in our model. You’ll also notice that the default constructor calls a base constructor using the name= syntax. This tells Code First that the connection string to use for this context should be loaded from the configuration file.
-
-```C#
-
-public partial class BloggingContext : DbContext
-    {
-        public BloggingContext()
-            : base("name=BloggingContext")
-        {
-        }
-
-        public virtual DbSet<Blog> Blogs { get; set; }
-        public virtual DbSet<Post> Posts { get; set; }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-        }
-    }
-
-```
-You should always use the name= syntax when you are using a connection string in the config file. This ensures that if the connection string is not present then Entity Framework will throw rather than creating a new database by convention.
-Model classes
-
-Finally, a Blog and Post class have also been added to the project. These are the domain classes that make up our model. You'll see Data Annotations applied to the classes to specify configuration where the Code First conventions would not align with the structure of the existing database. For example, you'll see the StringLength annotation on Blog.Name and Blog.Url since they have a maximum length of 200 in the database (the Code First default is to use the maximun length supported by the database provider - nvarchar(max) in SQL Server).
-
-```C#
-
-
-public partial class Blog
-{
-    public Blog()
-    {
-        Posts = new HashSet<Post>();
-    }
-
-    public int BlogId { get; set; }
-
-    [StringLength(200)]
-    public string Name { get; set; }
-
-    [StringLength(200)]
-    public string Url { get; set; }
-
-    public virtual ICollection<Post> Posts { get; set; }
-}
-
-```
-4. Reading & Writing Data
-
-Now that we have a model it’s time to use it to access some data. Implement the Main method in Program.cs as shown below. This code creates a new instance of our context and then uses it to insert a new Blog. Then it uses a LINQ query to retrieve all Blogs from the database ordered alphabetically by Title.
-
-
-```C#
-
-
-
-class Program
-{
-    static void Main(string[] args)
-    {
-        using (var db = new BloggingContext())
-        {
-            // Create and save a new Blog
-            Console.Write("Enter a name for a new Blog: ");
-            var name = Console.ReadLine();
-
-            var blog = new Blog { Name = name };
-            db.Blogs.Add(blog);
-            db.SaveChanges();
-
-            // Display all Blogs from the database
-            var query = from b in db.Blogs
-                        orderby b.Name
-                        select b;
-
-            Console.WriteLine("All blogs in the database:");
-            foreach (var item in query)
-            {
-                Console.WriteLine(item.Name);
-            }
-
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
-        }
-    }
-}
-```
-You can now run the application and test it out.
-console
-
-Copy
-
-Enter a name for a new Blog: ADO.NET Blog
-All blogs in the database:
-.NET Framework Blog
-ADO.NET Blog
-The Visual Studio Blog
-Press any key to exit...
- 
-What if My Database Changes?
-
-The Code First to Database wizard is designed to generate a starting point set of classes that you can then tweak and modify. If your database schema changes you can either manually edit the classes or perform another reverse engineer to overwrite the classes.
-Using Code First Migrations to an Existing Database
-If you want to use Code First Migrations with an existing database, see Code First Migrations to an existing database.
-Summary
-
-In this walkthrough we looked at Code First development using an existing database. We used the Entity Framework Tools for Visual Studio to reverse engineer a set of classes that mapped to the database and could be used to store and retrieve data.
 
 [EF Core How](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/Ef_Core_How.md)
