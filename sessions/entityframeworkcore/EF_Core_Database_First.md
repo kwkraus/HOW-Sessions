@@ -361,6 +361,9 @@ Select **OK** and you will be asked if you want to create a new database, select
 # Reverse Engineering with EF Core Power Tools 
 
 
+[How to Install Extensions](https://docs.microsoft.com/en-us/visualstudio/ide/finding-and-using-visual-studio-extensions?view=vs-2019)
+
+
 Generate POCO classes, derived DbContext and mapping for an existing database using EFCore PowerTools
 
 [Power Tools Reverser Engineer](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering)
