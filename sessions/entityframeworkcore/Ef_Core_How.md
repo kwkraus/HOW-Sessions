@@ -5,8 +5,8 @@
 
 - Consultant App Domain 
 - U.S. Army Retired SFC 24 yrs 
-- Software Engineer 15 yrs
-- Web Developer 18 yrs
+- Software Engineer 16 yrs
+- Web Developer 19 yrs
 - Aspiring Architect 
 - Family: Marcela Oleson, Brandy(26), Toma(16), Anna(6)
 
