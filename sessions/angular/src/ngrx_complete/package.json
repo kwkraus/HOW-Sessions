@@ -22,11 +22,16 @@
     "@angular/platform-browser": "~8.2.11",
     "@angular/platform-browser-dynamic": "~8.2.11",
     "@angular/router": "~8.2.11",
+    "@microsoft/applicationinsights-web": "~2.4.4",
+    "@ngrx/store": "~8.6.0",
+    "@ngrx/entity": "~8.6.0",
+    "@ngrx/effects": "~8.6.0",
+    "@ngrx/store-devtools": "~8.6.0",
+    "adal-angular4": "~4.0.12",
+    "hammerjs": "^2.0.8",
     "rxjs": "^6.5.3",
     "tslib": "^1.10.0",
-    "zone.js": "^0.9.1",
-    "@microsoft/applicationinsights-web": "~2.4.4",
-    "adal-angular4": "~4.0.12"
+    "zone.js": "^0.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.14",

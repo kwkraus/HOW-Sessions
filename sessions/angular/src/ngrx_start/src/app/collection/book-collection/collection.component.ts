@@ -33,10 +33,6 @@ export class CollectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    // const testObject = {
-    //   name: 'Fred'
-    // };
-    // const test = (<any>testObject).address.city;
     this.books = this._route.snapshot.data['books'];
     this._dataService.search(this.searchTerm$)
       .subscribe(books => {

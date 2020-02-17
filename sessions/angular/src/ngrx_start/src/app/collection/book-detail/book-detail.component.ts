@@ -71,15 +71,15 @@ export class BookDetailComponent implements OnInit, OnDestroy {
         }, error => this.updateMessage(<any>error, 'ERROR'));
   }
 
-  previous(): void {
+  previous(book: IBook): void {
     this._dataService
-      .getPreviousBookId(this.book.id)
+      .getPreviousBookId(book.id)
       .subscribe((bookId) => this._router.navigate(['/collection', bookId]));
   }
 
-  next(): void {
+  next(book: IBook): void {
     this._dataService
-      .getNextBookId(this.book.id)
+      .getNextBookId(book.id)
       .subscribe((bookId) => this._router.navigate(['/collection', bookId]));
   }
 }

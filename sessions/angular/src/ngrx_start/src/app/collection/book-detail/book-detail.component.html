@@ -31,11 +31,11 @@
           <i class="material-icons">close</i>
           CLOSE
         </button>
-        <button mat-button (click)="previous()" *ngIf="!bookId">
+        <button mat-button (click)="previous(book)" *ngIf="!bookId">
           <i class="material-icons">keyboard_arrow_left</i>
           PREVIOUS
         </button>
-        <button mat-button (click)="next()" *ngIf="!bookId">NEXT
+        <button mat-button (click)="next(book)" *ngIf="!bookId">NEXT
           <i class="material-icons">keyboard_arrow_right</i>
         </button>
         <button mat-button (click)="return()" *ngIf="!bookId">

@@ -13,7 +13,7 @@
 <div>
   Search Books By Tite or Author:
   <input (keyup)="searchTerm$.next($event.target.value)">
-  <div class="text-right add-btn" [appHideIfUnauthorized]="'ADMIN'">
+  <div class="text-right add-btn" [appHideIfUnauthorized]="'UPDATE'">
     <button mat-raised-button color="primary" (click)="addBook()">
       <i class="material-icons">add_box</i> ADD BOOK</button>
   </div>
