@@ -28,7 +28,6 @@ Art, Photography, Digital Illustration.
 Why Entity Framework Core why do we need EF Core?
 What Has Changed?
 
-
 ## Agenda 
 
 * [Entity Framework Core Overview](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/EF_Core_Overview.md)

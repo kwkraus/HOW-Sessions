@@ -398,7 +398,7 @@ Key properties must always have a non-default value when adding a new entity to 
 An alternate key serves as an alternate unique identifier for each entity instance in addition to the primary key; it can be used as the target of a relationship. When using a relational database this maps to the concept of a unique index/constraint on the alternate key column(s) and one or more foreign key constraints that reference the column(s).
 
  >**Tip**   
->If you just want to enforce uniqueness on a column, define a unique index rather than an alternate key (see Indexes). In EF, alternate keys are read-only and provide additional semantics over unique indexes because they can be used as the target of a foreign key.
+>If you just want to enforce uniqueness on a column, define a unique index rather than an alternate key ([see Indexes](https://docs.microsoft.com/en-us/ef/core/modeling/indexes)). In EF, alternate keys are read-only and provide additional semantics over unique indexes because they can be used as the target of a foreign key.
 
 Alternate keys are typically introduced for you when needed and you do not need to manually configure them. By convention, an alternate key is introduced for you when you identify a property which isn't the primary key as the target of a relationship.
 
