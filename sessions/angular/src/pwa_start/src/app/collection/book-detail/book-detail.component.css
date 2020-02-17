@@ -1,0 +1,16 @@
+.mat-card {
+    margin-top: 15px;
+  }
+  .mat-card-avatar {
+    width: 64px;
+    height: 64px;
+  }
+  .mat-card-header {
+    margin-bottom: 10px;
+  }
+  .mat-card-header h4 {
+    margin-bottom: 0;
+    margin-top: 5px;
+    font-size: 18px;
+  }
+  
