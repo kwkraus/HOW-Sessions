@@ -4,32 +4,31 @@ import { of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { DataService } from '../services/data.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BookGuardService {
 
-  constructor(private _router: Router, private _dataService: DataService) { }
+  constructor(private router: Router, private dataService: DataService) { }
 
   canActivate(route: ActivatedRouteSnapshot) {
-   // parse the book id from the route.
+   // get the book id from the route.
    // Note:+ ensures that the value is returned as number and not string
-    const id = +route.url[0].path;
+    const id = +route.params['id'];
     if (isNaN(id)) {
-      // start a new navigation to redirect to list page
-      this._router.navigate(['/collection']);
-      // abort current navigation
+      // optionally, redirect to an appropriate
+      this.router.navigate(['/collection']);
       return false;
     }
 
-    return this._dataService.canActivate(id).pipe(
+    return this.dataService.canActivate(id).pipe(
         map(result => {
           if (result) {
               return true;
           }
-          this._router.navigate(['/collection']);
+          this.router.navigate(['/collection']);
           return of(false);
         }),
         catchError(() => {
-          this._router.navigate(['/collection']);
+          this.router.navigate(['/collection']);
           return of(false);
         })
     );

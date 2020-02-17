@@ -12,6 +12,8 @@ import { RatingCategoryPipe } from '../pipes/rating-category.pipe';
 import { RatingComponent } from '../rating/rating.component';
 import { NewBookComponent } from './new-book/new-book.component';
 import { BookDetailComponent } from './book-detail/book-detail.component';
+import { BookGuardService } from '../guards/book-guard.service';
+import { CollectionResolver } from './collection.resolver';
 
 @NgModule({
   imports: [

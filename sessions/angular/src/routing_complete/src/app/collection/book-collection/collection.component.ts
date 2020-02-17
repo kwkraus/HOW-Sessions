@@ -33,10 +33,7 @@ export class CollectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._dataService.getBooks().subscribe(books => {
-      this.books = books;
-    });
-
+    this.books = this._route.snapshot.data['books'];
     this._dataService.search(this.searchTerm$)
       .subscribe(books => {
         this.books = books;

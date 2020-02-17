@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { IBook } from '../models/book.models';
 import { DataService } from '../services/data.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CollectionResolver implements Resolve<IBook[]> {
     constructor(private _dataService: DataService) {}
 
