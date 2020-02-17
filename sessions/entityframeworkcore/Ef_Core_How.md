@@ -1,6 +1,4 @@
-# Entity Framework Core
-
-## Presenter
+# Presenter
 ![Presenter](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/TimOlesonPhoto.jpg)
 
 ### Tim Oleson
@@ -19,13 +17,16 @@ Art, Photography, Digital Illustration.
 
 **Patterns:** MVC, Factory, Microservices, Domain, Transact Script, Table Module
 
-Languages and Scripting: #C, JavaScript, TypeScript, SQL, Linq, and learning C
+**Languages and Scripting:** #C, JavaScript, TypeScript, SQL, Linq, and learning C
 
 **Agile Methods:** DevOps, Agile Srum, Agile Scale, Spec Flow, Unit Testing, Behavioral Driven Design, Git(Distributed Version Control), Team Foundation Version Control (TFVC) (Centralized Version Control)
 
 **Heros:** Ragnar Lodbrok, John Wayne, Batman, Martin Fowler, Uncle Bob, Eric Evans, The Gang of Four
 
+# Entity Framework Core
 
+Why Entity Framework Core why do we need EF Core?
+What Has Changed?
 
 
 ## Agenda 
