@@ -31,7 +31,7 @@ What Has Changed?
 
 ## Agenda 
 
-* [Entity Framework Core Overview](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/EF_Core_Overview.md)
-* [Entity Framework Core Code First Walk Thru](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/EF_Core_Code_First.md)
-* [Entity Framework Core Data Base Fisrt](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/EF_Core_Database_First.md)
-* [Entity Framework Core Extensions](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/images/EF_Core_Database_First.md)
+* [Entity Framework Core Overview](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/EF_Core_Overview.md)
+* [Entity Framework Core Code First Walk Thru](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/EF_Core_Code_First.md)
+* [Entity Framework Core Data Base Fisrt](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/EF_Core_Database_First.md)
+* [Entity Framework Core Extensions](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/EF_Core_Database_First.md)
