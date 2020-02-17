@@ -490,7 +490,15 @@ using (var db = new BloggingContext())
 
 ## Saving Data
 
-Data is created, deleted, and modified in the database using instances of your entity classes. See Saving Data to learn more.
+Data is created, deleted, and modified in the database using instances of your entity classes. 
+
+
+### Basic Save
+
+#### Adding Data
+
+Use the DbSet.Add method to add new instances of your entity classes. The data will be inserted in the database when you call SaveChanges.
+
 
 ```C#
     using (var db = new BloggingContext())
@@ -501,6 +509,149 @@ Data is created, deleted, and modified in the database using instances of your e
 }
 
 ```
+
+>Tip        
+>The Add, Attach, and Update methods all work on the full graph of entities passed to them, as described in the Related Data section. Alternately, the EntityEntry.State property can be used to set the state of just a single entity. For example, context.Entry(blog).State = EntityState.Modified.
+
+#### Updating Data
+
+EF will automatically detect changes made to an existing entity that is tracked by the context. This includes entities that you load/query from the database, and entities that were previously added and saved to the database.
+
+Simply modify the values assigned to properties and then call SaveChanges.
+
+
+```C#
+   using (var context = new BloggingContext())
+{
+    var blog = context.Blogs.First();
+    blog.Url = "http://sample.com/blog";
+    context.SaveChanges();
+}
+
+```
+
+#### Deleting Data
+
+Use the DbSet.Remove method to delete instances of your entity classes.
+
+If the entity already exists in the database, it will be deleted during SaveChanges. If the entity has not yet been saved to the database (that is, it is tracked as added) then it will be removed from the context and will no longer be inserted when SaveChanges is called.
+
+```C#
+ using (var context = new BloggingContext())
+{
+    var blog = context.Blogs.First();
+    context.Blogs.Remove(blog);
+    context.SaveChanges();
+}
+
+```
+
+
+#### Multiple Operations in a single SaveChanges
+
+You can combine multiple Add/Update/Remove operations into a single call to SaveChanges.
+
+>Note           
+>For most database providers, SaveChanges is transactional. This means all the operations will either succeed or fail and the operations will never be left partially applied.
+
+```C#
+using (var context = new BloggingContext())
+{
+    // seeding database
+    context.Blogs.Add(new Blog { Url = "http://sample.com/blog" });
+    context.Blogs.Add(new Blog { Url = "http://sample.com/another_blog" });
+    context.SaveChanges();
+}
+
+using (var context = new BloggingContext())
+{
+    // add
+    context.Blogs.Add(new Blog { Url = "http://sample.com/blog_one" });
+    context.Blogs.Add(new Blog { Url = "http://sample.com/blog_two" });
+
+    // update
+    var firstBlog = context.Blogs.First();
+    firstBlog.Url = "";
+
+    // remove
+    var lastBlog = context.Blogs.Last();
+    context.Blogs.Remove(lastBlog);
+
+    context.SaveChanges();
+}
+
+```
+
+#### Adding a related entity
+
+If you reference a new entity from the navigation property of an entity that is already tracked by the context, the entity will be discovered and inserted into the database.
+
+In the following example, the post entity is inserted because it is added to the Posts property of the blog entity which was fetched from the database.
+
+
+```C#
+using (var context = new BloggingContext())
+{
+    var blog = context.Blogs.Include(b => b.Posts).First();
+    var post = new Post { Title = "Intro to EF Core" };
+
+    blog.Posts.Add(post);
+    context.SaveChanges();
+}
+
+```
+
+# Raw SQL Queries
+
+
+Entity Framework Core allows you to drop down to raw SQL queries when working with a relational database. Raw SQL queries are useful if the query you want can't be expressed using LINQ. Raw SQL queries are also used if using a LINQ query is resulting in an inefficient SQL query. Raw SQL queries can return regular entity types or keyless entity types that are part of your model.
+
+## Basic raw SQL queries
+
+You can use the FromSqlRaw extension method to begin a LINQ query based on a raw SQL query. FromSqlRaw can only be used on query roots, that is directly on the DbSet<>.
+
+
+```C#
+var blogs = context.Blogs
+    .FromSqlRaw("SELECT * FROM dbo.Blogs")
+    .ToList();
+```
+
+Raw SQL queries can be used to execute a stored procedure.
+
+```C#
+var blogs = context.Blogs
+    .FromSqlRaw("EXECUTE dbo.GetMostPopularBlogs")
+    .ToList();
+```
+
+## Passing parameters
+
+>Warning            
+>Always use parameterization for raw SQL queries
+>When introducing any user-provided values into a raw SQL query, care must be taken to avoid SQL injection attacks. In addition to validating that such values don't contain invalid characters, always use parameterization which sends the values separate from the SQL text.                     
+>In particular, never pass a concatenated or interpolated string ($"") with non-validated user-provided values into FromSqlRaw or ExecuteSqlRaw. The FromSqlInterpolated and ExecuteSqlInterpolated methods allow using string interpolation syntax in a way that protects against SQL injection attacks.
+
+The following example passes a single parameter to a stored procedure by including a parameter placeholder in the SQL query string and providing an additional argument. While this syntax may look like String.Format syntax, the supplied value is wrapped in a DbParameter and the generated parameter name inserted where the {0} placeholder was specified.
+
+```C#
+var user = "johndoe";
+
+var blogs = context.Blogs
+    .FromSqlInterpolated($"EXECUTE dbo.GetMostPopularBlogsForUser {user}")
+    .ToList();
+```
+
+You can also construct a DbParameter and supply it as a parameter value. Since a regular SQL parameter placeholder is used, rather than a string placeholder, FromSqlRaw can be safely used:
+
+```C#
+var user = new SqlParameter("user", "johndoe");
+
+var blogs = context.Blogs
+    .FromSqlRaw("EXECUTE dbo.GetMostPopularBlogsForUser @user", user)
+    .ToList();
+```
+
 
 # Migrations
 

@@ -339,6 +339,34 @@ Generate POCO classes, derived DbContext and mapping for an existing database us
 [EntityFramework-Reverse-POCO-Code-First-Generator](https://github.com/sjh37/EntityFramework-Reverse-POCO-Code-First-Generator)
 
 
+## Stored Procedures
+
+```C#
+public List<EmployeeSalesByCountryReturnModel> EmployeeSalesByCountry(DateTime? beginningDate, DateTime? endingDate, out int procResult)
+        {
+            var beginningDateParam = new SqlParameter { ParameterName = "@Beginning_Date", SqlDbType = SqlDbType.DateTime, Direction = ParameterDirection.Input, Value = beginningDate.GetValueOrDefault() };
+            if (!beginningDate.HasValue)
+                beginningDateParam.Value = DBNull.Value;
+
+            var endingDateParam = new SqlParameter { ParameterName = "@Ending_Date", SqlDbType = SqlDbType.DateTime, Direction = ParameterDirection.Input, Value = endingDate.GetValueOrDefault() };
+            if (!endingDate.HasValue)
+                endingDateParam.Value = DBNull.Value;
+
+            var procResultParam = new SqlParameter { ParameterName = "@procResult", SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
+            const string sqlCommand = "EXEC @procResult = [dbo].[Employee Sales by Country] @Beginning_Date, @Ending_Date";
+            var procResultData = Set<EmployeeSalesByCountryReturnModel>()
+                .FromSqlRaw(sqlCommand, beginningDateParam, endingDateParam, procResultParam)
+                .ToList();
+
+            procResult = (int) procResultParam.Value;
+            return procResultData;
+        }
+```
+
+[Code First Insert, Update, and Delete Stored Procedures](https://docs.microsoft.com/en-us/ef/ef6/modeling/code-first/fluent/cud-stored-procedures)
+
+
+
 ## Create New Reverse Engineering Database EF 6 Applicaton
 
 1. Create the Application
