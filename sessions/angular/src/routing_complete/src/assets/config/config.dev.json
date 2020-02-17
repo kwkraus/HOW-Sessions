@@ -1,0 +1,8 @@
+{
+    "logging": {
+        "console": true
+    },
+    "apiServer": {
+        "books": "https://bookservicelaurie.azurewebsites.net/api/"
+    }
+}

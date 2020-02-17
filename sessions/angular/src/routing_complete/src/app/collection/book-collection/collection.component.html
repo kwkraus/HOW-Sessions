@@ -13,8 +13,7 @@
 <div>
   Search Books By Tite or Author:
   <input (keyup)="searchTerm$.next($event.target.value)">
-  <div *ngIf="!books">Retrieving books...</div>
-  <mat-list *ngIf="books">
+  <mat-list>
     <mat-list-item *ngFor="let book of books">
       <mat-icon mat-list-icon>book</mat-icon>
       <h3 mat-line>

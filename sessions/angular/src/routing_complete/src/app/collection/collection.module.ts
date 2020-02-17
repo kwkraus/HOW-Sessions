@@ -12,6 +12,7 @@ import { RatingCategoryPipe } from '../pipes/rating-category.pipe';
 import { RatingComponent } from '../rating/rating.component';
 import { NewBookComponent } from './new-book/new-book.component';
 import { BookDetailComponent } from './book-detail/book-detail.component';
+import { BookReviewComponent } from './book-review/book-review.component';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ import { BookDetailComponent } from './book-detail/book-detail.component';
     RatingComponent,
     BookDetailComponent,
     NewBookComponent,
-    RatingCategoryPipe
+    RatingCategoryPipe,
+    BookReviewComponent
   ]
 })
 export class CollectionModule { }
