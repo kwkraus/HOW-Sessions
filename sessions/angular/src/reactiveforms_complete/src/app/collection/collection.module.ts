@@ -4,7 +4,7 @@ import { MatListModule, MatTabsModule, MatSnackBarModule,
   MatDialogModule, MatCardModule, MatIconModule,
   MatSlideToggleModule, MatButtonModule, MatLineModule,
   MatInputModule, MatToolbarModule } from '@angular/material';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CollectionRoutingModule } from './collection-routing.module';
 import { CollectionComponent } from './book-collection/collection.component';
@@ -19,6 +19,7 @@ import { BookReviewComponent } from './book-review/book-review.component';
     CommonModule,
     CollectionRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     MatListModule,
     MatTabsModule,

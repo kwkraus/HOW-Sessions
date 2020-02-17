@@ -1,4 +1,4 @@
-<form #newBookForm="ngForm">
+<form [formGroup]="newBookForm">
   <mat-card>
     <mat-card-header>
       <mat-card-title>
@@ -8,20 +8,20 @@
     </mat-card-header>
     <mat-card-content>
       <mat-form-field>
-        <input matInput placeholder="Book Title" [(ngModel)]="book.title" name="title" required />
+        <input matInput placeholder="Book Title" formControlName="title" />
       </mat-form-field>
       <br />
       <mat-form-field>
-        <input matInput placeholder="Author" [(ngModel)]="book.author" name="author" required />
+        <input matInput placeholder="Author" formControlName="author" />
       </mat-form-field>
       <p class="rating-label">Rating</p>
-      <my-rating [rating]="book.rating" (ratingClicked)="onRatingUpdate($event)">
+      <my-rating [rating]="newBookForm.get('rating')" (ratingClicked)="onRatingUpdate($event)">
       </my-rating>
-      <mat-slide-toggle color="primary" [(ngModel)]="book.isCheckedOut" name="checkedOut">Checked out?</mat-slide-toggle>
+      <mat-slide-toggle color="primary" formControlName="isCheckedOut" name="checkedOut">Checked out?</mat-slide-toggle>
     </mat-card-content>
     <mat-card-actions>
       <div class="text-right">
-        <button type="submit " mat-button (click)="save()" color="warn" [disabled]="newBookForm.form.invalid"><i class="material-icons">save</i>SAVE</button>
+        <button type="submit " mat-button (click)="save()" color="warn" [disabled]="newBookForm.invalid"><i class="material-icons">save</i>SAVE</button>
         <button type="reset" mat-button (click)="cancel()"><i class="material-icons">cancel</i>CANCEL</button>
       </div>
     </mat-card-actions>

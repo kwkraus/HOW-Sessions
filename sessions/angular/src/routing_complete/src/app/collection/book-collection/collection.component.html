@@ -13,6 +13,10 @@
 <div>
   Search Books By Tite or Author:
   <input (keyup)="searchTerm$.next($event.target.value)">
+  <div class="text-right add-btn">
+    <button mat-raised-button color="primary" (click)="addBook()">
+      <i class="material-icons">add_box</i> ADD BOOK</button>
+  </div>
   <mat-list>
     <mat-list-item *ngFor="let book of books">
       <mat-icon mat-list-icon>book</mat-icon>
@@ -45,8 +49,4 @@
       </p>
     </mat-list-item>
   </mat-list>
-  <div class="text-right add-btn">
-    <button mat-raised-button color="primary" (click)="addBook()">
-      <i class="material-icons">add_box</i> ADD BOOK</button>
-  </div>
 </div>

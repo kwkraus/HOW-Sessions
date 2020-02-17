@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IBook } from '../../models/book.models';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 
 @Component({
@@ -9,18 +9,38 @@ import { MatDialogRef } from '@angular/material';
 })
 export class NewBookComponent implements OnInit {
 
-  book: IBook;
+  newBookForm = new FormGroup({
+    title: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    author: new FormControl('', Validators.required),
+    isCheckedOut: new FormControl(false),
+    rating: new FormControl(0)
+  });
 
-  constructor(private _dialogRef: MatDialogRef<NewBookComponent>) { }
+  // newBookForm = this.fb.group({
+  //   title: ['', [Validators.required, Validators.minLength(3)]],
+  //   author: ['', Validators.required],
+  //   isCheckedOut: [false],
+  //   rating: [0],
+  //   libraryAddress: this.fb.group({
+  //     street: [''],
+  //     city: [''],
+  //     state: [''],
+  //     zip: ['']
+  //   }),
+  //   reviews: this.fb.array([
+  //     this.fb.control('')
+  //   ]),
+  // });
+
+  constructor(private _dialogRef: MatDialogRef<NewBookComponent>,
+    private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.book = {
-      id: 0,
-      title: '',
-      author: '',
-      isCheckedOut: false,
-      rating: 0
-    };
+    this.newBookForm.get('isCheckedOut').valueChanges.subscribe(
+      isCheckedout => {
+        console.log(`Is checkedout = ${isCheckedout}`);
+      }
+    );
   }
 
   cancel(): void {
@@ -28,10 +48,10 @@ export class NewBookComponent implements OnInit {
   }
 
   save(): void {
-    this._dialogRef.close(this.book);
+    this._dialogRef.close(this.newBookForm.value);
   }
 
   onRatingUpdate(rating: number): void {
-    this.book.rating = rating;
+    this.newBookForm.get('rating').setValue(rating);
   }
 }
