@@ -39,7 +39,7 @@ Modify the Collection Module to import the SharedModule and we can now remove th
 ```javascript
 @NgModule({
   imports: [
-    ~~~CommonModule,~~~
+    // CommonModule,
     SharedModule
 ```
 
