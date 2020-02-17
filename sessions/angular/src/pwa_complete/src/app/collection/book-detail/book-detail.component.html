@@ -1,0 +1,48 @@
+<div *ngIf="book">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h4>{{book.title}}</h4>
+      </mat-card-title>
+      <mat-card-subtitle>{{book.author}}</mat-card-subtitle>
+      <img mat-card-avatar src="assets/img/book.png" />
+    </mat-card-header>
+    <mat-card-content>
+      <div>
+        <label><strong>Title:</strong></label>
+        <span>{{book.title}}</span>
+      </div>
+      <div>
+        <label><strong>Author:</strong></label>
+        <span>{{book.author}}</span>
+      </div>
+      <div>
+        <label><strong>Checked Out?</strong></label>
+        <span>{{book.isCheckedOut ? 'Yes' : 'No'}}</span>
+      </div>
+      <div>
+        <label><strong>Rating:</strong></label>
+        <my-rating [rating]="book.rating" (ratingClicked)="onRatingUpdate(book, $event)"></my-rating>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="text-right">
+        <button mat-button mat-dialog-close *ngIf="bookId">
+          <i class="material-icons">close</i>
+          CLOSE
+        </button>
+        <button mat-button (click)="previous(book)" *ngIf="!bookId">
+          <i class="material-icons">keyboard_arrow_left</i>
+          PREVIOUS
+        </button>
+        <button mat-button (click)="next(book)" *ngIf="!bookId">NEXT
+          <i class="material-icons">keyboard_arrow_right</i>
+        </button>
+        <button mat-button (click)="return()" *ngIf="!bookId">
+          <i class="material-icons">keyboard_backspace</i>
+          RETURN
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>
