@@ -28,9 +28,9 @@ export class BookDetailComponent implements OnInit, OnDestroy {
           const id = +params['id'];
           this.getBook(id);
         });
-      return;
+    } else {
+      this.getBook(this.bookId);
     }
-    this.getBook(this.bookId);
   }
 
   ngOnDestroy() {

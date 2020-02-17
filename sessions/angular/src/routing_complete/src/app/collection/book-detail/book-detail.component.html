@@ -24,6 +24,17 @@
         <label><strong>Rating:</strong></label>
         <my-rating [rating]="book.rating" (ratingClicked)="onRatingUpdate(book, $event)"></my-rating>
       </div>
+      <div *ngIf="!bookId">
+        <label>Reviews</label>
+        <ul>
+          <li *ngFor="let review of book.bookReviews">
+            <a [routerLink]="['reviews', review.id]">
+              {{ review.title }}
+            </a>
+          </li>
+        </ul>
+        <router-outlet></router-outlet>
+      </div>
     </mat-card-content>
     <mat-card-actions>
       <div class="text-right">

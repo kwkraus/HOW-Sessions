@@ -47,14 +47,21 @@ export class DataService {
 
   getBook(id: number): Observable<IBook> {
     return this._http.get<IBook>(`${this._booksUrl}/${id.toString()}`)
-      .pipe(
-        catchError(this.handleError)
+      .pipe(map(book => {
+        book.bookReviews = [];
+        for (let i = 0; i < 3; i++) {
+          const text = book.rating === 5 ? 'Great book' : book.rating === 4 ? 'Good book' : 'Fair book';
+          book.bookReviews.push({
+            id: i + 1,
+            title: `${text} #${i + 1}`,
+            description: `${book.title} is a ${text}`,
+            rating: book.rating
+          });
+        }
+        return book;
+      }),
+      catchError(this.handleError)
       );
-    // return this.getBooks()
-    //   .pipe(
-    //     map((books: IBook[]) => books.find(b => b.id === id)),
-    //     catchError(this.handleError)
-    //   );
   }
 
   getPreviousBookId(id: number): Observable<number> {

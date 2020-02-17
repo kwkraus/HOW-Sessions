@@ -4,6 +4,7 @@ import { CollectionComponent } from './book-collection/collection.component';
 import { BookDetailComponent } from './book-detail/book-detail.component';
 import { BookGuardService } from '../guards/book-guard.service';
 import { CollectionResolver } from './collection.resolver';
+import { BookReviewComponent } from './book-review/book-review.component';
 
 const routes: Routes = [
   {
@@ -14,7 +15,13 @@ const routes: Routes = [
   {
     path: ':id',
     canActivate: [BookGuardService],
-    component: BookDetailComponent
+    component: BookDetailComponent,
+    children: [
+      {
+        path: 'reviews/:reviewId',
+        component: BookReviewComponent
+      }
+    ]
   }
 ];
 @NgModule({

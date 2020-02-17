@@ -2,7 +2,7 @@
 
 ## Topics
 1. Configuration for different environments – _complete_
-2. Routing: route guards, child routes, using resolvers - _get from intro workshop_
+2. Routing: route guards, child routes, using resolvers - _complete_
 3. Reactive Forms, how to dynamically create controls and apply validation rules via code - _to do_
 4. Unit testing using Jasmine and Karma - _get from intro workshop_
 5. Patterns for code reuse within a project using class inheritance in TypeScript - _demo only_
