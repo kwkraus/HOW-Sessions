@@ -531,3 +531,5 @@ If you want to use Code First Migrations with an existing database, see Code Fir
 Summary
 
 In this walkthrough we looked at Code First development using an existing database. We used the Entity Framework Tools for Visual Studio to reverse engineer a set of classes that mapped to the database and could be used to store and retrieve data.
+
+[EF Core How](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/Ef_Core_How.md)

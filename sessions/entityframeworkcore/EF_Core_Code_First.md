@@ -160,4 +160,8 @@ Just below the TargetFramework property, add the following:
 
 ```xml
 <StartWorkingDirectory>$(MSBuildProjectDirectory)</StartWorkingDirectory>
+
+
 ```
+
+[Entity Framework Core Data Base Fisrt](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/EF_Core_Database_First.md)

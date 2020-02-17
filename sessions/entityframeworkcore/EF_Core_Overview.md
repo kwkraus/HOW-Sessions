@@ -842,3 +842,4 @@ This method builds on top of the IMigrator service, which can be used for more a
 >- This approach isn't for everyone. While it's great for apps with a local database, most applications will require more robust deployment strategy like generating SQL scripts.
 >- Don't call EnsureCreated() before Migrate(). EnsureCreated() bypasses Migrations to create the schema, which causes Migrate() to fail.
 
+[Entity Framework Core Code First Walk Thru](https://github.com/kwkraus/HOW-Sessions/blob/master/sessions/entityframeworkcore/EF_Core_Code_First.md)
