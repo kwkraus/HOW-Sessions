@@ -1,10 +1,19 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { DataService } from './data.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { AppConfig } from '../app.config';
 
 describe('DataService', () => {
   beforeEach(() => {
 
+    class MockAppConfig {
+      static settings = {
+          apiServer: {
+              books: 'https://bookservicelaurie.azurewebsites.net/api/'
+          }
+      };
+    }
+    AppConfig.settings = <any>MockAppConfig.settings;
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [DataService]
