@@ -20,4 +20,16 @@ One of the project’s guiding principles is to support a common interface for a
 
 In this session, we'll be using Selenium support in .NET Core.
 
-### Nuget Packages
+## Nuget Packages
+
+Selenium for .NET Core is distributed through Nuget Packages.  Here's a list of the packages that will be used during this HOW Session.
+
+#### Selenium Core Libraries
+
+- [Selenium.Support](https://www.nuget.org/packages/Selenium.Support)
+- [Selenium.WebDriver](https://www.nuget.org/packages/Selenium.WebDriver)
+
+#### Selenium WebDriver distributions
+
+- [Selenium.WebDriver.ChromeDriver](https://www.nuget.org/packages/Selenium.WebDriver.ChromeDriver)
+- [Selenium.WebDriver.GeckoDriver](https://www.nuget.org/packages/Selenium.WebDriver.GeckoDriver)
