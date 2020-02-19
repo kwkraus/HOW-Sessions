@@ -43,7 +43,7 @@ export type ActionCode =
 ```
 ## Step 2 - Add the data service to call the authorization API
 
-### services\authorization-data.service
+### services\authorization-data.service.ts
 ```javascript
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -106,10 +106,10 @@ export class AuthorizationService {
     }
 
     initializePermissions() {
-        this.authorizationDataService.getPermissions()
-        .subscribe(
-            permissions => this.permissions = permissions
-        );
+        return this.authorizationDataService.getPermissions()
+        .pipe(tap((permissions: Array<ActionCode>) => {
+            this.permissions = permissions;
+        }));
     }
 }
 ```
@@ -118,18 +118,23 @@ export class AuthorizationService {
 
 In order to check a certain permission, we need to find a way to pass in that permission name. However, the way that a route guard is invoked does not allow for parameters. The solution is to use the ActivatedRoute data property, which is accessible when invoking the route guard.
 
-### app-routing.module.ts
-```javascript
-        canActivate: [AuthGuardService],
-        data: { actionCode: 'VIEW' },
-```
-
 ### service\auth-guard.service.ts
 ```javascript
+import { Injectable } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot } from '@angular/router';
+import { AuthService } from './auth.service';
+import { AppConfig } from '../app.config';
+import { ActionCode } from '../models/authorization.types';
+import { AuthorizationService } from './authorization.service';
+import { catchError, map } from 'rxjs/operators';
+import { of } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class AuthGuardService implements CanActivate {
     constructor(private authService: AuthService, private authorizationService: AuthorizationService) {
     }
 
-    canActivate(route: ActivatedRouteSnapshot): boolean {
+    canActivate(route: ActivatedRouteSnapshot) {
         return this.hasRequiredPermission(route.data['actionCode']);
     }
 
@@ -159,6 +164,14 @@ In order to check a certain permission, we need to find a way to pass in that pe
             return false;
         }
     }
+}
+```
+
+### app-routing.module.ts
+```javascript
+        path: 'collection',
+        canActivate: [AuthGuardService],
+        data: { actionCode: 'VIEW' },
 ```
 
 Run the application and attempt to navigate to the collection component. Watch the network traffic to see the request to the authorizations API.
@@ -179,13 +192,23 @@ export type ActionCode =
 ```javascript
   {
     canActivate: [AuthGuardService],
+    component: AboutComponent,
     data: { actionCode: 'ADMIN' },
-    path: 'newsletter',
-    component: NewsLetterComponent
+    path: 'admin'
   },
 ```
 
-Run the application and attempt to navigate to the newsletter component, which is the SURPRISE ME link. You should be blocked and unable to navigate.
+Also modify the TabsComponent that builds the menu.
+
+### tabs/tabs.component.ts
+```javascript
+    },
+    {
+      path: 'admin',
+      label: 'ADMIN'
+    }
+```
+Run the application and attempt to navigate to the admin route, which is the ADMIN link. You should be blocked and unable to navigate.
 
 ## Step 6 - Add directive to hide any HTML element if user does not have permission
 
@@ -257,7 +280,7 @@ export interface INavlink {
 ```
 
 ### tabs/tabs.component.ts
-Require that the user has ADMIN permision to be able to click the "Surprise Me" menu item.
+Require that the user has ADMIN permision to be able to click the "Admin" menu item.
 
 ```javascript
 export class TabsComponent {
@@ -266,8 +289,8 @@ export class TabsComponent {
     }
     . . .
     {
-      path: 'newsletter',
-      label: 'SURPRISE ME',
+      path: 'admin',
+      label: 'ADMIN',
       disabled: !this.authorizationService.hasPermission('ADMIN')
     }
 ```

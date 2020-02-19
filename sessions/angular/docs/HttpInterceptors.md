@@ -1,9 +1,22 @@
 # Http Interceptors
-We'll create an interceptor that captures every http request and if there is an error, it uses a custom service to emit an observable that components can subsribe to and show a notification message.
+We'll create an interceptor that captures every http request and if there is an error, it uses a custom service to emit an observable that components can subscribe to and show a notification message.
 
 ## Step 1 - Create the Notification Service
 
-### notification.service.ts
+### models/notification-message.models.ts
+
+```javascript
+export interface INotificationMessage {
+    type: NotificationType;
+    message: string;
+}
+
+export type NotificationType =
+    'success' | 'error' | 'warning' | 'info';
+
+```
+
+### services/notification.service.ts
 
 ```javascript
 import { Injectable } from '@angular/core';
@@ -24,21 +37,10 @@ export class NotificationService {
     }
 }
 ```
-### notification.service.ts
 
-```javascript
-export interface INotificationMessage {
-    type: NotificationType;
-    message: string;
-}
-
-export type NotificationType =
-    'success' | 'error' | 'warning' | 'info';
-
-```
 ## Step 2 - Create the Http Interceptor
 
-### error-notification-interceptor.ts
+### error-notification-interceptor.service.ts
 
 ```javascript
 import { Injectable } from '@angular/core';

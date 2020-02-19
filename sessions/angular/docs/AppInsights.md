@@ -27,7 +27,7 @@ See Configuration module for more details on this option.
 
 ```json
     "logging": {
-        "appInsights": false
+        "appInsights": true
     },
     "appInsights": {
         "instrumentationKey": "<your-key-here>"
@@ -50,8 +50,30 @@ export interface IAppConfig {
 }
 ```
 
+## Step 3 - Add App Insights JS library provided by Microsoft
+You could merely place this JavaScript library on the index.html page and logging would be done.
+
+Any exceptions inside the browser would be send to App Insights as well as page views.
+
+However, if you want to catch exceptions, you will need to manually log those exceptions. And, the notion of page view is not so useful in the context of a SPA. So, again you would need to log these manually as the user navigates to a different clientside route.
+
+### package.json file
+```json
+"dependencies": {
+    "@microsoft/applicationinsights-web": "~2.4.4"
+},
+```
+```
+npm install
+```
+
+### applicationinsights-js documentation
+https://github.com/microsoft/applicationinsights-js
+
 ### app.module APP_INITIALIZER
 ```javascript
+import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+
 export function initializeApp(appConfig: AppConfig) {
   const promise = appConfig.load().then(() => {
       if (AppConfig.settings && AppConfig.settings.logging &&
@@ -66,34 +88,16 @@ export function initializeApp(appConfig: AppConfig) {
           appInsights.trackPageView();
           AppConfig.appMonitor = appInsights;
       }
-  });
+  }});
   return () => promise;
 }
 ```
 
-## Step 3 - Add App Insights JS library provided by Microsoft
-You could merely place this JavaScript library on the index.html page and logging would be done.
-
-Any exceptions inside the browser would be send to App Insights as well as page views.
-
-However, if you want to catch exceptions, you will need to manually log those exceptions. And, the notion of page view is not so useful in the context of a SPA. So, again you would need to log these manually as the user navigates to a different clientside route.
-
-### package.json file
-```json
-"dependencies": {
-    "@microsoft/applicationinsights-web": "~2.4.4"
-},
-```
-
-### applicationinsights-js documentation
-https://github.com/microsoft/applicationinsights-js
-
 ## Step 4 - Consume the Application Insights SDK in custom logging class
 Create a TypeScript class as a wrapper around the Application Insights JavaScript API and import the AppInsights class using the module loading system. Include methods for each method in the SDK that you want to support.
 
-### add interface for ApplicationInsights library
-To remove any dependency directly on App Insights in our custom logging service,
-create an interface.
+### models/app-monitor.ts
+Add interface for ApplicationInsights library to remove any dependency directly on App Insights in our custom logging service
 ```
 export interface IAppMonitor {
     trackEvent(event: {name: string}, customProperties?: {
@@ -159,7 +163,7 @@ Add a property to the AppConfig class to store the one ApplicationInsights insta
 export class AppConfig {
   static appMonitor: IAppMonitor;
 ```
-### logging.service.ts
+### services/logging.service.ts
 ```javascript
 import { Injectable } from '@angular/core';
 import { AppConfig } from '../app.config';
@@ -255,6 +259,8 @@ export class LoggingService {
 ## Step 5 - Provide Angular Error Handler that logs to App Insights
 
 Create the custom error handler
+
+### services/error-handler.service.ts
 ```javascript
 import { ErrorHandler, Injectable } from '@angular/core';
 import { LoggingService } from './logging.service';
@@ -298,6 +304,9 @@ export class AppModule {
 ```
 npm start
 ```
+
+View the browser network tab to see track requests and see how App Insights send data. Notice, they are POST requests and information is in the body of the request.
+
 ## Step 7 - introduce an exception and examine results in Azure portal
 
 Add code to collection.component.ts ngOnInit() to cause an exception to occur
@@ -308,8 +317,6 @@ Add code to collection.component.ts ngOnInit() to cause an exception to occur
     };
     const test = (<any>testObject).address.city;
 ```
-
-View the browser network tab to see track requests and see how App Insights send data.
 
 Navigate to the Azure portal and the App Insights service - Failures.
 Filter by Browser, Exceptions

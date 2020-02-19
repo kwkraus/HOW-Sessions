@@ -49,7 +49,8 @@ Move the directives folder from under the collection folder to be under the shar
 └──app/shared/directives/hide-if-unauthorized.directive.ts
 ```
 
-This directive uses AuthorizationService and ActionCode, but these were created in the AppModule. So, let's move these to a new Core module. First, lets declare the attribute directive in the Shared module.
+### shared.module.ts
+Also delete the declaration of HideIfUnquthorizedDirective from the CollectionModule into the SharedModule.
 
 ```javascript
 import { NgModule } from '@angular/core';
@@ -71,6 +72,8 @@ import { HideIfUnauthorizedDirective } from './directives/hide-if-unauthorized.d
 export class SharedModule { }
 
 ```
+
+This directive uses AuthorizationService and ActionCode, but these were created in the AppModule. So, let's move these to a new Core module.
 
 ## Step 2 - Add Core Module
 **Best practices for Core Module**
@@ -106,6 +109,8 @@ export class CoreModule { }
 
 ## Step 3 - Now that we have a CoreModule, move all shared services and models from the AppModule into the CoreModule
 
+Create a services folder for the services and a models folder for the models.
+
 ### Services
 1. auth-guard.service.ts
 2. auth-interceptor.service.ts
@@ -113,6 +118,7 @@ export class CoreModule { }
 4. authorization-data.service.ts
 5. authorization.service.ts
 6. error-handler.service.ts
+7. error-notification-interceptor.service.ts
 7. logging.service.ts
 8. notification.service.ts
 
