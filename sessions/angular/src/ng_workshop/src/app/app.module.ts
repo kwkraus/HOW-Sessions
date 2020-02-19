@@ -8,22 +8,18 @@ import {
   MatButtonModule, MatLineModule, MatToolbarModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
 
 import { TabsComponent } from './tabs/tabs.component';
-import { environment } from '../environments/environment';
-import { NewsLetterComponent } from './newsletter/newsletter.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AboutComponent,
-    TabsComponent,
-    NewsLetterComponent
+    TabsComponent
   ],
   imports: [
     BrowserModule,
@@ -41,9 +37,7 @@ import { NewsLetterComponent } from './newsletter/newsletter.component';
     MatInputModule,
     MatToolbarModule,
     BrowserAnimationsModule,
-    // import HttpClientModule after BrowserModule.
-    HttpClientModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
+    HttpClientModule
   ],
   bootstrap: [AppComponent]
 })

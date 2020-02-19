@@ -18,7 +18,8 @@ describe('CollectionComponent', () => {
   let books: Array<IBook>;
 
   beforeEach(async(() => {
-    mockDataService = jasmine.createSpyObj(['deleteBook', 'getBooks', 'addBook', 'search', 'updateBook']);
+    mockDataService = jasmine.createSpyObj([
+      'deleteBook', 'getBooks', 'getBook', 'addBook', 'search', 'updateBook']);
 
     TestBed.configureTestingModule({
       imports: [

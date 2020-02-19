@@ -22,7 +22,7 @@
       </div>
       <div>
         <label><strong>Rating:</strong></label>
-        <my-rating [rating]="book.rating" (ratingClicked)="onRatingUpdate(book, $event)"></my-rating>
+        <my-rating [rating]="book.rating" (ratingClicked)="onRatingUpdate($event)"></my-rating>
       </div>
     </mat-card-content>
     <mat-card-actions>

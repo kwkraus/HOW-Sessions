@@ -49,11 +49,6 @@ export class DataService {
       .pipe(
         catchError(this.handleError)
       );
-    // return this.getBooks()
-    //   .pipe(
-    //     map((books: IBook[]) => books.find(b => b.id === id)),
-    //     catchError(this.handleError)
-    //   );
   }
 
   getPreviousBookId(id: number): Observable<number> {
