@@ -61,7 +61,15 @@ The **Library App** is the application built in the Intro Workshop. Features can
 
 **Student setup notes**
 - Open docs in the browser to follow along and also to have access to copy/paste of larger code snippets.
-- git clone the angular folder (git svn https://path-to-folder
+- git clone the angular folder
+  - create a folder for your local repository
+  - Open a command promt from that folder
+  - git init
+  - git remote add origin -f https://github.com/kwkraus/How-Sessions.git
+  - git config core.sparsecheckout true
+  - echo sessions/angular >> .git/info/sparse-checkout
+  - git pull origin master
+
 - With multiple apps in this repo with the same file names it can be confusing if you open VS Code at the root of the angular folder. Therefore, it is recommended that you open VS Code in the folder of the app that you are working in. That folder is ng_workshop.
 - You may want to open a different instance of VS Code to view finished modules as a reference.
 
