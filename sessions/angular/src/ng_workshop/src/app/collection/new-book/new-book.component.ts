@@ -31,4 +31,7 @@ export class NewBookComponent implements OnInit {
     this._dialogRef.close(this.book);
   }
 
+  onRatingUpdate(rating: number): void {
+    this.book.rating = rating;
+  }
 }

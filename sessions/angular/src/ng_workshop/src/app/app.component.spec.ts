@@ -1,7 +1,6 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { MatTabsModule, MatToolbarModule, MatSnackBarModule } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
 import { TabsComponent } from './tabs/tabs.component';
@@ -22,8 +21,7 @@ describe('AppComponent', () => {
         MatTabsModule,
         MatToolbarModule,
         MatSnackBarModule,
-        RouterTestingModule,
-        ServiceWorkerModule.register('', { enabled: false })
+        RouterTestingModule
       ],
     }).compileComponents();
   }));

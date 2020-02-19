@@ -24,8 +24,7 @@ export class CollectionComponent implements OnInit {
   constructor(private _snackBar: MatSnackBar,
     private _dataService: DataService,
     private _dialog: MatDialog,
-    private _router: Router,
-    private _route: ActivatedRoute) {
+    private _router: Router) {
     this.openingTime = new Date();
     this.openingTime.setHours(10, 0);
     this.closingTime = new Date();
@@ -33,7 +32,10 @@ export class CollectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.books = this._route.snapshot.data['books'];
+    this._dataService.getBooks().subscribe(books => {
+      this.books = books;
+    });
+
     this._dataService.search(this.searchTerm$)
       .subscribe(books => {
         this.books = books;
@@ -48,8 +50,8 @@ export class CollectionComponent implements OnInit {
     }
   }
 
-
-  onRatingUpdate(book: IBook): void {
+  onRatingUpdate(book: IBook, rating: number): void {
+    book.rating = rating;
     this.updateBook(book);
     this.updateMessage(book.title, ' Rating has been updated');
   }

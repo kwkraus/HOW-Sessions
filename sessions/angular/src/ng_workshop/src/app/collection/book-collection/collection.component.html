@@ -13,7 +13,12 @@
 <div>
   Search Books By Tite or Author:
   <input (keyup)="searchTerm$.next($event.target.value)">
-  <mat-list>
+  <div *ngIf="!books">Retrieving books...</div>
+  <div class="text-right add-btn">
+    <button mat-raised-button color="primary" (click)="addBook()">
+      <i class="material-icons">add_box</i> ADD BOOK</button>
+  </div>
+  <mat-list *ngIf="books">
     <mat-list-item *ngFor="let book of books">
       <mat-icon mat-list-icon>book</mat-icon>
       <h3 mat-line>
@@ -37,7 +42,7 @@
         <span>{{book.author}}</span>
       </p>
       <p mat-line>
-        <my-rating [rating]="book.rating" [book]="book" (ratingClicked)="onRatingUpdate($event)">
+        <my-rating [rating]="book.rating" (ratingClicked)="onRatingUpdate(book, $event)">
         </my-rating>
       </p>
       <p mat-line>
@@ -45,8 +50,4 @@
       </p>
     </mat-list-item>
   </mat-list>
-  <div class="text-right add-btn">
-    <button mat-raised-button color="primary" (click)="addBook()">
-      <i class="material-icons">add_box</i> ADD BOOK</button>
-  </div>
 </div>

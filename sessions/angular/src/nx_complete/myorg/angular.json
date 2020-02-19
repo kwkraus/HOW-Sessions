@@ -1,0 +1,287 @@
+{
+  "version": 1,
+  "projects": {
+    "bookshelf-member-portal": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/bookshelf-member-portal",
+      "sourceRoot": "apps/bookshelf-member-portal/src",
+      "prefix": "myorg",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/bookshelf-member-portal",
+            "index": "apps/bookshelf-member-portal/src/index.html",
+            "main": "apps/bookshelf-member-portal/src/main.ts",
+            "polyfills": "apps/bookshelf-member-portal/src/polyfills.ts",
+            "tsConfig": "apps/bookshelf-member-portal/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/bookshelf-member-portal/src/favicon.ico",
+              "apps/bookshelf-member-portal/src/assets"
+            ],
+            "styles": ["apps/bookshelf-member-portal/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/bookshelf-member-portal/src/environments/environment.ts",
+                  "with": "apps/bookshelf-member-portal/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "bookshelf-member-portal:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "bookshelf-member-portal:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "bookshelf-member-portal:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/bookshelf-member-portal/tsconfig.app.json",
+              "apps/bookshelf-member-portal/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/bookshelf-member-portal/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/bookshelf-member-portal/jest.config.js",
+            "tsConfig": "apps/bookshelf-member-portal/tsconfig.spec.json",
+            "setupFile": "apps/bookshelf-member-portal/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "bookshelf-member-portal-e2e": {
+      "root": "apps/bookshelf-member-portal-e2e",
+      "sourceRoot": "apps/bookshelf-member-portal-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/bookshelf-member-portal-e2e/cypress.json",
+            "tsConfig": "apps/bookshelf-member-portal-e2e/tsconfig.e2e.json",
+            "devServerTarget": "bookshelf-member-portal:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "bookshelf-member-portal:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/bookshelf-member-portal-e2e/tsconfig.e2e.json"],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/bookshelf-member-portal-e2e/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-portal": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/admin-portal",
+      "sourceRoot": "apps/admin-portal/src",
+      "prefix": "myorg",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/admin-portal",
+            "index": "apps/admin-portal/src/index.html",
+            "main": "apps/admin-portal/src/main.ts",
+            "polyfills": "apps/admin-portal/src/polyfills.ts",
+            "tsConfig": "apps/admin-portal/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/admin-portal/src/favicon.ico",
+              "apps/admin-portal/src/assets"
+            ],
+            "styles": ["apps/admin-portal/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/admin-portal/src/environments/environment.ts",
+                  "with": "apps/admin-portal/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "admin-portal:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "admin-portal:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "admin-portal:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/admin-portal/tsconfig.app.json",
+              "apps/admin-portal/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/admin-portal/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/admin-portal/jest.config.js",
+            "tsConfig": "apps/admin-portal/tsconfig.spec.json",
+            "setupFile": "apps/admin-portal/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "admin-portal-e2e": {
+      "root": "apps/admin-portal-e2e",
+      "sourceRoot": "apps/admin-portal-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/admin-portal-e2e/cypress.json",
+            "tsConfig": "apps/admin-portal-e2e/tsconfig.e2e.json",
+            "devServerTarget": "admin-portal:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "admin-portal:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/admin-portal-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/admin-portal-e2e/**"]
+          }
+        }
+      }
+    },
+    "about": {
+      "projectType": "library",
+      "root": "libs/about",
+      "sourceRoot": "libs/about/src",
+      "prefix": "myorg",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/about/tsconfig.lib.json",
+              "libs/about/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/about/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/about/jest.config.js",
+            "tsConfig": "libs/about/tsconfig.spec.json",
+            "setupFile": "libs/about/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "bookshelf-member-portal"
+}

@@ -1,0 +1,12 @@
+{
+    "logging": {
+        "console": true,
+        "appInsights": true
+    },
+    "appInsights": {
+        "instrumentationKey": "<your-guid-here>"
+    },
+    "apiServer": {
+        "books": "https://bookservicelaurie.azurewebsites.net/api/"
+    }
+}

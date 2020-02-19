@@ -1,0 +1,11 @@
+mat-card-content.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 800px;
+}
+.result-card {
+    max-width: 200px;
+    background-color: cornflowerblue;
+    border-color: darkblue;
+    margin: 15px;
+}

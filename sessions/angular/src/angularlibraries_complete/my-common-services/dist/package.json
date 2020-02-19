@@ -1,0 +1,20 @@
+{
+  "name": "my-common-services",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/core": ">=8.0.0",
+    "@angular/common": ">=8.0.0",
+    "tslib": "^1.9.0"
+  },
+  "dest": "dist",
+  "main": "bundles/my-common-services.umd.js",
+  "module": "fesm5/my-common-services.js",
+  "es2015": "fesm2015/my-common-services.js",
+  "esm5": "esm5/my-common-services.js",
+  "esm2015": "esm2015/my-common-services.js",
+  "fesm5": "fesm5/my-common-services.js",
+  "fesm2015": "fesm2015/my-common-services.js",
+  "typings": "my-common-services.d.ts",
+  "metadata": "my-common-services.metadata.json",
+  "sideEffects": false
+}

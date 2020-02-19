@@ -1,0 +1,32 @@
+{
+  "npmScope": "myorg",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "bookshelf-member-portal": {
+      "tags": []
+    },
+    "bookshelf-member-portal-e2e": {
+      "tags": [],
+      "implicitDependencies": ["bookshelf-member-portal"]
+    },
+    "admin-portal": {
+      "tags": []
+    },
+    "admin-portal-e2e": {
+      "tags": [],
+      "implicitDependencies": ["admin-portal"]
+    },
+    "about": {
+      "tags": []
+    }
+  }
+}

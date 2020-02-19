@@ -1,0 +1,17 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{title}}</mat-card-title>
+        <mat-card-subtitle>{{searchstring}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="container">
+        <mat-card *ngFor="let url of imageResults, index as i" class="result-card">
+            <p>{{url.name}}</p>
+            <img mat-card-image [src]="url.thumbnailUrl">
+            <button mat-button (click)="select(i)">SELECT</button>
+        </mat-card>
+    </mat-card-content>
+    <mat-card-actions>
+        <button *ngIf="searchstring && imageResults?.length === 0"
+            mat-button (click)="search()">SEARCH</button>
+    </mat-card-actions>
+</mat-card>

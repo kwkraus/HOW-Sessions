@@ -1,0 +1,52 @@
+<h3>{{pageTitle}}&nbsp;
+  <mat-slide-toggle class="plr-15" color="primary" [(ngModel)]="showOperatingHours">{{showOperatingHours ? 'Hide' : 'Show'}} library hours
+  </mat-slide-toggle>
+</h3>
+<div [hidden]="!showOperatingHours">
+  <mat-card>
+    <mat-card-subtitle>
+      <strong>Operating Hours</strong>
+    </mat-card-subtitle>
+    <mat-card-content>{{openingTime | date:'shortTime'}} - {{closingTime | date:'shortTime'}} (M-F)</mat-card-content>
+  </mat-card>
+</div>
+<div>
+  Search Books By Tite or Author:
+  <input (keyup)="searchTerm$.next($event.target.value)">
+  <div class="text-right add-btn">
+    <button mat-raised-button color="primary" (click)="addBook()">
+      <i class="material-icons">add_box</i> ADD BOOK</button>
+  </div>
+  <mat-list>
+    <mat-list-item *ngFor="let book of books">
+      <mat-icon mat-list-icon>book</mat-icon>
+      <h3 mat-line>
+        <strong>{{book.title}}</strong>
+      </h3>
+      <div>
+        <button mat-button (click)="openDialog(book.id)">
+          <i class="material-icons">pageview</i>
+          Dialog
+        </button>
+        <button mat-button (click)="openRoute(book.id)">
+          <i class="material-icons"> pageview</i>
+          Route
+        </button>
+        <button mat-button (click)="delete(book)">
+          <i class="material-icons">delete_forever</i>
+          Delete
+        </button>
+      </div>
+      <p mat-line>
+        <span>{{book.author}}</span>
+      </p>
+      <p mat-line>
+        <my-rating [rating]="book.rating" (ratingClicked)="onRatingUpdate(book, $event)">
+        </my-rating>
+      </p>
+      <p mat-line>
+        <span [class]="book.isCheckedOut ? 'chip chip-danger' : 'chip chip-success'">{{book.isCheckedOut ? 'Checked-Out' : 'Available'}}</span>
+      </p>
+    </mat-list-item>
+  </mat-list>
+</div>

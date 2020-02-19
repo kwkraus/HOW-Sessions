@@ -45,8 +45,9 @@ export class BookDetailComponent implements OnInit, OnDestroy {
       error => this.updateMessage(<any>error, 'Error'));
   }
 
-  onRatingUpdate(book: IBook): void {
-    this.updateBook(book);
+  onRatingUpdate(rating: number): void {
+    this.book.rating = rating;
+    this.updateBook();
   }
 
   updateMessage(message: string, type: string, actionText: string = 'DISMISS') {
@@ -61,10 +62,10 @@ export class BookDetailComponent implements OnInit, OnDestroy {
     this._router.navigate(['/collection']);
   }
 
-  updateBook(book: IBook): void {
-    this._dataService.updateBook(book)
+  updateBook(): void {
+    this._dataService.updateBook(this.book)
       .subscribe(books => {
-          this._snackBar.open(`"${book.title}" has been updated!`, 'DISMISS', {
+          this._snackBar.open(`"${this.book.title}" has been updated!`, 'DISMISS', {
             duration: 3000
           });
         }, error => this.updateMessage(<any>error, 'ERROR'));
