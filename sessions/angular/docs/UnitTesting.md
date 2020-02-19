@@ -11,7 +11,7 @@ const context = require.context('./app', true, /hellotesting\.spec\.ts$/);
 ```
 
 ## Run from command line or terminal
-
+Look at hellotesting.spec.ts
 ```
 ng test
 ```
@@ -21,6 +21,7 @@ Now, run existing tests for collection component.
 ```javascript
 const context = require.context('./app/collection/book-collection', true, /collection.component\.spec\.ts$/);
 ```
+Look at collection.component.spec.ts
 
 Then, run all spec files in the collection module.
 ```javascript
@@ -47,7 +48,7 @@ Now it needs the HttpClient. Show that any dependencies will cascade through the
 
 ```javascript
   beforeEach(async(() => {
-    const mockDataService = jasmine.createSpyObj(['deleteBook', 'getBooks', 'getBook', 'addBook', 'search', 'updateBook']);
+    const mockDataService = jasmine.createSpyObj(['getBook']);
 
     TestBed.configureTestingModule({
         . . .
@@ -55,9 +56,15 @@ Now it needs the HttpClient. Show that any dependencies will cascade through the
         { provide: DataService, useValue: mockDataService }
       ]
 ```
+And provide an implementation of getBook()
+```javascript
+    const book = { id: 1, title: 'Angular Rocks!', author: 'Fred Flinstone', isCheckedOut: true, rating: 5, bookReviews: []};
+
+    mockDataService.getBook.and.returnValue(of(book));
+```
 
 Now, we have a broken test ```TypeError: Cannot read property 'title' of undefined```
-Show how to debug in the browser.
+Show how to debug in the browser. Click DEBUG button and set breakpoints.
 We have not populated the data in the route, so we need to mock that as well.
 
 ```javascript
@@ -69,13 +76,6 @@ We have not populated the data in the route, so we need to mock that as well.
               params: { id: '1' }}}
         }}
       ]
-```
-
-Now, need an implementation of getBook()
-```javascript
-    const book = { id: 1, title: 'Angular Rocks!', author: 'Fred Flinstone', isCheckedOut: true, rating: 5, bookReviews: []};
-
-    mockDataService.getBook.and.returnValue(of(book));
 ```
 
 So, it turns out, we have an actual bug. If there are no reviews for the id pass in on the route, the component crashes. Let's fix the component.

@@ -9,11 +9,10 @@ import { IBook } from '../models/book.models';
 export class RatingComponent {
 
   @Input() rating: number;
-  @Input() book: IBook;
-  @Output() ratingClicked: EventEmitter<IBook> = new EventEmitter<IBook>();
+  @Output() ratingClicked: EventEmitter<number> = new EventEmitter<number>();
 
   click(rating: number): void {
-    this.book.rating = rating;
-    this.ratingClicked.emit(this.book);
+    this.rating = rating;
+    this.ratingClicked.emit(rating);
   }
 }

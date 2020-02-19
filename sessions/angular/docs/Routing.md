@@ -56,6 +56,8 @@ const routes: Routes = [
 ];
 ```
 
+Test the guard by attempting to run the app and navigate to the book detail page with a non-numeric or invalid id.
+
 ## Route Resolvers
 https://angular.io/guide/router#resolve-pre-fetching-component-data
 
@@ -88,15 +90,21 @@ const routes: Routes = [
 ```
 
 ### collection.component.ts
-```diff
+```javascript
+  constructor(. . .,
+    private _route: ActivatedRoute)
+```
+```javascript
   ngOnInit() {
--     this._dataService.getBooks().subscribe(books => {
--      this.books = books;
--    });
+    //  this._dataService.getBooks().subscribe(books => {
+    //   this.books = books;
+    // });
 
-+    this.books = this._route.snapshot.data['books'];
+    this.books = this._route.snapshot.data['books'];
   }
 ```
+
+Run the app to make sure we are still getting the list of books for the collection component. Notice that now the user remains on the previous page while waiting for the resolver to get the data.
 
 ## Child Routes
 Let's say we had book reviews that we want to show inside the book detail component.
@@ -232,3 +240,6 @@ export class BookReviewComponent implements OnInit, OnDestroy {
   </mat-card-content>
 </mat-card>
 ```
+Run the app and navigate to the book detail page.
+Click on reviews to see the child route navigation.
+Set breakpoint in BookReview component to see what values are available on the route.

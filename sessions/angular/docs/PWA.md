@@ -9,7 +9,7 @@ In this module we will introduce some features to the application that makes it 
 
 Before you introduce the service worker to your application try using your application in offline mode by opening the f12 tools and choosing offline mode under the network tab as shown below. Notice that you will be presented by a “There is no Internet connection” message which is the expected behavior of a web application when there is no connection. 
 
-![](pwa_img1.png)
+![](images/pwa_img1.png)
 
 ## Add PWA functionality to the app
 
@@ -17,7 +17,7 @@ Before you introduce the service worker to your application try using your appli
 ng add @angular/pwa
 ```
 
-![](pwa_img2.png)
+![](images/pwa_img2.png)
 
 ### app.module.ts
 ```javascript
@@ -55,7 +55,7 @@ To simulate a network issue, disable network interaction for your application. I
 
 Refresh the page and the page should still display even though there is not network connect.
 
-![](pwa_img3.png)
+![](images/pwa_img3.png)
 
 Notice that under the "Size" column, the requests state is (from ServiceWorker). This means that the resources are not being loaded from the network. Instead, they are being loaded from the service worker's cache.
 

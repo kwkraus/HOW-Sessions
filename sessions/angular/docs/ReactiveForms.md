@@ -21,15 +21,8 @@ Add property to component for the form model.
 ```diff
 + import { FormGroup, FormControl } from '@angular/forms';
 
-+  newBookForm = new FormGroup({
-+    title: new FormControl(''),
-+    author: new FormControl(''),
-+    isCheckedOut: new FormControl(false),
-+    rating: new FormControl(0)
-+  });
-
 -  book: IBook;
--  ngOnInit() {
+   ngOnInit() {
 -    this.book = {
 -      id: 0,
 -      title: '',
@@ -37,10 +30,22 @@ Add property to component for the form model.
 -      isCheckedOut: false,
 -      rating: 0
 -    };
--  }
+   }
+
++  newBookForm = new FormGroup({
++    title: new FormControl(''),
++    author: new FormControl(''),
++    isCheckedOut: new FormControl(false),
++    rating: new FormControl(0)
++  });
 ```
 
 ```diff
+  save(): void {
+-    this._dialogRef.close(this.book);
++    this._dialogRef.close(this.newBookForm.value);
+  }
+
   onRatingUpdate(rating: number): void {
 -   this.book.rating = rating;
 +    this.newBookForm.get('rating').setValue(rating);
@@ -111,7 +116,7 @@ https://angular.io/guide/reactive-forms#generating-form-controls-with-formbuilde
 import { FormBuilder } from '@angular/forms';
 
   constructor(private _dialogRef: MatDialogRef<NewBookComponent>,
-    private formBuilder: FormBuilder) { }
+    private fb: FormBuilder) { }
 ```
 Another service available to make the form easier.
 
@@ -141,6 +146,9 @@ Another service available to make the form easier.
 ```
 
 ## React to form changes
+The API for the AbstractControl class can be used to get & set properties of the FormControl, FormGroup, and FormArray.
+
+https://angular.io/api/forms/AbstractControl#abstractcontrol
 
 ### new-book.component.ts
 ```javascript
@@ -152,3 +160,9 @@ Another service available to make the form easier.
     );
   }
 ```
+
+Other useful methods are to setValidators(), setValue(), enable(), disable()
+
+## Dynamically constructed form
+https://angular.io/guide/dynamic-form#question-form-components
+question-control.service.ts

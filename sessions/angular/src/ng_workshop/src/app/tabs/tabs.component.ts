@@ -16,10 +16,6 @@ export class TabsComponent {
     {
       path: 'collection',
       label: 'MY COLLECTION'
-    },
-    {
-      path: 'newsletter',
-      label: 'SURPRISE ME'
     }
   ];
 }

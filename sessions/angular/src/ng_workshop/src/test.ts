@@ -29,7 +29,7 @@ getTestBed().initTestEnvironment(
 //const context = require.context('./', true, /\.spec\.ts$/);
 const context = require.context('./app', true, /hellotesting\.spec\.ts$/);
 //const context = require.context('./app', true, /app\.component\.spec\.ts$/);
-// const context = require.context('./app/book-detail', true, /\.spec\.ts$/);
+//const context = require.context('./app/collection/book-collection', true, /collection.component\.spec\.ts$/);
 //const context = require.context('./app/collection', true, /\.spec\.ts$/);
 //const context = require.context('./app/services', true, /\.spec\.ts$/);
 // And load the modules.
