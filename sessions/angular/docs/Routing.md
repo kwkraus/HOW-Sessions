@@ -14,7 +14,7 @@ import { map, catchError } from 'rxjs/operators';
 import { DataService } from '../services/data.service';
 
 @Injectable({ providedIn: 'root' })
-export class BookGuardService {
+export class BookGuardService implements CanActivate {
 
   constructor(private router: Router, private dataService: DataService) { }
 
@@ -34,7 +34,7 @@ export class BookGuardService {
               return true;
           }
           this.router.navigate(['/collection']);
-          return of(false);
+          return false;
         }),
         catchError(() => {
           this.router.navigate(['/collection']);
