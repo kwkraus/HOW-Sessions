@@ -19,22 +19,20 @@ Angular Elements allow us to build web components which can be consumed by other
     2. Material/CDK components in any environment
     3. Design systems - build once, use anywhere
 
+https://angular.io/guide/elements
+
 ## Create an empty application using the Angular CLI v9
-Show the running app.
+Routing is not needed. You can select CSS for styling.
+
+Add Angular Material
+```
+npm install --save @angular/material @angular/cdk @angular/animations hammerjs
+```
+
 Go to the Azure portal and create a Bing Image Search Cognitive Service.
 Make note of the URL and subscription key.
 Show the documentation.
 
-## Update config with subscription key
-
-### config.dev.json
-```json
-    "cognitiveApiService": {
-        "subscriptionKeys": {
-            "bingSearch": "ecdcc32fbd20470fa8642beab002e281"
-        }
-    }
-```
 ## Add angular-elements to the application
 ```
 ng add @angular/elements
@@ -50,6 +48,7 @@ ng add @angular/elements
 └──app/models
 ```
 
+### bing-search.models.ts
 ```javascript
 export interface IBingSearchResult {
     value: Array<IBingMediaSearch | IBingNewsSearch>;
@@ -93,6 +92,7 @@ export interface IBingNewsSearch {
 └──app/services
 ```
 
+### bing-search.service.ts
 ```javascript
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -126,7 +126,7 @@ export class BingSearchService {
     }
 
     private getFormattedResults(searchResult: IBingSearchResult) {
-        return (<IBingMediaSearch[]>searchResult.value).map(result => {
+        return (searchResult.value as IBingMediaSearch[]).map(result => {
             return {
                 contentUrl: result.contentUrl,
                 thumbnailUrl: result.thumbnailUrl,
@@ -138,8 +138,9 @@ export class BingSearchService {
 ```
 
 ## Create the component
+
 ```
-└──app/image-search
+ng g c ImageSearch
 ```
 
 ### image-search.component.ts
@@ -231,7 +232,7 @@ mat-card-content.container {
 ```
 
 ## Create the custom element that is a wrapper for the component
-### image-search.element.ts
+### image-search/image-search.element.ts
 ```javascript
 import { ImageSearchComponent } from './image-search.component';
 import { ɵrenderComponent, ɵdetectChanges } from '@angular/core';
@@ -271,6 +272,8 @@ export class ImageSearchElement extends HTMLElement {
 ## Register the custom element with the browser
 This can be done in different places, but we'll do it in the App Module.
 ```javascript
+import { createCustomElement } from '@angular/elements';
+
 export class AppModule {
   constructor(private injector: Injector) {
   }
@@ -284,6 +287,10 @@ export class AppModule {
 
 Include the module imports that we need in the AppModule as well.
 ```javascript
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -292,7 +299,9 @@ Include the module imports that we need in the AppModule as well.
     MatButtonModule
   ],
 ```
-Remove the declaration and bootstrapping of the AppModule. The web component does not use it.
+Remove the declaration and bootstrapping of the AppComponent. The web component does not use it.
+
+Remove the AppComponent from the application. It is not needed.
 
 ## Add the custom component to the index.html page
 We should be able to use this custom component anywhere, so we insert it on the index.html page.
@@ -315,7 +324,7 @@ Remove the <app-root> since we are not loading the app component.
 </body>
 ```
 
-This will fail because the tsconfig file is sett to target ES5 which does bit include web components. We could modify the target in the tsconfig.json to be ES2015 or we can add polyfills so we can target older browsers.
+This will fail if the tsconfig file is set to target ES5 which does not include web components. We could modify the target in the tsconfig.json to be ES2015 or we can add polyfills so we can target older browsers.
 
 ## Add polyfills
 https://www.webcomponents.org/polyfills
@@ -327,7 +336,7 @@ https://www.webcomponents.org/polyfills
 ### polyfills.ts
 ```javascript
 
-// NOTE: one copy is zone.js is required.
+// NOTE: one copy of zone.js is required.
 // If this web component is used inside an Angular app,
 // we need to remove this import from that container app
 // and leave the import here in the web component
@@ -407,7 +416,7 @@ export interface IBook {
   author: string;
   isCheckedOut: boolean;
   rating: number;
-  coverUrl: string;
+  coverUrl?: string;
 }
 ```
 

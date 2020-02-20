@@ -1,4 +1,9 @@
 # Angular Libraries
+https://angular.io/guide/libraries
+https://angular.io/guide/creating-libraries
+
+Show angularlibraries_complete to show what we are attempting to build.
+
 Angular Package Format https://goo.gl/jB3GVv
 
 Note: to start clean from the previous module

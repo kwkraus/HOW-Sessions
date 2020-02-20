@@ -31,7 +31,7 @@
 - hide/disable controls
 - block pages by permission
 
-11. [Feature modules and lazy loading](docs/ModuleOrganization.md)
+11. [Module Organization](docs/ModuleOrganization.md)
 
 12. [Angular Elements](docs/AngularElements.md)
 - for non-Angular applications

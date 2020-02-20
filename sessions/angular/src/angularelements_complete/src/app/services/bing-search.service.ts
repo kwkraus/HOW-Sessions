@@ -30,7 +30,7 @@ export class BingSearchService {
     }
 
     private getFormattedResults(searchResult: IBingSearchResult) {
-        return (<IBingMediaSearch[]>searchResult.value).map(result => {
+        return (searchResult.value as IBingMediaSearch[]).map(result => {
             return {
                 contentUrl: result.contentUrl,
                 thumbnailUrl: result.thumbnailUrl,
