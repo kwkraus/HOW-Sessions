@@ -11,7 +11,7 @@
         "metadata": "https://ng-demo-metadata.azurewebsites.net/api/"
     },
     "aad": {
-        "requireAuth": true,
+        "requireAuth": false,
         "tenant": "7534f15c-6ed2-4469-bbb2-1d432dec01a6",
         "clientId": "5fb2a243-96aa-4583-abb7-a8a7e252cd1a",
         "endpoints": {

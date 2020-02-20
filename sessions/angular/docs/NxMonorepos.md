@@ -38,7 +38,7 @@ ng add @nrwl/angular --defaults
 ng g @nrwl/angular:application bookshelf-member-portal
 ```
 
-Since we have an application under the workspace, we need to indicate which one to servce.
+Since we have an application under the workspace, we need to indicate which one to serve.
 ```
 ng serve bookshelf-member-portal
 ```
@@ -81,6 +81,8 @@ Add a link to the AboutComponent
   <a [routerLink]="['/about']">ABOUT</a>
 ```
 
+Note: The router-outlet is at the bottom of the page, so that's where you'll see it.
+
 ## Only rebuild affected files
 https://nx.dev/web/tutorial/11-build-affected-projects
 
@@ -88,5 +90,5 @@ https://nx.dev/web/tutorial/11-build-affected-projects
 npm run affected:build
 ```
 
-## Monorepo Tops and Best Practices
+## Monorepo Tips and Best Practices
 https://nx.dev/web/guides/monorepo-nx-enterprise

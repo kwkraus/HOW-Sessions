@@ -166,3 +166,21 @@ Other useful methods are to setValidators(), setValue(), enable(), disable()
 ## Dynamically constructed form
 https://angular.io/guide/dynamic-form#question-form-components
 question-control.service.ts
+
+## Clean up for the next module
+
+### new-book.component
+```javascript
+  book: IBook;
+  ngOnInit() {
+    this.book = {
+      id: 0,
+      title: '',
+      author: '',
+      isCheckedOut: false,
+      rating: 0
+    };
+  }
+```
+
+Revert ts and html files back to template-driven forms.
