@@ -2,6 +2,7 @@
 https://ngrx.io/
 
 https://ngrx.io/guide/store#diagram
+*Draw this diagram on the shiteboard to refer to during this module*
 
 https://ngrx.io/docs#when-should-i-use-ngrx-for-state-management
 
@@ -11,6 +12,17 @@ https://ngrx.io/docs#when-should-i-use-ngrx-for-state-management
 We could add dependencies to package.json and then start creating reducers, etc.
 However, we can use schematics to add it for us.
 https://ngrx.io/guide/store/install#installing-with-ng-add
+
+Note #1: To avoid this error:
+_Two or more projects are using identical roots. Unable to determine project using current working directory. Using default workspace project instead.
+schematics_1.applyTemplates is not a function_
+edit angular.json.
+```json
+    "angular-workshop-e2e": {
+      "root": "e2e",
+```
+
+Note #2: npm uninstall @angular/pwa dependency if included in the package.json. There is an incompatability with the ngrx schematics.
 
 ```
 ng add @ngrx/store
@@ -35,6 +47,8 @@ Also, add the other 3 libraries that we'll be using
 ```
 
 ## Start coding with Actions
+**Actions** - the events that happen throughout the application.
+
 https://ngrx.io/guide/store/actions#actions
 
 ### app/collection/actions/books-api.actions.ts
@@ -108,6 +122,8 @@ export { BooksUIActions, BooksApiActions };
 ```
 
 ## After Actions, next code Reducers
+**Reducers** - Functions that listen for actions and handle state transitions without any side-effects.
+
 https://ngrx.io/guide/store/reducers#reducers
 
 Since we need to manage record collection, we will use Entity State in our reducer.
@@ -130,6 +146,7 @@ export interface State extends EntityState<IBook> {
 }
 
 // Entity State uses an Adapter to manage the collection of books
+// The adapter is a utility class with functions to simplify the manipulation of the entity state.
 export const adapter = createEntityAdapter<IBook>();
 
 export const initialState = adapter.getInitialState({
@@ -178,17 +195,26 @@ export const bookReducer = createReducer(
 
 export function reducer(state: State | undefined, action: Action) {
     return bookReducer(state, action);
-  }
+}
+```
 
-// Entity Selectors
-// The getSelectors method returned by the created entity adapter provides functions
-//   for selecting information from the entity.
-// The getSelectors method takes a selector function as its only argument to select
-//   the piece of state for a defined entity.
+## Next add Selectors
+**Selectors** - Functions that get slices of the store without any side-effects.
+
+https://ngrx.io/guide/store/selectors
+
+### app/reducers/books.reducer.ts
+The getSelectors method returned by the created entity adapter provides functions for selecting information from the entity.
+adapter.getSelectors() automatically generates selectAll and selectEntities, which can be used directly in components or as the starting point for building other selectors.
+```javascript
 export const { selectAll, selectEntities } = adapter.getSelectors();
+
+// selector for one piece of data
 export const selectActiveBookId = (state: State) => state.activeBookId;
+
+// createSelector() is used to select data based on multiple slices of the same state
 export const selectActiveBook = createSelector(selectEntities, selectActiveBookId,
-    (entities, bookId) => (bookId ? entities[bookId] : null));
+    (entities, bookId) => (bookId ? entities[bookId] : null)); 
 ```
 
 ### app/reducers/index.ts
@@ -201,6 +227,7 @@ import {
 } from '@ngrx/store';
 import { environment } from '../../environments/environment';
 
+// Use the alias to differenciate objects with same name in different reducers 
 import * as fromBooks from './books.reducer';
 
 export interface State {
@@ -380,8 +407,14 @@ import * as fromRoot from '../../reducers';
     // }
   }
 ```
+
+### book-detail.component.html
+Use the async pipe for the list of books.
+Also, make sure book is passed into onRatingUpdate() 
 ```html
 <div *ngIf="book$ | async; let book">
+  . . .
+  <my-rating [rating]="book.rating" (ratingClicked)="onRatingUpdate(book, $event)"></my-rating>
 ```
 
 ### book.collection.component.ts
@@ -430,6 +463,7 @@ import * as fromRoot from '../../reducers';
   }
 ```
 
+### book.collection.component.html
 ```html
 <mat-list-item *ngFor="let book of books$ | async">
 ```
@@ -445,6 +479,8 @@ Add Chrome extension Redux DevTools
 ### app.module.ts
 ```javascript
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+  imports: [
 . . .
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
