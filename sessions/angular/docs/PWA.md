@@ -5,13 +5,14 @@ In this module we will introduce some features to the application that makes it 
 1. Offline caching with service workers so your app can work without an internet connection
 2. Application manifest to define the look and feel of your app (icons, name, full screen)
 3. Install to home screen feature so your web app can be accessed just like any other native app
-4. Support for push notifications
 
 Before you introduce the service worker to your application try using your application in offline mode by opening the f12 tools and choosing offline mode under the network tab as shown below. Notice that you will be presented by a “There is no Internet connection” message which is the expected behavior of a web application when there is no connection. 
 
 ![](images/pwa_img1.png)
 
 ## Add PWA functionality to the app
+
+Make sure that assets/icons folder is empty.
 
 ```
 ng add @angular/pwa
@@ -21,6 +22,8 @@ ng add @angular/pwa
 
 ### app.module.ts
 ```javascript
+imports: [
+  . . .
 ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
 ```
 
@@ -30,7 +33,10 @@ If you build your app in production mode, you get your app with a service worker
 
 So, we need to execute ```ng build --prod``` and host with another web server.
 
-IIS or lite-server
+Make sure the app includes config.prod.json
+
+Note: https://stackoverflow.com/questions/60234452/angular-pwa-error-site-cannot-be-installed-no-matching-service-worker-detected
+
 
 ```
 npm install http-server --save-dev
@@ -62,7 +68,7 @@ Notice that under the "Size" column, the requests state is (from ServiceWorker).
 ### ngsw-config.json
 View the default configuration for cached files.
 
-It uses the prefetch strategy so the service worker place2 the whole app into the cache and can load it even when the server is offline. 
+It uses the prefetch strategy so the service worker places the whole app into the cache and can load it even when the server is offline. 
 You can also use the Chrome developer tools to inspect service workers.
 Open the developer tools, select the Application tab, and choose Service Workers in the left navigation panel. You can see that the service worker is running.
 
