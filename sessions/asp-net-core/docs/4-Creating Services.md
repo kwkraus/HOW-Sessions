@@ -716,6 +716,13 @@ public async Task UpdateProductAsync(Product product)
         await _context.SaveChangesAsync();
     }
 }
+
+private async Task<Uri> SaveFileToStorageAsync(Product product)
+{
+    return await _storageService.SaveFileAsync(
+        product.Image.OpenReadStream(),
+        $"{product.Id}{Path.GetExtension(product.Image.FileName)}");
+}
 ```
 
 #### Update DeleteProductAsync Method
