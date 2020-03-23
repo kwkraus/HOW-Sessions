@@ -716,13 +716,6 @@ public async Task UpdateProductAsync(Product product)
         await _context.SaveChangesAsync();
     }
 }
-
-private async Task<Uri> SaveFileToStorageAsync(Product product)
-{
-    return await _storageService.SaveFileAsync(
-        product.Image.OpenReadStream(),
-        $"{product.Id}{Path.GetExtension(product.Image.FileName)}");
-}
 ```
 
 #### Update DeleteProductAsync Method
@@ -742,6 +735,17 @@ public async Task DeleteProductAsync(int? id)
 
     _context.Products.Remove(productToDelete);
     await _context.SaveChangesAsync();
+}
+```
+
+#### Create Private Method for saving files
+
+```csharp
+private async Task<Uri> SaveFileToStorageAsync(Product product)
+{
+    return await _storageService.SaveFileAsync(
+        product.Image.OpenReadStream(),
+        $"{product.Id}{Path.GetExtension(product.Image.FileName)}");
 }
 ```
 
