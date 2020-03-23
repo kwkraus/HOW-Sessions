@@ -738,6 +738,17 @@ public async Task DeleteProductAsync(int? id)
 }
 ```
 
+#### Create Private Method for saving files
+
+```csharp
+private async Task<Uri> SaveFileToStorageAsync(Product product)
+{
+    return await _storageService.SaveFileAsync(
+        product.Image.OpenReadStream(),
+        $"{product.Id}{Path.GetExtension(product.Image.FileName)}");
+}
+```
+
 ### Register `AzureBlobService` with DI System
 
 In order to use our new `AzureBlobService` class within the `ProductService` we need to register the type with the Dependency Injection system.
