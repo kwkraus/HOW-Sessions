@@ -67,6 +67,25 @@ Let's start by creating a new solution with the below projects for our session. 
 
 > NOTE: You can allow customer to use any tools they wish if you are comfortable supporting this scenario
 
+### Create Framework Project
+
+The Framework project is the astraction layer between test execution and the Selenium API calls.  Pages are represented as Page Objects and encapsulate all data, commands, and behavior for a specific page within the system under test.
+
+- Visual Studio
+  - Add new .NET Core 3.x Class Library project using the Visual Studio provided template.
+- .NET Core cli
+  - `dotnet new classlib --name HOW.Selenium.WebApp.Framework`
+
+#### Add Selenium Core Nuget Packages
+
+Add the following Nuget packages to the `HOW.Selenium.WebApp.Framework` project.
+
+- [Selenium.WebDriver](https://www.nuget.org/packages/Selenium.WebDriver)
+  - This package contains the core Selenium WebDriver library that contains the IWebDriver Interface used by all WebDriver implementations.  It also contains the majority of API calls for Selenium
+
+- [Selenium.Support](https://www.nuget.org/packages/Selenium.Support)
+  - This package contains support library with out of band API calls that haven't been added to the core Selenium.WebDriver library.
+
 ### Create Test Project
 
 Here we will create a new .NET Core 3.x MSTest Unit Test project called `HOW.Selenium.WebApp.Tests.MSTest`.  All Selenium tests will be composed within an MSTest method, along with configuration and initialization code.
@@ -75,6 +94,12 @@ Here we will create a new .NET Core 3.x MSTest Unit Test project called `HOW.Sel
   - Add new .NET Core 3.x MSTest project using the Visual Studio provided template.
 - .NET Core cli
   - `dotnet new mstest --name HOW.Selenium.WebApp.Tests.MSTest`
+
+#### Add Project based reference to `HOW.Selenium.WebApp.Framework` project
+
+This test project will consume the Page Objects defined within libary when composing new tests.  
+
+Add a Project based reference to `HOW.Selenium.WebApp.Framework`
 
 #### Add Selenium WebDriver Implementation Nuget Packages
 
@@ -93,6 +118,7 @@ Every test we create will inherit from a base class called `TestBase.cs`.  This 
 Create a new class at the root of the project called `TestBase` and add the following code.
 
 ```csharp
+using HOW.Selenium.WebApp.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HOW.Selenium.WebApp.Tests.MSTest
@@ -119,6 +145,7 @@ namespace HOW.Selenium.WebApp.Tests.MSTest
         public TestContext TestContext { get; set; }
     }
 }
+
 ```
 
 #### Create runsettings file for configuration setup
@@ -193,24 +220,6 @@ Create a new runsettings file called `dev.runsettings` and paste the following c
 </RunSettings>
 ```
 
-### Create Framework Project
-
-The Framework project is the astraction layer between test execution and the Selenium API calls.  Pages are represented as Page Objects and encapsulate all data, commands, and behavior for a specific page within the system under test.
-
-- Visual Studio
-  - Add new .NET Core 3.x Class Library project using the Visual Studio provided template.
-- .NET Core cli
-  - `dotnet new classlib --name HOW.Selenium.WebApp.Framework`
-
-#### Add Selenium Core Nuget Packages
-
-Add the following Nuget packages to the `HOW.Selenium.WebApp.Framework` project.
-
-- [Selenium.WebDriver](https://www.nuget.org/packages/Selenium.WebDriver)
-  - This package contains the core Selenium WebDriver library that contains the IWebDriver Interface used by all WebDriver implementations.  It also contains the majority of API calls for Selenium
-
-- [Selenium.Support](https://www.nuget.org/packages/Selenium.Support)
-  - This package contains support library with out of band API calls that haven't been added to the core Selenium.WebDriver library.
 
 ### Create Web Application Project
 
