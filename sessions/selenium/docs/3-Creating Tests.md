@@ -178,7 +178,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HOW.Selenium.WebApp.Tests.MSTest.Tests
 {
     [TestClass]
-    public class HomePageTests
+    public class HomePageTests : TestBase
     {
         [TestMethod]
         public void HomePage_Navigate_To_Page()
