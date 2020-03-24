@@ -55,8 +55,9 @@ Selenium for .NET Core is distributed through several Nuget Packages.  Here's a 
 
 These packages are the core libraries for Selenium API calls and will be consumed from within the `HOW.Selenium.WebApp.Framework` project to abstract away Selenium API calls from test execution.
 
-- [Selenium.Support](https://www.nuget.org/packages/Selenium.Support)
 - [Selenium.WebDriver](https://www.nuget.org/packages/Selenium.WebDriver)
+- [Selenium.Support](https://www.nuget.org/packages/Selenium.Support)
+- [DotNetSeleniumExtras.WaitHelpers](https://www.nuget.org/packages/DotNetSeleniumExtras.WaitHelpers)
 
 #### Selenium WebDriver distributions
 
@@ -94,6 +95,9 @@ Add the following Nuget packages to the `HOW.Selenium.WebApp.Framework` project.
 - [Selenium.Support](https://www.nuget.org/packages/Selenium.Support)
   - This package contains support library with out of band API calls that haven't been added to the core Selenium.WebDriver library.
 
+- [DotNetSeleniumExtras.WaitHelpers](https://www.nuget.org/packages/DotNetSeleniumExtras.WaitHelpers)
+  - This package contains WaitHelpers for Selenium
+  
 ### Create Test Project
 
 Here we will create a new .NET Core 3.x MSTest Unit Test project called `HOW.Selenium.WebApp.Tests.MSTest`.  All Selenium tests will be composed within an MSTest method, along with configuration and initialization code.
