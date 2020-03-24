@@ -24,6 +24,14 @@ Developed as an internal tool for Thoughtworks, it was open sourced in 2004 and 
 
 In 2007, a parallel project within Thoughtworks was being developed called Web Driver.  This new technology was considered superior to Selenium RC. During a meeting at the Google Test Automation converence, it was decided to merge the two projects and rebrand as Selenium WebDriver or Selenium 2.0
 
+## Prerequisites
+
+- Visual Studio 2019 (Latest updates)
+  - Ensure LocalDb is installed
+- Access to Azure DevOps Organization (can be a personal org)
+- Access to Azure Subscription (can be personal subscription, i.e. Visual Studio subscription)
+- Access to nuget.com package feed
+
 ## How to get Started
 
 In this session, we'll be using Selenium support in .NET Core.  The solution will consist of three projects:
@@ -226,9 +234,10 @@ Create a new runsettings file called `dev.runsettings` and paste the following c
 The Web Application project is the system under test.  We will start with an out of box ASP.NET Core 3.x Razor application and add functionality to support our Selenium testing.
 
 - Visual Studio
-  - Add new .NET Core 3.x Class Library project using the Visual Studio provided template.
+  - Add new ASP.NET Core 3.x Razor Web Application project using the Visual Studio provided template.
+  - Ensure you select the Individual Account authentication option during creation.  This will include ASP.NET Identity in the project.
 - .NET Core cli
-  - `dotnet new webapp --name HOW.Selenium.WebApp`
+  - `dotnet new webapp --name HOW.Selenium.WebApp --auth Individual --use-local-db`
 
 Default templates enable HTTPS, make sure to trust local certs
 
