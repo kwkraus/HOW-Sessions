@@ -142,14 +142,18 @@ First we need to create a new class called `HomePage.cs` within a folder called 
 
 In this version of the Page Object pattern, every Page Object will contain two methods:
 
-- Goto()
+- **Goto()**
   - Used to navigate to a routable endpoint for the page
-- IsAt
+- **IsAt**
   - Property used to identify whether or not the target page was successfully loaded.  Usually an indicator on the rendered page.
 
-For the HomePage class, the routable endpoint will be the root of the web application.  Here we will navigate to the BaseUrl defined in the `Driver` class.
+Discussion Points:
 
-To identify that we are at the HomePage and that it has rendered successfully, we will check for the word "Welcome" located within a H1 tag.
+- For the HomePage class, the routable endpoint will be the root of the web application.  Here we will navigate to the BaseUrl defined in the `Driver` class.
+
+- To identify that we are at the HomePage and that it has rendered successfully, we will check for the word "Welcome" located within a H1 tag.
+
+- All methods are marked `static` for a reason.  When composing a test, using static methods makes the composition and readability much more easy.
 
 Here is what the HomePage Page Object should look like.
 
@@ -179,3 +183,28 @@ namespace HOW.Selenium.WebApp.Framework.Pages
 ```
 
 ## Helper Classes
+
+Helper classes are great for centralizing shared functionality for easy access.  In this session, our helper class will have a method for taking screenshots at the current state of the WebDriver UI.  This is very helpful to provide a visual representation of a failure to better troubleshoot issues.
+
+### Create Helper Class
+
+At the root of the project, create a new class called `Helper.cs` and add the following implementation.  This class is only to be used internally within the Framework project.
+
+The helper class should look as follows.
+```csharp
+using OpenQA.Selenium;
+using System;
+
+namespace HOW.Selenium.WebApp.Framework
+{
+    internal static class Helper
+    {
+        internal static void TakeScreenShot(IWebDriver driver, string fileName)
+        {
+            Screenshot ss = ((ITakesScreenshot)driver).GetScreenshot();
+
+            ss.SaveAsFile($"{fileName}-{DateTime.Now:yyyyMMddss}.png", ScreenshotImageFormat.Png);
+        }
+    }
+}
+```
