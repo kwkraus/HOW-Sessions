@@ -76,7 +76,7 @@ In our example, we default to using the Chrome WebDriver, using incognito mode, 
 ```xml
 <!-- Parameters used by tests at runtime -->
 <TestRunParameters>
-  <Parameter name="BaseUrl" value="https://localhost:5000" />
+  <Parameter name="BaseUrl" value="https://localhost:5001" />
   <Parameter name="TargetBrowser" value="Chrome" />
   <Parameter name="isPrivateMode" value="true" />
   <Parameter name="isHeadless" value="false" />
@@ -132,7 +132,7 @@ Below is what your `dev.runsettings` file should look like in it's entirety
 
   <!-- Parameters used by tests at runtime -->
   <TestRunParameters>
-    <Parameter name="BaseUrl" value="https://localhost:5000" />
+    <Parameter name="BaseUrl" value="https://localhost:5001" />
     <Parameter name="TargetBrowser" value="Chrome" />
     <Parameter name="isPrivateMode" value="true" />
     <Parameter name="isHeadless" value="false" />
@@ -203,7 +203,7 @@ Open **Test Explorer** and verify that you see our newly created test.  If you s
 
 2. Ensure you have the `dev.runsettings` file selected within the Test menu of Visual Studio.
 
-3. From within Visual Studio Test Explorer, run the test.  You should see an instance of Chrome open, using incognito mode, load the target web application at https://localhost:5000, then close when done.
+3. From within Visual Studio Test Explorer, run the test.  You should see an instance of Chrome open, using incognito mode, load the target web application at https://localhost:5001, then close when done.
 
 ### Evaluate Test Execution
 
