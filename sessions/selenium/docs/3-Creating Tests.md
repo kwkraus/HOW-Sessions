@@ -207,4 +207,14 @@ Open **Test Explorer** and verify that you see our newly created test.  If you s
 
 ### Evaluate Test Execution
 
+Back within the **Test Explorer** window, you should see a green checkmark indicating that the test successfully completed.
+
+If you see a red X, you will need to troubleshoot the issue and rerun the test.
+
+### Running Test in Debug Mode
+
+To illustrate how the test executes, you can run the test in debug mode and set breakpoints to walk through the code.
+
+Make sure you step into each method to see the actual Selenium API calls being used and discuss with students.
+
 ## Questions that may come up
