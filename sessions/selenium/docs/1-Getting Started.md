@@ -28,6 +28,7 @@ In 2007, a parallel project within Thoughtworks was being developed called Web D
 
 - Visual Studio 2019 (Latest updates)
   - Ensure LocalDb is installed
+- .NET Core 3.X 
 - Access to Azure DevOps Organization (can be a personal org)
 - Access to Azure Subscription (can be personal subscription, i.e. Visual Studio subscription)
 - Access to nuget.com package feed
