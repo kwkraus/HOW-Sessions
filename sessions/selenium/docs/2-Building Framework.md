@@ -21,6 +21,20 @@ The `Driver` class manages the following:
 - `Quit()` method
   - Method that is called by the test to cleanup the `IWebDriver instance when a test is completed.
 
+Discussion Points:
+
+1. `Initialize()` method takes two parameters. `isPrivate` turns on/off incognito or private mode on the browser.  `isHeadless` shows/hides the browser UI allowing for non interactive execution of tests.
+
+2. `Quit()` method must be called after a test has been executed.  If `Quit()` is not called, the browser session (UI) will still be active.  All sessions need to be cleaned up after test execution.
+
+3. Each WebDriver implementation takes an `options` class to configure its execution.  Discuss the relevant options associated with `isPrivate` and `isHeadless`.
+
+### Create Driver class
+
+Create a new class at root of `HOW.Selenium.WebApp.Framework` and call it `Driver.cs`.
+
+The following code is what the `Driver.cs` class should look like
+
 ```csharp
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -90,5 +104,32 @@ namespace HOW.Selenium.WebApp.Framework
 ```
 
 ## The Page Object
+
+A Page Object is a collection of actions, behaviors, and state specific to one page in the target web application (system under test).
+
+These can include:
+
+- Interactions (Clicks, Drag/Drop, Text Entry, etc.)
+- Behaviors (Update Item, Find text on page, Validation)
+- State (Data used on page, Random data generation)
+
+Each Page Object is named to represent the name of the page it models.  Large web applications can have hundreds, even thousands, of pages that need to be modeled.  When creating Page Objects, it is recommended to house them in a folder called **Pages** and use subfolders for sections/areas within your applications to avoid namespace issues.
+
+For example:
+
+```bash
+...
+├── Pages
+│   ├── Orders
+│   │   ├── IndexPage.cs
+│   │   ├── OrderPage.cs
+│   │   ├── ReviewOrderPage.cs
+│   ├── Users
+│   │   ├── IndexPage.cs
+│   │   ├── UpdateProfilePage.cs
+│   └── partials/template
+├── Driver.cs
+...
+```
 
 ## Helper Classes
