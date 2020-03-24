@@ -153,6 +153,58 @@ Below is what your `dev.runsettings` file should look like in it's entirety
 
 > NOTE: Don't forget to select the newly created runsettings file from within the Test menu within Visual Studio in order for them to take effect.
 
-## Create First Test
+## First Test
 
 Our first test will be a very simple test, but will validate that all of our plumbing is working and allows us to visualize a running test and that our configuration is valid.
+
+### Create `HomePageTests.cs` class
+
+It is common practice to group related tests together within the same file.  Here we will create a new Test class called `HomePageTests.cs` in a folder called **Tests** at the root of the project.
+
+You will need to add a new empty class and update its contents to look like the following.
+
+Discussion Points:
+
+- Mark class as public to ensure tests can execute and be seen by tooling
+
+- Add the `TestClass` attribute to the class, this is required by MSTest
+
+- Add a new method called `HomePage_Navigate_To_Page()` and add the `TestMethod` attribute to this method.  This constitues a "Test" and the name of this method should be descriptive enough to understand what the test is doing in order to make identification and troubleshooting easier.
+
+```csharp
+using HOW.Selenium.WebApp.Framework.Pages;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace HOW.Selenium.WebApp.Tests.MSTest.Tests
+{
+    [TestClass]
+    public class HomePageTests
+    {
+        [TestMethod]
+        public void HomePage_Navigate_To_Page()
+        {
+            HomePage.GoTo();
+
+            Assert.IsTrue(HomePage.IsAt);
+        }
+    }
+}
+```
+
+### Run your First Test
+
+Before we run our new test, we need to make sure it compiles and we can discover it within Visual Studio Test tooling.
+
+Visual Studio contains a tool called **Test Explorer** that discovers all tests within a loaded solution using the attributes added to the test files.  These tests will only be discovered when the test projects compile successfully.
+
+Open **Test Explorer** and verify that you see our newly created test.  If you see the test, you are ready to run it.
+
+1. Make sure the `HOW.Selenium.WebApp` project is running.  Easiest way to do this is to open a command window, navigate to the WebApp folder, and launch site using dotnet cli using `dotnet run`
+
+2. Ensure you have the `dev.runsettings` file selected within the Test menu of Visual Studio.
+
+3. From within Visual Studio Test Explorer, run the test.  You should see an instance of Chrome open, using incognito mode, load the target web application at https://localhost:5001, then close when done.
+
+### Evaluate Test Execution
+
+## Questions that may come up
