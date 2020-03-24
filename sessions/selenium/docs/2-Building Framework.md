@@ -132,4 +132,50 @@ For example:
 ...
 ```
 
+### Create first Page Object
+
+The system under test will be an out of the box ASP.NET Core Razor Page application, so our first test will target the loading of the index page and assert that we navigated to the correct page.
+
+#### Create Home Page Object
+
+First we need to create a new class called `HomePage.cs` within a folder called **Pages**.  This Page Object will represent our initial Home page that we land on when we launch the application.
+
+In this version of the Page Object pattern, every Page Object will contain two methods:
+
+- Goto()
+  - Used to navigate to a routable endpoint for the page
+- IsAt
+  - Property used to identify whether or not the target page was successfully loaded.  Usually an indicator on the rendered page.
+
+For the HomePage class, the routable endpoint will be the root of the web application.  Here we will navigate to the BaseUrl defined in the `Driver` class.
+
+To identify that we are at the HomePage and that it has rendered successfully, we will check for the word "Welcome" located within a H1 tag.
+
+Here is what the HomePage Page Object should look like.
+
+```csharp
+using OpenQA.Selenium;
+
+namespace HOW.Selenium.WebApp.Framework.Pages
+{
+    public static class HomePage
+    {
+        public static void GoTo()
+        {
+            Driver.Instance.Navigate().GoToUrl($"{Driver.BaseUrl}/");
+        }
+
+        public static bool IsAt
+        {
+            get
+            {
+                var header = Driver.Instance.FindElement(By.TagName("h1"));
+
+                return (header.Text == "Welcome");
+            }
+        }
+    }
+}
+```
+
 ## Helper Classes
