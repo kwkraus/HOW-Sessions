@@ -149,11 +149,13 @@ In this version of the Page Object pattern, every Page Object will contain two m
 
 Discussion Points:
 
-- For the HomePage class, the routable endpoint will be the root of the web application.  Here we will navigate to the BaseUrl defined in the `Driver` class.
+- For the HomePage class, the routable endpoint will be the root of the web application.  Here we will navigate to the BaseUrl defined in the `Driver` class.  Discuss the `Navigate()` API call.
 
-- To identify that we are at the HomePage and that it has rendered successfully, we will check for the word "Welcome" located within a H1 tag.
+- To identify that we are at the HomePage and that it has rendered successfully, we will check for the word "Welcome" located within a H1 tag.  Discuss the `FindElement()` API call.
 
 - All methods are marked `static` for a reason.  When composing a test, using static methods makes the composition and readability much more easy.
+
+> NOTE: We touch on a couple of API calls in this section, but a more comprehensive list of core APIs will be discussed in the Advanced session.
 
 Here is what the HomePage Page Object should look like.
 
