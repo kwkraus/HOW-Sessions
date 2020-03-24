@@ -76,14 +76,22 @@ Let's start by creating a new solution with the below projects for our session. 
 
 > NOTE: You can allow customer to use any tools they wish if you are comfortable supporting this scenario
 
+### Create a folder
+
+Create a folder to place your solution and project files
+
+ `md HOW-Selenium`
+
 ### Create Framework Project
 
-The Framework project is the astraction layer between test execution and the Selenium API calls.  Pages are represented as Page Objects and encapsulate all data, commands, and behavior for a specific page within the system under test.
+The Framework project is the abstraction layer between test execution and the Selenium API calls.  Pages are represented as Page Objects and encapsulate all data, commands, and behavior for a specific page within the system under test.
 
 - Visual Studio
   - Add new .NET Core 3.x Class Library project using the Visual Studio provided template.
 - .NET Core cli
+  - `dotnet new sln`
   - `dotnet new classlib --name HOW.Selenium.WebApp.Framework`
+   - `dotnet sln add HOW.Selenium.WebApp.Framework\HOW.Selenium.WebApp.Framework.csproj`
 
 #### Add Selenium Core Nuget Packages
 
@@ -106,6 +114,7 @@ Here we will create a new .NET Core 3.x MSTest Unit Test project called `HOW.Sel
   - Add new .NET Core 3.x MSTest project using the Visual Studio provided template.
 - .NET Core cli
   - `dotnet new mstest --name HOW.Selenium.WebApp.Tests.MSTest`
+  - `dotnet sln add HOW.Selenium.WebApp.Tests.MSTest\HOW.Selenium.WebApp.Tests.MSTest.csproj`
 
 #### Add Project based reference to `HOW.Selenium.WebApp.Framework` project
 
@@ -132,6 +141,7 @@ The Web Application project is the system under test.  We will start with an out
   - Ensure you select the Individual Account authentication option during creation.  This will include ASP.NET Identity in the project.
 - .NET Core cli
   - `dotnet new webapp --name HOW.Selenium.WebApp --auth Individual --use-local-db`
+  - `dotnet sln add HOW.Selenium.WebApp\HOW.Selenium.WebApp.csproj`
 
 Default templates enable HTTPS, make sure to trust local certs
 
