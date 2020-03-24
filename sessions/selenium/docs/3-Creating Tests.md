@@ -2,9 +2,11 @@
 
 In this session, we'll create our first Selenium test, composing the test from our Framework Page Objects.  Every test will inherit from a `TestBase` class that manages the lifetime of the test, including the interactions with the Framework `Driver` class.
 
-## Create TestBase Class
+## TestBase Class
 
 Every test we create will inherit from a base class called `TestBase.cs`.  This class will be responsible for the initialization and cleanup of resources used during the test, specifically the Framework `Driver` class.
+
+### Create `TestBase.cs` class
 
 Create a new class at the root of the project called `TestBase.cs` and add the following code.
 
@@ -48,13 +50,40 @@ namespace HOW.Selenium.WebApp.Tests.MSTest
 }
 
 ```
-## Add runsettings File
 
-#### Create runsettings file for configuration setup
+> NOTE: If you see red squiggly lines under the Driver references, make sure you had added a Project Reference to the `HOW.Selenium.WebApp.Framework` project.
+
+## Runsettings File
+
+[Reference Doc](https://docs.microsoft.com/en-us/visualstudio/test/configure-unit-tests-by-using-a-dot-runsettings-file?view=vs-2019)
 
 MSTest utilizes runsettings to manage the behavior of the test execution engine.  These runsettings also have a configuration section that allows for environment specific configuration to be used.
 
-Create a new runsettings file called `dev.runsettings` and paste the following code into this empty file.
+### Create `dev.runsettings` file
+
+Create a new runsettings file at the root of the test project called `dev.runsettings`.  
+
+> NOTE: you will need to add a file with a known extension, then rename with extension of .runsettings
+
+### Define TestRunParameters
+
+[Reference Doc](https://docs.microsoft.com/en-us/visualstudio/test/configure-unit-tests-by-using-a-dot-runsettings-file?view=vs-2019#testrunparameters)
+
+For this session, the main purpose of the `dev.runsettings` file is to manage configuration options for running Selenium test.  These parameters are stored in a section of the runsettings file called `TestRunParameters`.  This is a list of name/value pairs that can be referenced from within the `TestBase` when executing tests.
+
+In our example, we default to using the Chrome WebDriver, using incognito mode, with the browser UI visible.
+
+```xml
+<!-- Parameters used by tests at runtime -->
+<TestRunParameters>
+  <Parameter name="BaseUrl" value="https://localhost:5001" />
+  <Parameter name="TargetBrowser" value="Chrome" />
+  <Parameter name="isPrivateMode" value="true" />
+  <Parameter name="isHeadless" value="false" />
+</TestRunParameters>
+```
+
+Below is what your `dev.runsettings` file should look like in it's entirety
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -103,7 +132,7 @@ Create a new runsettings file called `dev.runsettings` and paste the following c
 
   <!-- Parameters used by tests at runtime -->
   <TestRunParameters>
-    <Parameter name="BaseUrl" value="https://localhost:44310" />
+    <Parameter name="BaseUrl" value="https://localhost:5001" />
     <Parameter name="TargetBrowser" value="Chrome" />
     <Parameter name="isPrivateMode" value="true" />
     <Parameter name="isHeadless" value="false" />
@@ -122,3 +151,8 @@ Create a new runsettings file called `dev.runsettings` and paste the following c
 </RunSettings>
 ```
 
+> NOTE: Don't forget to select the newly created runsettings file from within the Test menu within Visual Studio in order for them to take effect.
+
+## Create First Test
+
+Our first test will be a very simple test, but will validate that all of our plumbing is working and allows us to visualize a running test and that our configuration is valid.
