@@ -1,10 +1,22 @@
 # Creating Selenium Tests
 
-## Add TestBase Class
+In this session, we'll create our first Selenium test, composing the test from our Framework Page Objects.  Every test will inherit from a `TestBase` class that manages the lifetime of the test, including the interactions with the Framework `Driver` class.
+
+## Create TestBase Class
 
 Every test we create will inherit from a base class called `TestBase.cs`.  This class will be responsible for the initialization and cleanup of resources used during the test, specifically the Framework `Driver` class.
 
-Create a new class at the root of the project called `TestBase` and add the following code.
+Create a new class at the root of the project called `TestBase.cs` and add the following code.
+
+Discussion Points:
+
+- Depending on which Test execution tool you are using, the `TestBase` class will look different based on how each test framework implements lifetime.  In this example, we are using MSTest, where we use the `TestInitialize()` and `TestCleanup()` attributes for lifetime events.
+
+- The `Initialize()` method is responsible for initializing the Framework's Driver class, which is responsible for the runtime configuration of the WebDriver.
+
+- The `Cleanup()` method must alway call the Quit() method in order to close the browser session and clean up resources on executing machine.
+
+Here is what the `TestBase` class should look like for MSTest
 
 ```csharp
 using HOW.Selenium.WebApp.Framework;
