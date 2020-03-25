@@ -58,8 +58,8 @@ namespace HOW.Selenium.WebApp.Framework
             {
                 case "Chrome":
                     //chrome
-                    ChromeDriverService svc = ChromeDriverService.CreateDefaultService();
-                    ChromeOptions chromeOptions = new ChromeOptions();
+                    var svc = ChromeDriverService.CreateDefaultService();
+                    var chromeOptions = new ChromeOptions();
                     if (isPrivateMode)
                         chromeOptions.AddArgument("incognito");
 
@@ -71,7 +71,7 @@ namespace HOW.Selenium.WebApp.Framework
 
                 case "Firefox":
                     //firefox
-                    FirefoxDriverService geckoSvc = FirefoxDriverService.CreateDefaultService();
+                    var geckoSvc = FirefoxDriverService.CreateDefaultService();
                     var geckoOptions = new FirefoxOptions
                     {
                         AcceptInsecureCertificates = true
