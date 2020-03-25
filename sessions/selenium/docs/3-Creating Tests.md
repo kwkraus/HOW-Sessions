@@ -72,7 +72,9 @@ Create a new runsettings file at the root of the test project called `dev.runset
 
 For this session, the main purpose of the `dev.runsettings` file is to manage configuration options for running Selenium test.  These parameters are stored in a section of the runsettings file called `TestRunParameters`.  This is a list of name/value pairs that can be referenced from within the `TestBase` when executing tests.
 
-Use this link [Example runsettings file](https://docs.microsoft.com/en-us/visualstudio/test/configure-unit-tests-by-using-a-dot-runsettings-file?view=vs-2019#example-runsettings-file) for the students to download an example runsettings file and update the TargetFrameworkVersion to the following `<TargetFrameworkVersion>FrameworkCore10</TargetFrameworkVersion>`
+Use this link [Example runsettings file](https://docs.microsoft.com/en-us/visualstudio/test/configure-unit-tests-by-using-a-dot-runsettings-file?view=vs-2019#example-runsettings-file) for the students to download an example runsettings file.  It will probably be easiest from them to open browser and search for `"visual studio .runsettings example"`.  You should see a link `"Configure unit tests by using a .runsettings file"` which they can click on and then scroll to the section of the example.
+
+Next update the TargetFrameworkVersion to the following `<TargetFrameworkVersion>FrameworkCore10</TargetFrameworkVersion>`
 
 Replace the existing TestRunParameters node and replace with the following
 
