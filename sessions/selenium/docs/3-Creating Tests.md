@@ -16,7 +16,7 @@ Discussion Points:
 
 - The `Initialize()` method is responsible for initializing the Framework's Driver class, which is responsible for the runtime configuration of the WebDriver.
 
-- The `Cleanup()` method must alway call the Quit() method in order to close the browser session and clean up resources on executing machine.
+- The `Cleanup()` method must always call the Quit() method in order to close the browser session and clean up resources on executing machine.
 
 Here is what the `TestBase` class should look like for MSTest
 
@@ -28,6 +28,9 @@ namespace HOW.Selenium.WebApp.Tests.MSTest
 {
     public class TestBase
     {
+
+        public TestContext TestContext { get; set; }
+              
         //Snippet selbase
         [TestInitialize()]
         public void Initialize()
@@ -44,8 +47,6 @@ namespace HOW.Selenium.WebApp.Tests.MSTest
         {
             Driver.Quit();
         }
-
-        public TestContext TestContext { get; set; }
     }
 }
 
