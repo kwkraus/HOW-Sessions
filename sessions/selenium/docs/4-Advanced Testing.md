@@ -155,7 +155,7 @@ Compile the code and run the new test to verify it works.
 
 In this section, we will create a test that passes in data to the Page Object in order to interact with the webpage.  For this example, we'll simulate logging into the website using known user credentials.
 
-We must first create a new user within the web application's credential store, but registering a new user from the "Register" link on the Home Page.  This web application utilizes ASP.NET Identity and LocalDb.  The first time you attempt to access the database, you will be prompted to run the initial migration script.  Make sure you click the button and refresh the screen when done.
+We must first create a new user within the web application's credential store, but registering a new user from the "Register" link on the Home Page.  This web application utilizes ASP.NET Identity and LocalDb.  The first time you attempt to access the database, you will be prompted to run the **initial migration** script.  Make sure you click the button and refresh the screen when done.
 
 Next, click the "Register" button in the navigation and enter the following credentials
 
@@ -245,6 +245,9 @@ Compile the projects and run the test to verify that it works.
 > NOTE: These tests can run fast, if you'd like to slow down the test for visualization purposes, add a strategic `Thread.Sleep()` here and there to demonstrate.
 
 ### WaitDrivers
+
+In this section, we're going to cover how WaitDriver's work and get an understanding of why they are important and useful.
+
 
 ### Calling Javascript
 
