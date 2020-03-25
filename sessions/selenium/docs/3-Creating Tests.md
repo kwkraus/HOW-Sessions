@@ -39,7 +39,7 @@ namespace HOW.Selenium.WebApp.Tests.MSTest
             Driver.BaseUrl = TestContext.Properties["BaseUrl"].ToString();
         }
 
-        [TestCleanup()]
+        [TestCleanup()]git s
         public void Cleanup()
         {
             Driver.Quit();
@@ -71,7 +71,9 @@ Create a new runsettings file at the root of the test project called `dev.runset
 
 For this session, the main purpose of the `dev.runsettings` file is to manage configuration options for running Selenium test.  These parameters are stored in a section of the runsettings file called `TestRunParameters`.  This is a list of name/value pairs that can be referenced from within the `TestBase` when executing tests.
 
-In our example, we default to using the Chrome WebDriver, using incognito mode, with the browser UI visible.
+Use this link [Example runsettings file](https://docs.microsoft.com/en-us/visualstudio/test/configure-unit-tests-by-using-a-dot-runsettings-file?view=vs-2019#example-runsettings-file) for the students to download an example runsettings file and update the TargetFrameworkVersion to the following `<TargetFrameworkVersion>FrameworkCore10</TargetFrameworkVersion>`
+
+Replace the existing TestRunParameters node and replace with the following
 
 ```xml
 <!-- Parameters used by tests at runtime -->
@@ -82,6 +84,8 @@ In our example, we default to using the Chrome WebDriver, using incognito mode, 
   <Parameter name="isHeadless" value="false" />
 </TestRunParameters>
 ```
+
+In our example, we default to using the Chrome WebDriver, using incognito mode, with the browser UI visible.
 
 Below is what your `dev.runsettings` file should look like in it's entirety
 
@@ -98,8 +102,8 @@ Below is what your `dev.runsettings` file should look like in it's entirety
       - You can also change it from menu Test, Test Settings, Default Processor Architecture -->
     <TargetPlatform>x86</TargetPlatform>
 
-    <!-- Framework35 | [Framework40] | Framework45 -->
-    <TargetFrameworkVersion>Framework45</TargetFrameworkVersion>
+    <!-- Framework35 | [Framework40] | Framework45 | FrameworkCore10 -->
+    <TargetFrameworkVersion>FrameworkCore10</TargetFrameworkVersion>
 
     <!-- Path to Test Adapters -->
     <!-- TestAdaptersPaths>%SystemDrive%\Temp\foo;%SystemDrive%\Temp\bar</TestAdaptersPaths -->
