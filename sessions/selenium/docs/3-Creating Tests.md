@@ -42,7 +42,7 @@ namespace HOW.Selenium.WebApp.Tests.MSTest
             Driver.BaseUrl = TestContext.Properties["BaseUrl"].ToString();
         }
 
-        [TestCleanup()]git s
+        [TestCleanup()]
         public void Cleanup()
         {
             Driver.Quit();
