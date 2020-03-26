@@ -408,6 +408,8 @@ Run the application, login and verify that the "New Request" link is visible and
     }
     ```
 
+    > NOTE: Discuss the `WebDriverWait` object and how it is the recommended method for observability into the virtual DOM.
+
 #### Additions to HomePage Page Object
 
 Because we want to check navigation links when we are on the HomePage, let's add a new method to the Page Object to check if links with specific names exist.
