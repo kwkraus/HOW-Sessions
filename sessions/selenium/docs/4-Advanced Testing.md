@@ -419,6 +419,69 @@ In order to persist new requests to the database, we will leverage the use of AS
 
 Review the LocalDb database and run web application to ensure the changes took effect and are working correctly.
 
+#### Create Request Page Objects
+
+We will now create two Page Objects, one for the Request Index page and another for the Request Create Page.  We'll use these Page Objects to create and validate new Requests in our tests.
+
+- Create a new class in the **Pages** folder called `RequestIndexPage.cs` within the `HOW.Selenium.WebApp.Framework` project.
+
+  Add the following code
+
+    ```csharp
+    using OpenQA.Selenium;
+
+    namespace HOW.Selenium.WebApp.Framework.Pages
+    {
+        public class RequestIndexPage
+        {
+            public static void GoTo()
+            {
+                Driver.Instance.Navigate().GoToUrl($"{Driver.BaseUrl}/Requests");
+            }
+
+            public static bool IsAt
+            {
+                get
+                {
+                    var header = Driver.Instance.FindElement(By.TagName("h1"));
+
+                    return (header.Text == "Index");
+                }
+            }
+        }
+    }
+    ```
+
+- Create a new class in the **Pages** folder called `RequestCreatePage.cs` within the `HOW.Selenium.WebApp.Framework` project.
+
+  Add the following code
+
+    ```csharp
+    using OpenQA.Selenium;
+
+    namespace HOW.Selenium.WebApp.Framework.Pages
+    {
+        public class RequestCreatePage
+        {
+            public static void GoTo()
+            {
+                Driver.Instance.Navigate().GoToUrl($"{Driver.BaseUrl}/Requests/Create");
+            }
+
+            public static bool IsAt
+            {
+                get
+                {
+                    var header = Driver.Instance.FindElement(By.TagName("h1"));
+
+                    return (header.Text == "Create");
+                }
+            }
+        }
+    }
+    ```
+#### Create RequestPage Tests
+
 ### WaitDrivers
 
 In this section, we're going to cover how WaitDriver's work and get an understanding of why they are important and useful.
