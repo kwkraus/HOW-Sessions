@@ -296,7 +296,7 @@ We will create the following:
         </div>
     </div>
     ```
-    
+
 - Add access to the Request page within the layout template navigation section.
 
   - `_Layout.cshtml`
@@ -364,11 +364,9 @@ We will create the following:
     </html>
     ```
 
-#### Create Request Page Objects
+#### Create Request Page Object
 
-We will now create two Page Objects, one for the Request Index page and another for the Request Create Page.  We'll use these Page Objects to create and validate new Requests in our tests.
-
-- Create a new class in the **Pages** folder called `RequestIndexPage.cs` within the `HOW.Selenium.WebApp.Framework` project.
+- Create a new class in the **Pages** folder called `RequestPage.cs` within the `HOW.Selenium.WebApp.Framework` project.
 
   Add the following code
 
@@ -381,7 +379,7 @@ We will now create two Page Objects, one for the Request Index page and another 
         {
             public static void GoTo()
             {
-                Driver.Instance.Navigate().GoToUrl($"{Driver.BaseUrl}/Requests");
+                Driver.Instance.Navigate().GoToUrl($"{Driver.BaseUrl}/Request");
             }
 
             public static bool IsAt
@@ -390,42 +388,12 @@ We will now create two Page Objects, one for the Request Index page and another 
                 {
                     var header = Driver.Instance.FindElement(By.TagName("h1"));
 
-                    return (header.Text == "Index");
+                    return (header.Text == "Request");
                 }
             }
         }
     }
     ```
-
-- Create a new class in the **Pages** folder called `RequestCreatePage.cs` within the `HOW.Selenium.WebApp.Framework` project.
-
-  Add the following code
-
-    ```csharp
-    using OpenQA.Selenium;
-
-    namespace HOW.Selenium.WebApp.Framework.Pages
-    {
-        public class RequestCreatePage
-        {
-            public static void GoTo()
-            {
-                Driver.Instance.Navigate().GoToUrl($"{Driver.BaseUrl}/Requests/Create");
-            }
-
-            public static bool IsAt
-            {
-                get
-                {
-                    var header = Driver.Instance.FindElement(By.TagName("h1"));
-
-                    return (header.Text == "Create");
-                }
-            }
-        }
-    }
-    ```
-
 
 #### Create RequestPage Tests
 
