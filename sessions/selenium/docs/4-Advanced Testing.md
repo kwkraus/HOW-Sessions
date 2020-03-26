@@ -260,13 +260,43 @@ We will create the following:
 
 #### Create Request Page for Testing
 
-
 - Create a new Razor page called **Request** in the **Pages** folder within the `HOW.Selenium.WebApp` project.
 
   - Use Visual Studio's __Razor Page__ scaffolded template.
 
   - Add the `[Authorize]` attribute to the PageModel class to ensure they can only be rendered by authenticated users.
 
+  - Copy/Paste html into new `Request.cshtml` page
+
+    ```html
+    @page
+    @model HOW.Selenium.WebApp.Pages.RequestModel
+    @{
+        ViewData["Title"] = "Request";
+    }
+
+    <h1>Request</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post" asp-page="Index">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Body" class="control-label"></label>
+                    <input asp-for="Body" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input id="Create_Request" type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    ```
+    
 - Add access to the Request page within the layout template navigation section.
 
   - `_Layout.cshtml`
@@ -333,7 +363,7 @@ We will create the following:
     </body>
     </html>
     ```
-    
+
 #### Create Request Page Objects
 
 We will now create two Page Objects, one for the Request Index page and another for the Request Create Page.  We'll use these Page Objects to create and validate new Requests in our tests.
