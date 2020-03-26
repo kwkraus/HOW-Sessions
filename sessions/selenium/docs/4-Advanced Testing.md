@@ -364,6 +364,8 @@ We will create the following:
     </html>
     ```
 
+Run the application, login and verify that the "New Request" link is visible and that you can open the Request page.
+
 #### Create Request Page Object
 
 - Create a new class in the **Pages** folder called `RequestPage.cs` within the `HOW.Selenium.WebApp.Framework` project.
@@ -372,10 +374,12 @@ We will create the following:
 
     ```csharp
     using OpenQA.Selenium;
+    using OpenQA.Selenium.Support.UI;
+    using System;
 
     namespace HOW.Selenium.WebApp.Framework.Pages
     {
-        public class RequestIndexPage
+        public class RequestPage
         {
             public static void GoTo()
             {
@@ -391,11 +395,75 @@ We will create the following:
                     return (header.Text == "Request");
                 }
             }
+
+            public static void SubmitRequest(string title, string body)
+            {
+                Driver.Instance.FindElement(By.Id("Title")).SendKeys(title);
+                Driver.Instance.FindElement(By.Id("Body")).SendKeys(body);
+
+                new WebDriverWait(Driver.Instance, new TimeSpan(0, 0, 5))
+                    .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.Id("Create_Request"))).Click();
+            }
         }
     }
     ```
 
+#### Additions to HomePage Page Object
+
+Because we want to check navigation links when we are on the HomePage, let's add a new method to the Page Object to check if links with specific names exist.
+
+- Add a new validation method called `IsNavLinkPresent()` to the HomePage Page Object Class.
+
+    ```csharp
+    public static bool IsNavLinkPresent(string linkText)
+    {
+        var links = Driver.Instance.FindElements(By.LinkText(linkText));
+
+        return (links.Count > 0);
+    }
+    ```
+
 #### Create RequestPage Tests
+
+In this section, we'll create a couple of new tests and store them in a new Test Class called `RequestPageTests` within the **Tests** folder of the `HOW.Selenium.WebApp.Tests.MSTest`.
+
+Create a new test called `RequestPage_Link_Visible_When_Logged_In()` that will check for the "New Request" link in anonymous mode, then login and check for the "New Request" link as an authenticated user.
+
+- `RequestPage_Link_Visible_When_Logged_In()`
+
+```csharp
+[TestMethod]
+public void RequestPage_Link_Visible_When_Logged_In()
+{
+    HomePage.GoTo();
+
+    var linkText = "New Request";
+
+    Assert.IsFalse(HomePage.IsNavLinkPresent(linkText),$"Link with name={linkText} was present when it shouldn't be.");
+
+    LoginPage.GoTo();
+    LoginPage.Login("a@a.com", "Pass@word1");
+
+    Assert.IsTrue(HomePage.IsNavLinkPresent(linkText), $"Link with name={linkText} was NOT present when it should be.");
+}
+```
+
+- `RequestPage_Enter_New_Request_Form()`
+
+```csharp
+[TestMethod]
+public void RequestPage_Enter_New_Request_Form()
+{
+    RequestPage.GoTo();
+
+    //should redirect to login page
+    LoginPage.Login("a@a.com", "Pass@word1");
+
+    RequestPage.SubmitRequest("First Request", "My body of proof");
+
+    Assert.IsTrue(HomePage.IsAt, "failed to redirect to home page");
+}
+```
 
 ### WaitDrivers
 
