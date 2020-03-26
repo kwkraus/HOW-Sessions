@@ -260,73 +260,12 @@ We will create the following:
 
 #### Create Request Page for Testing
 
-In order to persist new requests to the database, we will leverage the use of ASP.NET Identity and its `ApplicationDbContext` for persistence to LocalDb.
 
-- Create a new entity called `Request.cs` in a new folder called **Entities** that will represent a request in our system.  Add the following code to this class
+- Create a new Razor page called **Request** in the **Pages** folder within the `HOW.Selenium.WebApp` project.
 
-  - `Request.cs`
+  - Use Visual Studio's __Razor Page__ scaffolded template.
 
-    ```csharp
-    using System.ComponentModel.DataAnnotations;
-
-    namespace HOW.Selenium.WebApp.Entities
-    {
-        public class Request
-        {
-            public int Id { get; set; }
-
-            [Required(ErrorMessage = "Each Request needs a Title")]
-            [MaxLength(50)]
-            public string Title { get; set; }
-
-            [MaxLength(500)]
-            public string Body { get; set; }
-
-            [Required(ErrorMessage = "Each Request needs a Priority")]
-            public Priority Priority { get; set; }
-        }
-
-        public enum Priority
-        {
-            Low,
-            Medium,
-            High
-        }
-    }
-    ```
-
-- Add the new `Request.cs` entity to the `ApplicaitonDbContext` by adding a new property to the class
-
-  - `ApplicationDbContext`
-
-    ```csharp
-    using HOW.Selenium.WebApp.Entities;
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore;
-
-    namespace HOW.Selenium.WebApp.Data
-    {
-        public class ApplicationDbContext : IdentityDbContext
-        {
-            public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-                : base(options)
-            {
-            }
-
-            public DbSet<Request> Requests { get; set; }
-        }
-    }
-    ```
-
-- Create a new Razor page within the `HOW.Selenium.WebApp` project.
-
-  - Create new folder called **Requests** within the **Pages** folder
-
-  - Use Visual Studio's __Razor Pages using Entity Framework (CRUD)__ scaffolded template using our newly created `Request` entity.  This will create several pages within the Requests folder: Index.cshtml, Delete.cshtml, Details.cshtml, Edit.cshtml, Create.cshtml
-
-    - Make sure to scaffold these pages using the `ApplicationDbContext`
-
-  - Add the `[Authorize]` attribute to all scaffolded pages code behind classes to ensure they can only be rendered by authenticated users.
+  - Add the `[Authorize]` attribute to the PageModel class to ensure they can only be rendered by authenticated users.
 
 - Add access to the Request page within the layout template navigation section.
 
@@ -363,7 +302,7 @@ In order to persist new requests to the database, we will leverage the use of AS
                             @if (SignInManager.IsSignedIn(User))
                             {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Requests/Index">Requests</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Request">New Request</a>
                             </li>
                             }
                             <li class="nav-item">
@@ -394,31 +333,7 @@ In order to persist new requests to the database, we will leverage the use of AS
     </body>
     </html>
     ```
-
-- Add Dropdown list items to both the `Create.cshtml` and `Edit.cshtml` pages
-
-  - Locate the `<select>` tag for the Priority field, and update to the following
-
-    - `<select asp-for="Request.Priority" asp-items="Html.GetEnumSelectList<Priority>()" class="form-control"></select>`
-
-    - add `@using HOW.Selenium.WebApp.Entities` to top of page
-
-    > NOTE: This will populate the select tag with names from the enum `Priority`
-
-- Finally, we need to create a new Entity Framework Core migration to update our LocalDb database with our new entity changes.
-
-  - Package Manager Console
-    - `Add-Migration Requests`
-    - `Update-Database`
-
-    > NOTE: make sure `HOW.Selenium.WebApp` is the startup application and the nuget package `Microsoft.EntityFrameworkCore.Design` is installed
-
-  - Dotnet CLI
-    - `dotnet ef migrations add Requests`
-    - `dotnet ef database update`
-
-Review the LocalDb database and run web application to ensure the changes took effect and are working correctly.
-
+    
 #### Create Request Page Objects
 
 We will now create two Page Objects, one for the Request Index page and another for the Request Create Page.  We'll use these Page Objects to create and validate new Requests in our tests.
