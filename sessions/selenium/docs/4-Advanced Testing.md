@@ -262,12 +262,11 @@ We will create the following:
 
 In order to persist new requests to the database, we will leverage the use of ASP.NET Identity and its `ApplicationDbContext` for persistence to LocalDb.
 
-Create a new entity called `Request.cs` in a new folder called **Entities** that will represent a request in our system.  Add the following code to this class
+- Create a new entity called `Request.cs` in a new folder called **Entities** that will represent a request in our system.  Add the following code to this class
 
-- `Request.cs`
+  - `Request.cs`
 
-  ```csharp
-    using System;
+    ```csharp
     using System.ComponentModel.DataAnnotations;
 
     namespace HOW.Selenium.WebApp.Entities
@@ -285,8 +284,6 @@ Create a new entity called `Request.cs` in a new folder called **Entities** that
 
             [Required(ErrorMessage = "Each Request needs a Priority")]
             public Priority Priority { get; set; }
-
-            public DateTime CreatedDate { get; set; }
         }
 
         public enum Priority
@@ -296,13 +293,13 @@ Create a new entity called `Request.cs` in a new folder called **Entities** that
             High
         }
     }
-  ```
+    ```
 
-Add the new `Request.cs` entity to the `ApplicaitonDbContext` by adding a new property to the class
+- Add the new `Request.cs` entity to the `ApplicaitonDbContext` by adding a new property to the class
 
-- `ApplicationDbContext`
+  - `ApplicationDbContext`
 
-  ```csharp
+    ```csharp
     using HOW.Selenium.WebApp.Entities;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
@@ -319,41 +316,108 @@ Add the new `Request.cs` entity to the `ApplicaitonDbContext` by adding a new pr
             public DbSet<Request> Requests { get; set; }
         }
     }
-  ```
+    ```
 
-Create a new Razor page within **Pages/Requests** folder to the `HOW.Selenium.WebApp` project.
+- Create a new Razor page within the `HOW.Selenium.WebApp` project.
 
-- Create new folder called **Requests** within the **Pages** folder
+  - Create new folder called **Requests** within the **Pages** folder
 
-- Use Visual Studio's __Razor Pages using Entity Framework (CRUD)__ scaffolded template using our newly created `Request` entity.  This will create several pages within the Requests folder: Index.cshtml, Delete.cshtml, Details.cshtml, Edit.cshtml, Create.cshtml
+  - Use Visual Studio's __Razor Pages using Entity Framework (CRUD)__ scaffolded template using our newly created `Request` entity.  This will create several pages within the Requests folder: Index.cshtml, Delete.cshtml, Details.cshtml, Edit.cshtml, Create.cshtml
 
-  - Make sure to scaffold these pages using the `ApplicationDbContext`
+    - Make sure to scaffold these pages using the `ApplicationDbContext`
 
-- Add the `[Authorize]` attribute to all scaffolded pages to ensure they can only be rendered by authenticated users.
+  - Add the `[Authorize]` attribute to all scaffolded pages code behind classes to ensure they can only be rendered by authenticated users.
 
-> NOTE: This is not an ASP.NET Core Razor Page, so copy and paste will be fine.
+- Add access to the Request page within the layout template navigation section.
 
+  - `_Layout.cshtml`
 
-- `Request.cshtml`
+    ```html
+    @inject SignInManager<IdentityUser> SignInManager
+    @inject UserManager<IdentityUser> UserManager
 
-  ```xml
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - HOW.Selenium.WebApp</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-page="/Index">HOW.Selenium.WebApp</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <partial name="_LoginPartial" />
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            </li>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Requests/Index">Requests</a>
+                            </li>
+                            }
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
 
-  ```
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2020 - HOW.Selenium.WebApp - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            </div>
+        </footer>
 
-- `Request.cshtml.cs`
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
 
-  ```csharp
+        @RenderSection("Scripts", required: false)
+    </body>
+    </html>
+    ```
 
-  ```
+- Add Dropdown list items to both the `Create.cshtml` and `Edit.cshtml` pages
 
-- `Layout.cshtml`
+  - Locate the `<select>` tag for the Priority field, and update to the following
 
-  ```xml
+    - `<select asp-for="Request.Priority" asp-items="Html.GetEnumSelectList<Priority>()" class="form-control"></select>`
 
-  ```
+    - add `@using HOW.Selenium.WebApp.Entities` to top of page
 
+    > NOTE: This will populate the select tag with names from the enum `Priority`
 
+- Finally, we need to create a new Entity Framework Core migration to update our LocalDb database with our new entity changes.
 
+  - Package Manager Console
+    - `Add-Migration Requests`
+    - `Update-Database`
+
+    > NOTE: make sure `HOW.Selenium.WebApp` is the startup application and the nuget package `Microsoft.EntityFrameworkCore.Design` is installed
+
+  - Dotnet CLI
+    - `dotnet ef migrations add Requests`
+    - `dotnet ef database update`
+
+Review the LocalDb database and run web application to ensure the changes took effect and are working correctly.
 
 ### WaitDrivers
 
