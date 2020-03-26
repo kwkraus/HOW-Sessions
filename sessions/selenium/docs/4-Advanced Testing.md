@@ -297,6 +297,28 @@ We will create the following:
     </div>
     ```
 
+  - Copy/Paste code into `Request.cshtml.cs` file
+
+    ```csharp
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+
+    namespace HOW.Selenium.WebApp.Pages
+    {
+        [Authorize]
+        public class RequestModel : PageModel
+        {
+            public string Title { get; set; }
+            public string Body { get; set; }
+
+            public void OnGet()
+            {
+
+            }
+        }
+    }
+    ```
+
 - Add access to the Request page within the layout template navigation section.
 
   - `_Layout.cshtml`
@@ -470,6 +492,8 @@ public void RequestPage_Enter_New_Request_Form()
 ### WaitDrivers
 
 In this section, we're going to cover how WaitDriver's work and get an understanding of why they are important and useful.
+
+We will add some JavaScript that will disable the "Create" button and only enable it for clicking after text has been entered into all fields and a delay has expired.
 
 ```js
 let inputs = document.querySelectorAll('[type="text"]'),
