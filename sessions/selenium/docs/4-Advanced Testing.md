@@ -244,10 +244,134 @@ Compile the projects and run the test to verify that it works.
 
 > NOTE: These tests can run fast, if you'd like to slow down the test for visualization purposes, add a strategic `Thread.Sleep()` here and there to demonstrate.
 
+### Validation
+
+For a more detailed example, we will need to make some additions to the `HOW.Selenium.WebApp` project that can only be accessed by authenticated users.  This will allow us to compose a more elaborate set of tests with validation.
+
+We will create the following:
+
+- New Request Page that can only be accessed by authenticated users
+
+- Updated navigation to show/hide link to request page
+
+- New RequestPage Page Object to model our new page
+
+- New tests for demonstrating validation
+
+#### Create Request Page for Testing
+
+In order to persist new requests to the database, we will leverage the use of ASP.NET Identity and its `ApplicationDbContext` for persistence to LocalDb.
+
+Create a new entity called `Request.cs` in a new folder called **Entities** that will represent a request in our system.  Add the following code to this class
+
+- `Request.cs`
+
+  ```csharp
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
+    namespace HOW.Selenium.WebApp.Entities
+    {
+        public class Request
+        {
+            public int Id { get; set; }
+
+            [Required(ErrorMessage = "Each Request needs a Title")]
+            [MaxLength(50)]
+            public string Title { get; set; }
+
+            [MaxLength(500)]
+            public string Body { get; set; }
+
+            [Required(ErrorMessage = "Each Request needs a Priority")]
+            public Priority Priority { get; set; }
+
+            public DateTime CreatedDate { get; set; }
+        }
+
+        public enum Priority
+        {
+            Low,
+            Medium,
+            High
+        }
+    }
+  ```
+
+Add the new `Request.cs` entity to the `ApplicaitonDbContext` by adding a new property to the class
+
+- `ApplicationDbContext`
+
+  ```csharp
+    using HOW.Selenium.WebApp.Entities;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore;
+
+    namespace HOW.Selenium.WebApp.Data
+    {
+        public class ApplicationDbContext : IdentityDbContext
+        {
+            public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+                : base(options)
+            {
+            }
+
+            public DbSet<Request> Requests { get; set; }
+        }
+    }
+  ```
+
+Create a new Razor page within **Pages/Requests** folder to the `HOW.Selenium.WebApp` project.
+
+- Create new folder called **Requests** within the **Pages** folder
+
+- Use Visual Studio's __Razor Pages using Entity Framework (CRUD)__ scaffolded template using our newly created `Request` entity.  This will create several pages within the Requests folder: Index.cshtml, Delete.cshtml, Details.cshtml, Edit.cshtml, Create.cshtml
+
+  - Make sure to scaffold these pages using the `ApplicationDbContext`
+
+- Add the `[Authorize]` attribute to all scaffolded pages to ensure they can only be rendered by authenticated users.
+
+> NOTE: This is not an ASP.NET Core Razor Page, so copy and paste will be fine.
+
+
+- `Request.cshtml`
+
+  ```xml
+
+  ```
+
+- `Request.cshtml.cs`
+
+  ```csharp
+
+  ```
+
+- `Layout.cshtml`
+
+  ```xml
+
+  ```
+
+
+
+
 ### WaitDrivers
 
 In this section, we're going to cover how WaitDriver's work and get an understanding of why they are important and useful.
 
+```js
+let inputs = document.querySelectorAll('[type="text"]'),
+    knapp = document.querySelector('#skicka')
+knapp.disabled = true
+
+for (i = 0; i < inputs.length; i++) {
+  inputs[i].addEventListener('input',() => {
+    let values = []
+    inputs.forEach(v => values.push(v.value))
+    knapp.disabled = values.includes('')
+  })
+}
+```
 
 ### Calling Javascript
 
