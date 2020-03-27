@@ -32,6 +32,7 @@ In 2007, a parallel project within Thoughtworks was being developed called Web D
 - Access to Azure DevOps Organization (can be a personal org)
 - Access to Azure Subscription (can be personal subscription, i.e. Visual Studio subscription)
 - Access to nuget.com package feed
+- Chrome and Firefox browsers
 
 ## How to get Started
 
