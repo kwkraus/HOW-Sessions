@@ -483,11 +483,19 @@ new WebDriverWait(Driver.Instance, new TimeSpan(0, 0, 5))
 
 This class takes a TimeSpan that defines the length of time to wait for a specific condition to become true.  In this case, the condition is that an element is Clickable.
 
+> NOTE: This would be a great time to show the other `ExpectedConditions` and discuss their benefit.
+
 This call is also wrapped in a try/catch and when a timeout is reached, the WebDriverWait object will throw an `WebDriverTimeoutException`.  we can then react to this timeout.
 
 Let's run the `RequestPage_Enter_New_Request_Form()` test and see if it succeeds.
 
 Now reduce the `TimeSpan` from 5 seconds to 2 seconds.  you should see the test fail and log the exception information for troubleshooting.
+
+Discussion Points:
+
+- Lots of different `ExpectedConditions` makes for flexibility/resiliency
+
+- TimeSpan will wait UNTIL condition is met, so if condition is met in milliseconds, you don't have to wait for entire configured timeout.
 
 
 ### Calling Javascript
