@@ -4,11 +4,17 @@ The framework is a pattern for modeling all actions, behaviors, and data interac
 
 It is the abstraction layer over the Selenium APIs to allow easy composition of page interactions from within a test.
 
+Discussion Points:
+
+1. TODO: Advantages of this pattern???   Any disadvantages???
+
+2. TODO: Going to be using static classes - Advantages???    Any disadvantages???
+
 ## The Driver
 
 The `Driver` class is a wrapper around the Selenium WebDriver interface along with support for managing the WebDriver from within a test.
 
-Different test execution frameworks manage lifetime in different ways.  Depending on which test framework is being used will 
+Different test execution frameworks manage lifetime in different ways.  Depending on which test framework is being used will TODO: is something missing from the end of the sentence? 
 
 The `Driver` class manages the following:
 
@@ -23,7 +29,7 @@ The `Driver` class manages the following:
 
 Discussion Points:
 
-1. `Initialize()` method takes two parameters. `isPrivate` turns on/off incognito or private mode on the browser.  `isHeadless` shows/hides the browser UI allowing for non interactive execution of tests.
+1. `Initialize()` method takes three parameters. `driverType`  tells the class which DriverService to create.  `isPrivate` turns on/off incognito or private mode on the browser.  `isHeadless` shows/hides the browser UI allowing for non interactive execution of tests.
 
 2. `Quit()` method must be called after a test has been executed.  If `Quit()` is not called, the browser session (UI) will still be active.  All sessions need to be cleaned up after test execution.
 
