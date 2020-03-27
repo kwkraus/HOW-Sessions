@@ -72,7 +72,7 @@ These packages contain the browser specific WebDriver executables necessary to r
 
 > NOTE: These WebDrivers can also be downloaded separately and managed outside of Nuget packages, if desired.
 
-## Create Project Structure
+## Create Solution in Azure DevOps
 
 For this session, we will need to store all of the source code we generate within an Azure DevOps Organization.  Each student will need access to an organization or they can create their own Azure DevOps Organization by going to [Azure DevOps](https://dev.azure.com)
 
