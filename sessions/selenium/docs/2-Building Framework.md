@@ -109,19 +109,31 @@ namespace HOW.Selenium.WebApp.Framework
 }
 ```
 
-## The Page Object
+## The Page Object model
 
-A Page Object is a collection of actions, behaviors, and state specific to one page in the target web application (system under test).
+[Reference Doc](https://selenium.dev/about/)
 
-These can include:
+Discussion Points:
 
-- Interactions (Clicks, Drag/Drop, Text Entry, etc.)
-- Behaviors (Update Item, Find text on page, Validation)
-- State (Data used on page, Random data generation)
+- Page Object is a Design Pattern which has become popular in test automation for enhancing test maintenance and reducing code duplication. A page object is an object-oriented class that serves as an interface to a page of your AUT. The tests then use the methods of this page object class whenever they need to interact with the UI of that page. The benefit is that if the UI changes for the page, the tests themselves don’t need to change, only the code within the page object needs to change. Subsequently all changes to support that new UI are located in one place.
 
-Each Page Object is named to represent the name of the page it models.  Large web applications can have hundreds, even thousands, of pages that need to be modeled.  When creating Page Objects, it is recommended to house them in a folder called **Pages** and use subfolders for sections/areas within your applications to avoid namespace issues.
+- The Page Object Design Pattern provides the following advantages:
 
-For example:
+    - There is a clean separation between test code and page specific code such as locators (or their use if you’re using a UI Map) and layout.
+    - There is a single repository for the services or operations offered by the page rather than having these services scattered throughout the tests.
+
+
+- A Page Object is a collection of actions, behaviors, and state specific to one page in the target web application (system under test).
+
+    These can include:
+
+    - Interactions (Clicks, Drag/Drop, Text Entry, etc.)
+    - Behaviors (Update Item, Find text on page, Validation)
+    - State (Data used on page, Random data generation)
+
+- Each Page Object is named to represent the name of the page it models.  Large web applications can have hundreds, even thousands, of pages that need to be modeled.  When creating Page Objects, it is recommended to house them in a folder called **Pages** and use subfolders for sections/areas within your applications to avoid namespace issues.
+
+- For example:
 
 ```bash
 ...
@@ -192,7 +204,14 @@ namespace HOW.Selenium.WebApp.Framework.Pages
 
 ## Helper Classes
 
-Helper classes are great for centralizing shared functionality for easy access.  In this session, our helper class will have a method for taking screenshots at the current state of the WebDriver UI.  This is very helpful to provide a visual representation of a failure to better troubleshoot issues.
+Helper classes are great for centralizing shared functionality for easy access.  A few examples of things that could be put in a helper class are:
+
+- Copy files from one location to another location.
+- Send selenium execution reports through email.
+- Compare two text files.
+- Execute SQL queries.
+
+In this session, our helper class will have a method for taking screenshots at the current state of the WebDriver UI.  This is very helpful to provide a visual representation of a failure to better troubleshoot issues.
 
 ### Create Helper Class
 
