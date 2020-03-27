@@ -368,13 +368,19 @@ Run the application, login and verify that the "New Request" link is visible and
                 }
             }
 
-            public static void SubmitRequest(string title, string body)
+        public static void SubmitRequest(string title, string body)
+        {
+            try
             {
                 Driver.Instance.FindElement(By.Id("Title")).SendKeys(title);
                 Driver.Instance.FindElement(By.Id("Body")).SendKeys(body);
 
                 new WebDriverWait(Driver.Instance, new TimeSpan(0, 0, 5))
                     .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.Id("Create_Request"))).Click();
+            }
+            catch (WebDriverTimeoutException wdex)
+            {
+                throw new ApplicationException($"Timeout reached when trying to click Create_Request button", wdex);
             }
         }
     }
@@ -439,27 +445,71 @@ public void RequestPage_Enter_New_Request_Form()
 }
 ```
 
-### WaitDrivers
+### WebDriverWait
 
 In this section, we're going to cover how WaitDriver's work and get an understanding of why they are important and useful.
 
 We will add some JavaScript that will disable the "Create" button and only enable it for clicking after text has been entered into all fields and a delay has expired.
 
-```js
-let inputs = document.querySelectorAll('[type="text"]'),
-    knapp = document.querySelector('#skicka')
-knapp.disabled = true
+Add the following code at the bottom of the `Request.cshtml` page.  this code will be executed when the page loads and it will enable the Create button after 5 seconds.  
 
-for (i = 0; i < inputs.length; i++) {
-  inputs[i].addEventListener('input',() => {
-    let values = []
-    inputs.forEach(v => values.push(v.value))
-    knapp.disabled = values.includes('')
-  })
+```js
+@section Scripts {
+    <script type="text/javascript">
+        let inputs = document.querySelectorAll('[type="text"]'),
+            requestbtn = document.querySelector('#Create_Request')
+        requestbtn.disabled = true
+
+        for (i = 0; i < inputs.length; i++) {
+            inputs[i].addEventListener('input', () => {
+                let values = []
+                inputs.forEach(v => values.push(v.value))
+                setTimeout(function(isDisabled){
+                    console.log('Timeout reached');
+                    requestbtn.disabled = isDisabled;
+                }, 5000, values.includes(''))
+            })
+        }
+    </script>
 }
 ```
 
+From the previous section, you'll recall we add the `SubmitRequest()` method to the `RequestPage` Page Object and this method contains a Selenium API that uses the WebDriverWait object.
+
+```csharp
+new WebDriverWait(Driver.Instance, new TimeSpan(0, 0, 5))
+    .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.Id("Create_Request"))).Click();
+```
+
+This class takes a TimeSpan that defines the length of time to wait for a specific condition to become true.  In this case, the condition is that an element is Clickable.
+
+> NOTE: This would be a great time to show the other `ExpectedConditions` and discuss their benefit.
+
+This call is also wrapped in a try/catch and when a timeout is reached, the WebDriverWait object will throw an `WebDriverTimeoutException`.  we can then react to this timeout.
+
+Let's run the `RequestPage_Enter_New_Request_Form()` test and see if it succeeds.
+
+Now reduce the `TimeSpan` from 5 seconds to 2 seconds.  you should see the test fail and log the exception information for troubleshooting.
+
+Discussion Points:
+
+- Lots of different `ExpectedConditions` makes for flexibility/resiliency
+
+- TimeSpan will wait UNTIL condition is met, so if condition is met in milliseconds, you don't have to wait for entire configured timeout.
+
+
 ### Calling Javascript
 
+There are times when executing JavaScript to initiate a behavior is appropriate
+```csharp
+public static void ClickAlertFromExecuteJS()
+{
+    ((IJavaScriptExecutor)Driver.Instance).ExecuteScript(
+        "alert('executed from selenium ExecuteScript');");
 
+    IAlert alert = Driver.Instance.SwitchTo().Alert();
+    Thread.Sleep(1500);
+    alert.Accept();
+}
+```
 
