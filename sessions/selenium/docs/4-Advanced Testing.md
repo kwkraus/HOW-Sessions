@@ -264,8 +264,6 @@ We will create the following:
 
   - Use Visual Studio's __Razor Page__ scaffolded template.
 
-  - Add the `[Authorize]` attribute to the PageModel class to ensure they can only be rendered by authenticated users.
-
   - Copy/Paste html into new `Request.cshtml` page
 
     ```html
@@ -297,8 +295,8 @@ We will create the following:
     </div>
     ```
 
-  - Copy/Paste code into `Request.cshtml.cs` file
-
+  - Cut/Past this necessary code into the `Request.cshtml.cs` file.  Notice it includes the `[Authorize]` attribute to ensure the page can only be rendered by authenticated users.
+  
     ```csharp
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -319,71 +317,23 @@ We will create the following:
     }
     ```
 
-- Add access to the Request page within the layout template navigation section.
+- Add code to allow access to the Request page only for Authenticated users. 
 
-  - `_Layout.cshtml`
+  - First add these lines to the top of _Layout.cshtml
 
     ```html
     @inject SignInManager<IdentityUser> SignInManager
     @inject UserManager<IdentityUser> UserManager
+    ```
+  - Next add this code for the link to the new Request page - place it between the 'Index' and 'Privacy' links
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>@ViewData["Title"] - HOW.Selenium.WebApp</title>
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-    </head>
-    <body>
-        <header>
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-                <div class="container">
-                    <a class="navbar-brand" asp-area="" asp-page="/Index">HOW.Selenium.WebApp</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <partial name="_LoginPartial" />
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                            </li>
-                            @if (SignInManager.IsSignedIn(User))
-                            {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Request">New Request</a>
-                            </li>
-                            }
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
-        <div class="container">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-        </div>
-
-        <footer class="border-top footer text-muted">
-            <div class="container">
-                &copy; 2020 - HOW.Selenium.WebApp - <a asp-area="" asp-page="/Privacy">Privacy</a>
-            </div>
-        </footer>
-
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-
-        @RenderSection("Scripts", required: false)
-    </body>
-    </html>
+    ```html
+    @if (SignInManager.IsSignedIn(User))
+    {
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-page="/Request">New Request</a>
+    </li>
+    }
     ```
 
 Run the application, login and verify that the "New Request" link is visible and that you can open the Request page.
