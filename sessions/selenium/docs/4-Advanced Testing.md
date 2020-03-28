@@ -386,7 +386,7 @@ Run the application, login and verify that the "New Request" link is visible and
     }
     ```
 
-    > NOTE: Discuss the `WebDriverWait` object and how it is the recommended method for observability into the virtual DOM.
+    > NOTE: Discuss the `WebDriverWait` object and how it is the recommended method for observability into the virtual DOM.  TODO:  Add some discussion topics for this.....
 
 #### Additions to HomePage Page Object
 
