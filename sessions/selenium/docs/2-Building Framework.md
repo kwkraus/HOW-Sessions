@@ -217,7 +217,7 @@ In this session, our helper class will have a method for taking screenshots at t
 
 At the root of the project, create a new class called `Helper.cs` and add the following implementation.  This class is only to be used internally within the Framework project.
 
-The helper class should look as follows.
+The helper class should look as follows.  TODO: Do we want to use this somewhere?
 ```csharp
 using OpenQA.Selenium;
 using System;

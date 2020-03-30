@@ -503,6 +503,8 @@ Discussion Points:
 
 ### Calling Javascript
 
+TODO:   Do we want to use this in an example somewhere?
+
 There are times when executing JavaScript to initiate a behavior is appropriate
 ```csharp
 public static void ClickAlertFromExecuteJS()
