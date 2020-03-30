@@ -1,14 +1,11 @@
 # Creating Selenium Tests
 
-In this session, we'll create our first Selenium test, composing the test from our Framework Page Objects.  Every test will inherit from a `TestBase` class that manages the lifetime of the test, including the interactions with the Framework `Driver` class.
+In this session, we'll create our first Selenium test, composing the test from our Framework Page Objects.  
+ 
 
 ## TestBase Class
 
-Every test we create will inherit from a base class called `TestBase.cs`.  This class will be responsible for the initialization and cleanup of resources used during the test, specifically the Framework `Driver` class.
-
-### Create `TestBase.cs` class
-
-Create a new class at the root of the project called `TestBase.cs` and add the following code.
+The first step will be creating `TestBase` class.  Every test we create will inherit from this base class.  This class will be responsible for the initialization and cleanup of resources used during the test, specifically the Framework `Driver` class.
 
 Discussion Points:
 
@@ -18,7 +15,9 @@ Discussion Points:
 
 - The `Cleanup()` method must always call the Quit() method in order to close the browser session and clean up resources on executing machine.
 
-Here is what the `TestBase` class should look like for MSTest
+### Create `TestBase.cs` class
+
+Create a new class at the root of the project called `TestBase.cs` and add the following code.
 
 ```csharp
 using HOW.Selenium.WebApp.Framework;
@@ -62,9 +61,9 @@ MSTest utilizes runsettings to manage the behavior of the test execution engine.
 
 ### Create `dev.runsettings` file
 
-Create a new runsettings file at the root of the test project called `dev.runsettings`.  
+Create a new runsettings file at the root of the test project called `dev.runsettings`, you can use the XML template.  
 
-> NOTE: you will need to add a file with a known extension, then rename with extension of .runsettings
+> NOTE: if your file was created with the XML extension you will need to rename with extension of .runsettings
 
 ### Define TestRunParameters
 
@@ -72,11 +71,30 @@ Create a new runsettings file at the root of the test project called `dev.runset
 
 For this session, the main purpose of the `dev.runsettings` file is to manage configuration options for running Selenium test.  These parameters are stored in a section of the runsettings file called `TestRunParameters`.  This is a list of name/value pairs that can be referenced from within the `TestBase` when executing tests.
 
-Use this link [Example runsettings file](https://docs.microsoft.com/en-us/visualstudio/test/configure-unit-tests-by-using-a-dot-runsettings-file?view=vs-2019#example-runsettings-file) for the students to download an example runsettings file.  It will probably be easiest from them to open browser and search for `"visual studio .runsettings example"`.  You should see a link `"Configure unit tests by using a .runsettings file"` which they can click on and then scroll to the section of the example.
+Use this link [Example runsettings file](https://docs.microsoft.com/en-us/visualstudio/test/configure-unit-tests-by-using-a-dot-runsettings-file?view=vs-2019#example-runsettings-file) for the students to download an example runsettings file. 
+
+> NOTE: It will probably be easiest students to open browser and search for `"visual studio .runsettings example"`.  You should see a link `"Configure unit tests by using a .runsettings file"` which they can click on and then scroll to the section of the example.
 
 Next update the TargetFrameworkVersion to the following `<TargetFrameworkVersion>FrameworkCore10</TargetFrameworkVersion>`
 
-Replace the existing TestRunParameters node and replace with the following
+Then remove this line
+ `<TestSessionTimeout>10000</TestSessionTimeout>`
+
+ Next remove the section for the video datacollector
+
+ `      <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
+        <!--Video data collector was introduced in Visual Studio 2017 version 15.5 -->
+        <Configuration>
+          <!-- Set "sendRecordedMediaForPassedTestCase" to "false" to add video attachments to failed tests only -->
+          <MediaRecorder sendRecordedMediaForPassedTestCase="true"  xmlns="">
+            ​
+            <ScreenCaptureVideo bitRate="512" frameRate="2" quality="20" />​
+          </MediaRecorder>​
+        </Configuration>
+      </DataCollector>`
+
+
+Last, replace the existing TestRunParameters node and replace with the following
 
 ```xml
 <!-- Parameters used by tests at runtime -->
