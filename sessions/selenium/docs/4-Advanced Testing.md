@@ -524,14 +524,12 @@ Let's create a test to demonstrate.
 Add the following test to the HomePageTests class
 
 ```csharp
-public static void ClickAlertFromExecuteJS()
+[TestMethod]
+public void HomePage_Execute_Alert_And_Dismiss()
 {
-    ((IJavaScriptExecutor)Driver.Instance).ExecuteScript(
-        "alert('executed from selenium ExecuteScript');");
-
-    IAlert alert = Driver.Instance.SwitchTo().Alert();
-    Thread.Sleep(1500);
-    alert.Accept();
+    HomePage.GoTo();
+    HomePage.ClickAlertFromExecuteJS();
+    Assert.IsTrue(HomePage.IsAt);
 }
 ```
 
