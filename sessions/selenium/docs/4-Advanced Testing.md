@@ -503,9 +503,10 @@ Discussion Points:
 
 ### Calling Javascript
 
-TODO:   Do we want to use this in an example somewhere?
+There are times when executing JavaScript to initiate a behavior is appropriate.  Here we will execute javascript that lives in our Page Object and then demonstrate how to work with Alerts, which are not part of the DOM.
 
-There are times when executing JavaScript to initiate a behavior is appropriate
+Add the following method to the HomePage Page Object.  This is just a simple alert with our own text that gets closed.
+
 ```csharp
 public static void ClickAlertFromExecuteJS()
 {
@@ -518,3 +519,64 @@ public static void ClickAlertFromExecuteJS()
 }
 ```
 
+Let's create a test to demonstrate.
+
+Add the following test to the HomePageTests class
+
+```csharp
+public static void ClickAlertFromExecuteJS()
+{
+    ((IJavaScriptExecutor)Driver.Instance).ExecuteScript(
+        "alert('executed from selenium ExecuteScript');");
+
+    IAlert alert = Driver.Instance.SwitchTo().Alert();
+    Thread.Sleep(1500);
+    alert.Accept();
+}
+```
+
+There is a Thread.Sleep(1500) in this test just for students to see the alert and how it gets accepted.
+
+Run test to demonstrate.
+
+### Take a Screenshot
+
+There are times when a failed test is difficult to troubleshoot based on log data and having the ability to view the state of the page at the moment of failure would help.
+
+Here we will introduce a new class called `Helper.cs` that contains a helper method for taking sceenshots.
+
+Add a new class called `Helper` to the `HOW.Selenium.WebApp.Framework` project at the root and add the following implementation.
+
+```csharp
+using OpenQA.Selenium;
+using System;
+
+namespace HOW.Selenium.WebApp.Framework
+{
+    internal static class Helper
+    {
+        internal static void TakeScreenShot(IWebDriver driver, string fileName)
+        {
+            Screenshot ss = ((ITakesScreenshot)driver).GetScreenshot();
+
+            ss.SaveAsFile($"{fileName}-{DateTime.Now:yyyyMMddss}.png", ScreenshotImageFormat.Png);
+        }
+    }
+}
+```
+
+In order to use this new helper method, we'll add a call to it fromw within the catch block of the `SubmitRequest()` method in the RequestPage Page Object.
+
+If we lower the WebDriverWait Timespan to 2 seconds, it should throw an exception and a sceenshot can be taken.
+
+add the following Helper line of code to the `SubmitRequest` method catch block
+
+```csharp
+catch (WebDriverTimeoutException wdex)
+{
+    Helper.TakeScreenShot(Driver.Instance, nameof(SubmitRequest));
+    throw new ApplicationException($"Timeout reached when trying to click Create_Request button", wdex);
+}
+```
+
+Now run the `RequestPage_Enter_New_Request_Form()` test again and it should fail.  Check the bin\debug\netcoreapp3.1 folder for a new .png file that starts with "SubmitRequest-*"  this is the sceenshot the application took
