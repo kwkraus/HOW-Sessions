@@ -33,7 +33,7 @@ In 2007, a parallel project within Thoughtworks was being developed called Web D
 - Access to Azure Subscription (can be personal subscription, i.e. Visual Studio subscription)
 - Access to nuget.com package feed
 - Chrome and Firefox browsers
-- Dual Monitors (For remote enragements)
+- Dual Monitors (For remote engagements)
 
 ## How to get Started
 
