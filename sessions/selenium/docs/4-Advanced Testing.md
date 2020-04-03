@@ -501,9 +501,9 @@ Discussion Points:
 - TimeSpan will wait UNTIL condition is met, so if condition is met in milliseconds, you don't have to wait for entire configured timeout.
 
 
-### Calling Javascript
+### Calling JavaScript
 
-There are times when executing JavaScript to initiate a behavior is appropriate.  Here we will execute javascript that lives in our Page Object and then demonstrate how to work with Alerts, which are not part of the DOM.
+There are times when executing JavaScript to initiate a behavior is appropriate.  Here we will execute JavaScript that lives in our Page Object and then demonstrate how to work with Alerts, which are not part of the DOM.
 
 Add the following method to the HomePage Page Object.  This is just a simple alert with our own text that gets closed.
 
@@ -537,6 +537,127 @@ There is a Thread.Sleep(1500) in this test just for students to see the alert an
 
 Run test to demonstrate.
 
+### Detecting JavaScript
+
+Now there will also be when you want detect is some JavaScript has been executed on a page.  For example you may have an alert box display an error message when invalid data.  
+
+For this example we will add a box on the privacy page to enter the date and a button to then accept the privacy policy.   When the button is clicked we will display an invalid date alert message.
+
+First lets add the box and the button to Privacy.cshtml
+
+```js
+    <div class="form-group">
+        <label asp-for="Date" class="control-label"></label>
+        <input asp-for="Date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input id="Create_Alert" type="submit" value="Submit" onclick="alert('Alert! Alert!');" class="btn btn-primary" />
+    </div>
+```
+
+THen we need to add this to the PrivacyModel Class in the Privacy.cshtml.cs file
+
+```csharp
+        public string Date { get; set; }
+```
+
+Now that we have the page ready we can start building out the framework code needed for our test.   Go to the framework project and add a new class called PrivacyPage.cs to the pages folder.  **Instructor Note:  You can copy the GoTo and IsAt methods from one of the other classes and just update the url and IsAt text to look for to save some time if you want.
+
+```csharp
+using OpenQA.Selenium;
+using System;
+
+
+namespace HOW.Selenium.WebApp.Framework.Pages
+{
+    public static class PrivacyPage
+    {
+
+        public static void GoTo()
+        {
+            Driver.Instance.Navigate().GoToUrl($"{Driver.BaseUrl}/Privacy");
+        }
+
+        public static bool IsAt
+        {
+            get
+            {
+                var header = Driver.Instance.FindElement(By.TagName("h1"));
+
+                return (header.Text == "Privacy Policy");
+            }
+        }
+
+
+        public static void ClickSubmitButton()
+        {
+            var buttonID = "Create_Alert";
+
+            try
+            {
+                Driver.Instance.FindElement(By.Id("Date")).SendKeys("12/33/2020");
+                IWebElement submitbutton = Driver.Instance.FindElement(By.Id(buttonID));
+                submitbutton.Click();
+            }
+            catch (NoSuchElementException)
+            {
+                throw new ApplicationException($"Failed to find link with id={buttonID}");
+            }
+        }
+
+        public static bool IsAlertDisplayed()
+        {
+            try
+            {
+                IAlert alert = Driver.Instance.SwitchTo().Alert();
+                alert.Accept();
+                return true;
+            }
+            catch (NoAlertPresentException ex)
+            {
+                Helper.TakeScreenShot(Driver.Instance, nameof(IsAlertDisplayed));
+                throw new NoAlertPresentException($"No Alert Displayed", ex);
+            }
+
+        }
+    }
+}
+```
+
+
+Now that we have our page updated on the website and the Framework updated to include the functionality needed we can go ahead and create a test to check for the alert.
+
+Go ahead and add a new class called PrivacyPageTests.cs to the Tests folder in our MSTest project.  Then add the following code to it.
+
+```csharp
+namespace HOW.Selenium.WebApp.Tests.MSTest.Tests
+{
+    [TestClass]
+    public class PrivacyPageTests :TestBase
+    {
+
+        [TestMethod]
+        public void PrivacyPage_Click_AlertButton()
+        {
+            PrivacyPage.GoTo();
+
+            PrivacyPage.ClickSubmitButton();
+
+            Assert.IsTrue(PrivacyPage.IsAlertDisplayed(), "Failed to display alert");
+        }
+    }
+}
+
+```
+
+Now run the `PrivacyPage_Click_AlertButton()` to verify that it works correctly.
+
+To simulate the test failing you can add Thread.Sleep after the call to the ClickSubmitButton in the test.  Then during that pause click on the alert so then the check to see if the alert is displayed should fail
+
+
+
+
+
 ### Take a Screenshot
 
 There are times when a failed test is difficult to troubleshoot based on log data and having the ability to view the state of the page at the moment of failure would help.
@@ -563,7 +684,7 @@ namespace HOW.Selenium.WebApp.Framework
 }
 ```
 
-In order to use this new helper method, we'll add a call to it fromw within the catch block of the `SubmitRequest()` method in the RequestPage Page Object.
+In order to use this new helper method, we'll add a call to it from within the catch block of the `SubmitRequest()` method in the RequestPage Page Object.
 
 If we lower the WebDriverWait Timespan to 2 seconds, it should throw an exception and a sceenshot can be taken.
 
