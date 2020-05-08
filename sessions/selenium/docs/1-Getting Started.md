@@ -73,15 +73,15 @@ These packages contain the browser specific WebDriver executables necessary to r
 
 > NOTE: These WebDrivers can also be downloaded separately and managed outside of Nuget packages, if desired.
 
-## Create Solution in Azure DevOps
-
-For this session, we will need to store all of the source code we generate within an Azure DevOps Organization.  Each student will need access to an organization or they can create their own Azure DevOps Organization by going to [Azure DevOps](https://dev.azure.com)
-
-Each student will need to create a new Project (with GIT source control) within Azure DevOps.  Once they have cloned the initial Git repo, follow the below steps for creating the project structure.  Make sure to have them commit and push periodically in order to ensure they don't lose their work.  The sessions for creating the build and release pipelines will use the source within the Azure DevOps repo.
+## Create Solution in Visual Studio
 
 Let's start by creating a new solution with the below projects for our session.  If you are using Visual Studio to create these projects, make sure to name your solution different than the initial project you create.    Have a discussion with customer on what tooling they'd like to work with and be consistent during your sessions.
 
+ 
+
 > NOTE: You can allow customer to use any tools they wish if you are comfortable supporting this scenario
+
+## Follow the below steps for creating the project structure. 
 
 ### Create a folder
 

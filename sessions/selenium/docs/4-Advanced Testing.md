@@ -4,7 +4,7 @@
 
 Selenium has several different API calls that allow a test to access the source of a page, title for a page, and any elements loaded into the Document Object Model (DOM).  
 
-In this section, we'll create several tests demonstrating different API calls to manipulate and verify page data and behavior.
+In this section, we'll create several tests in our `HOW.Selenium.WebApp.Framework` project that demonstrate different API calls to manipulate and verify page data and behavior.
 
 ### PageSource and Title
 
@@ -36,7 +36,7 @@ public static bool IsTitleValid(string expectedPageTitle)
 }
 ```
 
-Now let's create two new tests that will consume each of these new methods to assert we have a valid Title for the page.
+Now let's create two new tests in the `HOW.Selenium.WebApp.MSTests` project that will consume each of these new methods to assert we have a valid Title for the page.
 
 Discussion Points:
 
@@ -91,7 +91,7 @@ using OpenQA.Selenium;
 
 namespace HOW.Selenium.WebApp.Framework.Pages
 {
-    public class PrivacyPage
+    public static class PrivacyPage
     {
         public static void GoTo()
         {
@@ -407,6 +407,18 @@ Because we want to check navigation links when we are on the HomePage, let's add
 
 In this section, we'll create a couple of new tests and store them in a new Test Class called `RequestPageTests` within the **Tests** folder of the `HOW.Selenium.WebApp.Tests.MSTest`.
 
+Add the following using statements
+```csharp
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+```
+
+Add the TestClass attribute to the class, make it public and inherit it from TestBase
+```csharp
+[TestClass]
+public class RequestPageTests : TestBase
+```
+
 Create a new test called `RequestPage_Link_Visible_When_Logged_In()` that will check for the "New Request" link in anonymous mode, then login and check for the "New Request" link as an authenticated user.
 
 - `RequestPage_Link_Visible_When_Logged_In()`
@@ -445,7 +457,15 @@ public void RequestPage_Enter_New_Request_Form()
 }
 ```
 
+Compile the projects and run the test to verify that it works.  
+
 ### WebDriverWait
+
+The WebDriverWait class can be used in many ways. When ever we need to perform any operation on element, we can use webdriver wait to check if the element is Present or visible or enabled or disabled or Clickable etc.
+
+WebDriver can generally be said to have a blocking API. Because it is an out-of-process library that instructs the browser what to do, and because the web platform has an intrinsically asynchronous nature, WebDriver does not track the active, real-time state of the DOM.
+
+[Reference Doc](https://www.selenium.dev/documentation/en/webdriver/waits/)
 
 In this section, we're going to cover how WaitDriver's work and get an understanding of why they are important and useful.
 
@@ -474,7 +494,9 @@ Add the following code at the bottom of the `Request.cshtml` page.  this code wi
 }
 ```
 
-From the previous section, you'll recall we add the `SubmitRequest()` method to the `RequestPage` Page Object and this method contains a Selenium API that uses the WebDriverWait object.
+- You will need to stop the running webapp, rebuild the solution and run the webapp again for the changes to take effect
+
+From the previous section, you'll recall we added the `SubmitRequest()` method to the `RequestPage` Page Object and this method contains a Selenium API that uses the WebDriverWait object.
 
 ```csharp
 new WebDriverWait(Driver.Instance, new TimeSpan(0, 0, 5))
@@ -539,9 +561,9 @@ Run test to demonstrate.
 
 ### Detecting JavaScript
 
-Now there will also be when you want detect is some JavaScript has been executed on a page.  For example you may have an alert box display an error message when invalid data.  
+Now there may also be a time when you want to detect if some JavaScript has been executed on a page.  For example you may have an alert box display an error message when an user inputs invalid data.  
 
-For this example we will add a box on the privacy page to enter the date and a button to then accept the privacy policy.   When the button is clicked we will display an invalid date alert message.
+For this example we will add a box on the privacy page to enter a date and a button to then accept the privacy policy.   When the button is clicked we will display an invalid date alert message.
 
 First lets add the box and the button to Privacy.cshtml
 
@@ -555,73 +577,46 @@ First lets add the box and the button to Privacy.cshtml
     </div>
 ```
 
-THen we need to add this to the PrivacyModel Class in the Privacy.cshtml.cs file
+Then we need to add this to the PrivacyModel class in the Privacy.cshtml.cs file
 
 ```csharp
         public string Date { get; set; }
 ```
 
-Now that we have the page ready we can start building out the framework code needed for our test.   Go to the framework project and add a new class called PrivacyPage.cs to the pages folder.  **Instructor Note:  You can copy the GoTo and IsAt methods from one of the other classes and just update the url and IsAt text to look for to save some time if you want.
+Now that we have the page ready we can start building out the framework code needed for our test.   Go to the framework project and open the PrivacyPage.cs file in the pages folder. Add the following two methods 
 
 ```csharp
-using OpenQA.Selenium;
-using System;
-
-
-namespace HOW.Selenium.WebApp.Framework.Pages
-{
-    public static class PrivacyPage
+    public static void ClickSubmitButton()
     {
+        var buttonID = "Create_Alert";
 
-        public static void GoTo()
+        try
         {
-            Driver.Instance.Navigate().GoToUrl($"{Driver.BaseUrl}/Privacy");
+            Driver.Instance.FindElement(By.Id("Date")).SendKeys("12/33/2020");
+            IWebElement submitbutton = Driver.Instance.FindElement(By.Id(buttonID));
+            submitbutton.Click();
         }
-
-        public static bool IsAt
+        catch (NoSuchElementException)
         {
-            get
-            {
-                var header = Driver.Instance.FindElement(By.TagName("h1"));
-
-                return (header.Text == "Privacy Policy");
-            }
-        }
-
-
-        public static void ClickSubmitButton()
-        {
-            var buttonID = "Create_Alert";
-
-            try
-            {
-                Driver.Instance.FindElement(By.Id("Date")).SendKeys("12/33/2020");
-                IWebElement submitbutton = Driver.Instance.FindElement(By.Id(buttonID));
-                submitbutton.Click();
-            }
-            catch (NoSuchElementException)
-            {
-                throw new ApplicationException($"Failed to find link with id={buttonID}");
-            }
-        }
-
-        public static bool IsAlertDisplayed()
-        {
-            try
-            {
-                IAlert alert = Driver.Instance.SwitchTo().Alert();
-                alert.Accept();
-                return true;
-            }
-            catch (NoAlertPresentException ex)
-            {
-                Helper.TakeScreenShot(Driver.Instance, nameof(IsAlertDisplayed));
-                throw new NoAlertPresentException($"No Alert Displayed", ex);
-            }
-
+            throw new ApplicationException($"Failed to find link with id={buttonID}");
         }
     }
-}
+
+    public static bool IsAlertDisplayed()
+    {
+        try
+        {
+            IAlert alert = Driver.Instance.SwitchTo().Alert();
+            alert.Accept();
+            return true;
+        }
+        catch (NoAlertPresentException ex)
+        {
+            Helper.TakeScreenShot(Driver.Instance, nameof(IsAlertDisplayed));
+            throw new NoAlertPresentException($"No Alert Displayed", ex);
+        }
+
+    }
 ```
 
 
@@ -630,6 +625,10 @@ Now that we have our page updated on the website and the Framework updated to in
 Go ahead and add a new class called PrivacyPageTests.cs to the Tests folder in our MSTest project.  Then add the following code to it.
 
 ```csharp
+
+using HOW.Selenium.WebApp.Framework.Pages;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace HOW.Selenium.WebApp.Tests.MSTest.Tests
 {
     [TestClass]
@@ -650,7 +649,7 @@ namespace HOW.Selenium.WebApp.Tests.MSTest.Tests
 
 ```
 
-Now run the `PrivacyPage_Click_AlertButton()` to verify that it works correctly.
+Now stop the running webapp, rebuild the solution, restart the webapp and then run the `PrivacyPage_Click_AlertButton()` test to verify that it works correctly.
 
 To simulate the test failing you can add Thread.Sleep after the call to the ClickSubmitButton in the test.  Then during that pause click on the alert so then the check to see if the alert is displayed should fail
 
@@ -662,29 +661,9 @@ To simulate the test failing you can add Thread.Sleep after the call to the Clic
 
 There are times when a failed test is difficult to troubleshoot based on log data and having the ability to view the state of the page at the moment of failure would help.
 
-Here we will introduce a new class called `Helper.cs` that contains a helper method for taking sceenshots.
+Previous we created a class called `Helper.cs` that contains a helper method for taking sceenshots.  Go back and review that class.
 
-Add a new class called `Helper` to the `HOW.Selenium.WebApp.Framework` project at the root and add the following implementation.
-
-```csharp
-using OpenQA.Selenium;
-using System;
-
-namespace HOW.Selenium.WebApp.Framework
-{
-    internal static class Helper
-    {
-        internal static void TakeScreenShot(IWebDriver driver, string fileName)
-        {
-            Screenshot ss = ((ITakesScreenshot)driver).GetScreenshot();
-
-            ss.SaveAsFile($"{fileName}-{DateTime.Now:yyyyMMddss}.png", ScreenshotImageFormat.Png);
-        }
-    }
-}
-```
-
-In order to use this new helper method, we'll add a call to it from within the catch block of the `SubmitRequest()` method in the RequestPage Page Object.
+In order to use this helper method, we'll add a call to it from within the catch block of the `SubmitRequest()` method in the RequestPage Page Object.
 
 If we lower the WebDriverWait Timespan to 2 seconds, it should throw an exception and a sceenshot can be taken.
 
