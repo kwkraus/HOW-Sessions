@@ -39,7 +39,7 @@ In 2007, a parallel project within Thoughtworks was being developed called Web D
 
 In this session, we'll be using Selenium support in .NET Core.  The solution will consist of three projects:
 
-- **HOW.Selenium.WebApp.Tests.MSTest**:  .NET Core xUnit Project
+- **HOW.Selenium.WebApp.Tests.MSTest**:  .NET Core MSTest Project
   - Project that houses all Selenium Tests
 
 - **HOW.Selenium.WebApp.Framework**:  .NET Core Class Library
