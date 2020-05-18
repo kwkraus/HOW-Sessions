@@ -1,6 +1,6 @@
 # ASP.NET Core HOW Session Documentation
 
-- [Getting Started](1-GettingStarted.md)
+- [Getting Started](1-Getting%20Started.md)
 
     This session breaks down the out of the box experience and templates used to start a new ASP.NET Core
     development project. It explains, in detail, how .NET Core works and the core features of an ASP.NET Core project.
