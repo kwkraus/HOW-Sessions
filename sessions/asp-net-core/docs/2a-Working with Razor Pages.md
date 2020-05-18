@@ -16,7 +16,7 @@ Concepts for this sesssion:
 
 ## What's in Razor Page Template
 
-When you inspect the what is generated from the Visual Studio 2019 ASP.NET Core Razor Page template, discuss the following items:
+When you inspect what is generated from the Visual Studio 2019 ASP.NET Core Razor Page template, discuss the following items:
 
 - Razor Page setup within Startup.cs
   - `ConfigureServices()`
@@ -65,7 +65,7 @@ When you inspect the what is generated from the Visual Studio 2019 ASP.NET Core 
   - `_viewStart.cshtml` attaches the layout page to all pages
   - `Shared\_layout.cshtml` contains the look at feel applied to all pages
 
-## Writing your first page
+## Create your first page
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-3.0)
 
@@ -180,7 +180,7 @@ Let's create our first Razor pages using Visual Studio.  For this session, we're
 
     - Add `<p>@DateTime.Now</p>` to top of page to demonstrate
 
-  - Explicit Expressions use two @ symbols
+  - Explicit Expressions use @ symbol with balanced parenthesis
 
     - Add `<p>Products last updated: @(DateTime.Now - TimeSpan.FromDays(7))</p>` to top of page to demonstrate
 
