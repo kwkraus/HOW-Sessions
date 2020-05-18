@@ -36,9 +36,12 @@ Create a new ASP.NET Core 3.x project using the target tool of choice.  Have a d
 > NOTE: You can allow customer to use any tools they wish if you are comfortable supporting this scenario
 
 - Visual Studio
+  - Add new ASP.NET Core 3.x project using the Visual Studio provided template.
 - .NET Core cli
-  - For MVC: `dotnet new mvc '<projectname>'`
-  - For Razor Pages: `dotnet new webapp '<projectname>'`
+  - For MVC: `dotnet new mvc --name <projectname>`
+  - For Razor Pages: `dotnet new webapp --name <projectname>`
+  - `dotnet new sln --name <solutionname>`
+  - `dotnet sln add <projectname>\<projectname>.csproj`
 
 Default templates enable HTTPS, make sure to trust local certs
 
@@ -54,7 +57,7 @@ With the new project created, we will discuss the main fundamentals of an ASP.NE
 
 [Reference Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/index?view=aspnetcore-3.0&tabs=windows#host)
 
-Discuss how ASP.NET Core is hosted and what scenarios different hosts can be utilized.
+Open the `Program.cs` file and discuss how ASP.NET Core is hosted and what scenarios different hosts can be utilized.
 
 - Lifetime Management
 
