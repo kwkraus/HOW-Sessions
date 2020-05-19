@@ -12,6 +12,15 @@ Concepts for this sesssion:
 
 >NOTE: This session will teach the basics of Entity Framework Core, but is not intended to be a comprehensive walkthrough of this technology.
 
+## Configuration Fundamentals
+
+- Talk about CreateDefaultHost() for default configuration
+
+- Talk about Environment Variables
+  - AppSettings.json->AppSettings.[Environment].json->Secret Manager->Envionment Variables
+  
+- Initialize Secret Manager and discuss how to use
+
 ## Configure Entity Framework Core
 
 In production ready systems, it is best practice to manage your data access resource within a separate class library.  
