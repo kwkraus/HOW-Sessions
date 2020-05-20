@@ -41,3 +41,12 @@
 
 
 ## Prerequisites
+
+- Intermediate C# coding knowledge
+- Azure DevOps personal Organization; for running builds and releases
+- Azure Subscription (usually provided with a Visual Studio subscription); need admin access to create and deploy resources
+- Full access to internet resources; Nuget specifically
+- Visual Studio 2019
+- Azure Storage Emulator
+- Latest .NET Core SDK
+ 
