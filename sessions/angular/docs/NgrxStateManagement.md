@@ -2,7 +2,7 @@
 https://ngrx.io/
 
 https://ngrx.io/guide/store#diagram
-*Draw this diagram on the shiteboard to refer to during this module*
+*Draw this diagram on the whiteboard to refer to during this module*
 
 https://ngrx.io/docs#when-should-i-use-ngrx-for-state-management
 
